@@ -2,28 +2,61 @@
 
 template<typename T>
 class Pilha {
-
 	private:
-		T* dados;
-		int topo;
+		T *dados;
+		int numeroTopo;
+		int maxPilha;
 
 	public:
-
 		Pilha() {}
 
-		Pilha<T>(int t);
+		Pilha<T>(int t) {
+			maxPilha = t;
+			numeroTopo = -1;
+			dados = new T[t];
+		}
 
-		void empilha(T dado); // slide 11
+		void empilha(T dado) {
+			if (PilhaCheia()) {
+				throw "problema";
+			} else {
+				numeroTopo += 1;
+				dados[numeroTopo] = dado;
+			}
+		}
 
-		T desempilha(); // slide 12
+		T desempilha() {
+			if (PilhaVazia()) {
+				throw "problema";
+			} else {
+				numeroTopo -= 1;
+				return dados[numeroTopo + 1];
+			}
+		}
 
-		T topo(); // slide 13
+		T topo() {
+			if (PilhaVazia())
+				throw "problema";
+			else
+				return dados[numeroTopo];
+		}
 
-		int getPosTopo();
+		int getPosTopo() {
+			if (PilhaVazia())
+				throw "problema";
+			else
+				return numeroTopo;
+		}
 
-		void limparPilha(); // slide 8
+		void limparPilha() {
+			numeroTopo = -1;
+		}
 
-		bool PilhaVazia(); // slide 10
+		bool PilhaVazia() {
+			return numeroTopo == -1;
+		}
 
-		bool PilhaCheia(); // slide 9
+		bool PilhaCheia() {
+			return numeroTopo == maxPilha - 1;
+		}
 };
