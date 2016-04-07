@@ -15,7 +15,7 @@ class Lista {
 
 		explicit Lista(int tam) {
 			maxLista = tam;
-			ultimo = -1
+			ultimo = -1;
 			dados = new T[tam];
 		}
 
@@ -91,7 +91,6 @@ class Lista {
 				ultimo -= 1;
 				return dados[ultimo + 1];
 			}
-
 		}
 
 		T retiraDoInicio() {
@@ -99,14 +98,13 @@ class Lista {
 				throw "problema";
 			} else {
 				ultimo -= 1;
-				T tmp = dado[0];
+				T tmp = dados[0];
 
 				for (int i = 1; i < maxLista; i++)
 					dados[i-1] = dados[i];
 
 				return tmp;
 			}
-
 		}
 
 		T retiraDaPosicao(int posicao) {
@@ -163,7 +161,6 @@ class Lista {
 
 		bool igual(T dado1, T dado2) {
 			return dado1 == dado2;
-
 		}
 
 		bool maior(T dado1, T dado2) {
