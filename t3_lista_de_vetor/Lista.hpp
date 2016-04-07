@@ -15,7 +15,7 @@ class Lista {
 		}
 
 		void adiciona(T dado) {
-			if (PilhaCheia()) {
+			if (listaCheia()) {
 				throw "problema";
 			} else {
 				ultimo += 1;
@@ -24,7 +24,7 @@ class Lista {
 		}
 
 		void adicionaNoInicio(T dado) {
-			if (PilhaCheia()) {
+			if (listaCheia()) {
 				throw "problema";
 			} else {
 				ultimo += 1;
@@ -50,6 +50,20 @@ class Lista {
 		}
 
 		void adicionaNaPosicao(T dado, int posicao) {
+			bool maiorZero = 0 < posicao;
+			bool menorMax = posicao < maxLista;
+
+			if (listaCheia() || (maiorZero && menorMax)) {
+				throw "problema";
+			} else {
+				ultimo += 1;
+
+				for (int i = posicao+1; i < maxLista; i++)
+					dados[i] = dados[i-1];
+
+				dados[posicao] = dado;
+			}
+
 
 		}
 
@@ -58,7 +72,7 @@ class Lista {
 		}
 
 		T retira() {
-			if (PilhaVazia()) {
+			if (listaVazia()) {
 				throw "problema";
 			} else {
 				ultimo -= 1;
@@ -68,11 +82,35 @@ class Lista {
 		}
 
 		T retiraDoInicio() {
+			if (listaVazia()) {
+				throw "problema";
+			} else {
+				ultimo -= 1;
+				T tmp = dado[0];
+
+				for (int i = 1; i < maxLista; i++)
+					dados[i-1] = dados[i];
+
+				return tmp;
+			}
 
 		}
 
 		T retiraDaPosicao(int posicao) {
+			bool maiorZero = 0 < posicao;
+			bool menorMax = posicao < maxLista;
 
+			if (listaCheia() || (maiorZero && menorMax)) {
+				throw "problema";
+			} else {
+				ultimo -= 1;
+				T tmp = dados[posicao];
+
+				for (int i = posicao+1; i < maxLista; i++)
+					dados[i-1] = dados[i];
+
+				return tmp;
+			}
 		}
 
 		int posicao(T dado) {
