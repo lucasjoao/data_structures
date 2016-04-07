@@ -55,15 +55,15 @@ class Lista {
 		}
 
 		void adicionaNaPosicao(T dado, int posicao) {
-			bool maiorZero = 0 < posicao;
-			bool menorMax = posicao < maxLista;
+			bool menorZero = posicao < 0;
+			bool maiorUlt = ultimo + 1 < posicao;
 
-			if (listaCheia() || (maiorZero && menorMax)) {
+			if (listaCheia() || menorZero || maiorUlt) {
 				throw "problema";
 			} else {
 				ultimo += 1;
 
-				for (int i = posicao+1; i < maxLista; i++)
+				for (int i = ultimo; i > posicao; i--)
 					dados[i] = dados[i-1];
 
 				dados[posicao] = dado;
@@ -108,16 +108,16 @@ class Lista {
 		}
 
 		T retiraDaPosicao(int posicao) {
-			bool maiorZero = 0 < posicao;
-			bool menorMax = posicao < maxLista;
+			bool menorZero = posicao < 0;
+			bool maiorUlt = ultimo < posicao;
 
-			if (listaVazia() || (maiorZero && menorMax)) {
+			if (listaVazia() || menorZero || maiorUlt) {
 				throw "problema";
 			} else {
 				ultimo -= 1;
 				T tmp = dados[posicao];
 
-				for (int i = posicao+1; i < maxLista; i++)
+				for (int i = posicao+1; i < ultimo; i++)
 					dados[i-1] = dados[i];
 
 				return tmp;
