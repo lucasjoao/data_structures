@@ -1,18 +1,26 @@
 template<typename T>  // nao sei se entra, ja que n esta no vpl
 class Lista {
 	private:
+		T *dados;
+		int ultimo;
+		int maxLista;
 
 	public:
-		Lista() {
-
-		}
+		Lista() { }
 
 		explicit Lista(int tam) {
-
+			maxLista = tam;
+			ultimo = -1
+			dados = new T[tam];
 		}
 
 		void adiciona(T dado) {
-
+			if (PilhaCheia()) {
+				throw "problema";
+			} else {
+				ultimo += 1;
+				dados[ultimo] = dado;
+			}
 		}
 
 		void adicionaNoInicio(T dado) {
@@ -60,14 +68,14 @@ class Lista {
 		}
 
 		bool listaCheia() {
-
+			return ultimo == maxLista - 1;
 		}
 
 		bool listaVazia() {
-
+			return ultimo == -1;
 		}
 
 		void destroiLista() {
-
+			ultimo = -1;
 		}
 };
