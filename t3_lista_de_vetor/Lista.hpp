@@ -128,12 +128,12 @@ class Lista {
 			if (listaVazia()) {
 				throw "problema";
 			} else {
-				int posicao = posicao(dado);
+				int local = posicao(dado);
 
-				if (posicao < 0)
+				if (local < 0)
 					throw "problema";
 				else
-					return retiraDaPosicao(posicao);
+					return retiraDaPosicao(local);
 			}
 		}
 
