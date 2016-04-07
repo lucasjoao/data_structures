@@ -1,3 +1,8 @@
+/**
+ *  Copyright [2016] - Lucas João Martins
+ *  Lista.hpp
+ */
+
 template<typename T>  // nao sei se entra, ja que n esta no vpl
 class Lista {
 	private:
@@ -63,12 +68,20 @@ class Lista {
 
 				dados[posicao] = dado;
 			}
-
-
 		}
 
 		void adicionaEmOrdem(T dado) {
+			if (listaCheia()) {
+				throw "problema";
+			} else {
+				int i = 0;
+				for (; i <= ultimo; i++) {
+					if (dados[i] > dado)
+						break;
+				}
 
+				adicionaNaPosicao(dado, i);
+			}
 		}
 
 		T retira() {
@@ -100,7 +113,7 @@ class Lista {
 			bool maiorZero = 0 < posicao;
 			bool menorMax = posicao < maxLista;
 
-			if (listaCheia() || (maiorZero && menorMax)) {
+			if (listaVazia() || (maiorZero && menorMax)) {
 				throw "problema";
 			} else {
 				ultimo -= 1;
@@ -113,24 +126,52 @@ class Lista {
 			}
 		}
 
-		int posicao(T dado) {
+		T retiraEspecifico(T dado) {
+			if (listaVazia()) {
+				throw "problema";
+			} else {
+				int posicao = posicao(dado);
 
+				if (posicao < 0)
+					throw "problema";
+				else
+					return retiraDaPosicao(posicao);
+			}
+		}
+
+		int posicao(T dado) {
+			int i = 0;
+
+			for (; i <= ultimo; i++) {
+				if (igual(dado, dados[i]))
+					break;
+			}
+
+			if (i > ultimo)
+				throw "problema";
+			else
+				return i;
 		}
 
 		bool contem(T dado) {
+			for (int i = 0; i <= ultimo; i++)
+				if (igual(dado, dados[i]))
+					return true;
 
+			return false;
 		}
 
 		bool igual(T dado1, T dado2) {
+			return dado1 == dado2;
 
 		}
 
 		bool maior(T dado1, T dado2) {
-
+			return dado1 > dado2;
 		}
 
 		bool menor(T dado1, T dado2) {
-
+			return dado1 < dado2;
 		}
 
 		bool listaCheia() {
