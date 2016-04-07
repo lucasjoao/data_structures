@@ -24,7 +24,29 @@ class Lista {
 		}
 
 		void adicionaNoInicio(T dado) {
+			if (PilhaCheia()) {
+				throw "problema";
+			} else {
+				ultimo += 1;
 
+				/**
+				 *  PORQUE ESSE MODO PODE NAO FUNCIONAR?
+				 *  na fila coloquei para a frente, aqui coloco para tras, essa e a diff. Trocar para for
+				 */
+				/*
+				for (int i = 0; i < maxLista; i++)  // duvida no funcionamento desse for --- BOTAR NO PAPEL PARA MELHOR ENTENDIMENTO
+					dados[i+1] = dados[i];
+				*/
+
+				int i = ultimo;
+
+				while (i > 0) {
+					dados[i] = dados[i-1];
+					i--;
+				}
+
+				dados[0] = dado;
+			}
 		}
 
 		void adicionaNaPosicao(T dado, int posicao) {
@@ -36,6 +58,12 @@ class Lista {
 		}
 
 		T retira() {
+			if (PilhaVazia()) {
+				throw "problema";
+			} else {
+				ultimo -= 1;
+				return dados[ultimo + 1];
+			}
 
 		}
 
