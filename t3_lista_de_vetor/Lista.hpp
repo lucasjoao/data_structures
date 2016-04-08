@@ -42,13 +42,16 @@ class Lista {
 				for (int i = 0; i < maxLista; i++)  // duvida no funcionamento desse for --- BOTAR NO PAPEL PARA MELHOR ENTENDIMENTO
 					dados[i+1] = dados[i];
 				*/
-
+				/*
 				int i = ultimo;
 
 				while (i > 0) {
 					dados[i] = dados[i-1];
 					i--;
 				}
+				*/
+				for (int i = ultimo; i > 0; i--)
+					dados[i] = dados[i-1];
 
 				dados[0] = dado;
 			}
@@ -76,7 +79,7 @@ class Lista {
 			} else {
 				int i = 0;
 				for (; i <= ultimo; i++) {
-					if (dados[i] > dado)
+					if (maior(dados[i], dado))
 						break;
 				}
 
@@ -97,11 +100,20 @@ class Lista {
 			if (listaVazia()) {
 				throw "problema";
 			} else {
+				/*
 				ultimo -= 1;
 				T tmp = dados[0];
 
 				for (int i = 1; i < maxLista; i++)
 					dados[i-1] = dados[i];
+				*/
+
+				T tmp = dados[0];
+
+				for (int i = 0; i < ultimo; i ++)
+					dados[i] = dados[i+1];
+
+				ultimo -=1;
 
 				return tmp;
 			}
@@ -114,11 +126,19 @@ class Lista {
 			if (listaVazia() || menorZero || maiorUlt) {
 				throw "problema";
 			} else {
+				/*
 				ultimo -= 1;
 				T tmp = dados[posicao];
 
 				for (int i = posicao+1; i < ultimo; i++)
 					dados[i-1] = dados[i];
+				*/
+				T tmp = dados[posicao];
+
+				for (int i = posicao; i < ultimo; i++)
+					dados[i] = dados[i+1];
+
+				ultimo -= 1;
 
 				return tmp;
 			}
