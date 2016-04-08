@@ -51,10 +51,10 @@ class Fila {
 		}
 
 		/** Função retira
-		 *  Se a fila não estiver vazia, então diminui o número que indica a
-		 *  	posição do último, salva temporariamente o dado que será
-		 *  	retirado e empurra todos os outros dados para uma posição
-		 *  	à frente através de um laço.
+		 *  Se a fila não estiver vazia, então salva temporariamente o dado
+		 * 		que será retirado, empurra todos os outros dados para uma
+		 *		posição	à frente através de um laço e diminui o número que
+		 *		indica a posição do último.
 		 *	Não há o processo de apagar o último dado da fila.
 		 *  Verifica o status da fila através da função filaVazia.
 		 *  Se houver problema na verificação, redireciona a execução para
