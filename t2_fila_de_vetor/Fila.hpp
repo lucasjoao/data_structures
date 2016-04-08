@@ -67,11 +67,12 @@ class Fila {
 			if (filaVazia()) {
 				throw "problema";
 			} else {
-				numeroUltimo -= 1;
 				T tmp = dados[0];
 
-				for (int i = 1; i < maxFila; i++)
-					dados[i-1] = dados[i];
+				for (int i = 0; i < numeroUltimo; i++)
+					dados[i] = dados[i+1];
+
+				numeroUltimo -= 1;
 
 				return tmp;
 			}
