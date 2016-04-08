@@ -3,7 +3,7 @@
  *  Lista.hpp
  */
 
-template<typename T>  // nao sei se entra, ja que n esta no vpl
+template<typename T>
 class Lista {
 	private:
 		T *dados;
@@ -34,22 +34,6 @@ class Lista {
 			} else {
 				ultimo += 1;
 
-				/**
-				 *  PORQUE ESSE MODO PODE NAO FUNCIONAR?
-				 *  na fila coloquei para a frente, aqui coloco para tras, essa e a diff. Trocar para for
-				 */
-				/*
-				for (int i = 0; i < maxLista; i++)  // duvida no funcionamento desse for --- BOTAR NO PAPEL PARA MELHOR ENTENDIMENTO
-					dados[i+1] = dados[i];
-				*/
-				/*
-				int i = ultimo;
-
-				while (i > 0) {
-					dados[i] = dados[i-1];
-					i--;
-				}
-				*/
 				for (int i = ultimo; i > 0; i--)
 					dados[i] = dados[i-1];
 
@@ -100,14 +84,6 @@ class Lista {
 			if (listaVazia()) {
 				throw "problema";
 			} else {
-				/*
-				ultimo -= 1;
-				T tmp = dados[0];
-
-				for (int i = 1; i < maxLista; i++)
-					dados[i-1] = dados[i];
-				*/
-
 				T tmp = dados[0];
 
 				for (int i = 0; i < ultimo; i ++)
@@ -126,13 +102,6 @@ class Lista {
 			if (listaVazia() || menorZero || maiorUlt) {
 				throw "problema";
 			} else {
-				/*
-				ultimo -= 1;
-				T tmp = dados[posicao];
-
-				for (int i = posicao+1; i < ultimo; i++)
-					dados[i-1] = dados[i];
-				*/
 				T tmp = dados[posicao];
 
 				for (int i = posicao; i < ultimo; i++)
