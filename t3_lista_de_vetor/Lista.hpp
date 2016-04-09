@@ -143,7 +143,8 @@ class Lista {
 			}
 		}
 
-		/** Funcao retira
+		/**
+		 *	Funcao retira
 		 *  Se a lista nao estiver vazia, entao diminui o numero que indica a
 		 *		posicao do ultimo elemento na estrutura.
 		 *	Nao ha o processo de apagar o dado retirado da lista.
@@ -162,12 +163,14 @@ class Lista {
 			}
 		}
 
-		/** Funcao retiraDoInicio
+		/**
+		 * 	Funcao retiraDoInicio
 		 *  Se a lista nao estiver vazia, entao salva temporariamente o dado
 		 *		que sera retirado, empura todos os outros dados para uma
 		 * 		posicao a frente atraves de um laco e diminui o numero que
 		 *		indica a posicao do ultimo.
-		 *	Nao ha o processo de apagar o ultimo dado da lista.
+		 *	Nao ha o processo de apagar o ultimo dado da lista, mas o dado
+		 *		retirado e sobrescrito.
 		 *  Verifica o status da lista atraves da funcao listaVazia.
 		 *  Se houver problema na verificacao, redireciona a execucao para
 		 *  	lugar nenhum.
@@ -190,6 +193,25 @@ class Lista {
 			}
 		}
 
+		/**
+		 *  Funcao retiraDaPosicao
+		 *  Se a lista nao estiver vazia e a posicao ser valida, entao salva
+		 * 	 	salva temporariamente o dado que sera retirado, empurra os
+		 *		dados, que estao entre o final e a posicao que sera retirada,
+		 *  	para uma posicao a frente e diminui o numero que indica a
+		 * 		posicao do ultimo.
+		 *  Verifica o status da lista atraves da funcao listaVazia.
+		 * 	Verifica se e uma posicao valida atraves de duas variaveis bool
+		 *		locais que armazenam o resultado das comparacoes adequadas.
+		 *  Se houver problema em alguma verificacao, redireciona a execucao
+		 *  	para lugar nenhum.
+		 *	Nao ha o processo de apagar o ultimo dado da lista, mas o dado
+		 *		retirado e sobrescrito.
+		 *	Parametro posicao e um inteiro que indica a posicao em que deve-se
+		 *		tentar retirar o dado.
+		 *  Retorna o tipo generico que representa o dado retirado da lista, o
+		 *		que foi salvo temporariamente durante o processo.
+		 */
 		T retiraDaPosicao(int posicao) {
 			bool menorZero = posicao < 0;
 			bool maiorUlt = ultimo < posicao;
@@ -208,19 +230,43 @@ class Lista {
 			}
 		}
 
+		/**
+		 *  Funcao retiraEspecifico
+		 *  Se a lista nao estiver vazia, entao chama a funcao posicao para ter
+		 *		o local do dado passado como argumento e passa esse local para
+		 *		a funcao retiraEspecifico que fara o processo de retirada do
+		 *		dado.
+		 *	O dado retirado e sobrescrito no processo realizado pela funcao
+		 *		retiraDaPosicao.
+		 *  Verifica o status da lista atraves da funcao listaVazia.
+		 *  Se houver problema na verificacao, redireciona a execucao para
+		 *  	lugar nenhum.
+		 * 	Parametro dado e um tipo generico que representa o dado que deve
+		 *		 ser retirado da lista.
+		 *	Retorna uma chamada para a funcao retiraDaPosicao.
+		 */
 		T retiraEspecifico(T dado) {
 			if (listaVazia()) {
 				throw "problema";
 			} else {
-				int local = posicao(dado);
-
-				if (local < 0)
-					throw "problema";
-				else
-					return retiraDaPosicao(local);
+				return retiraDaPosicao(posicao(dado));
 			}
 		}
 
+		/**
+		 *  Funcao posicao
+		 *	Percorre toda a estrutura e para cada elemento dela compara o
+		 *		elemento com o dado passado como argumento atraves da funcao
+		 *		igual. Se houver igualdade, entao o laco e parado, e, a posicao
+		 *		onde houve igualdade e armazenada para um futuro retorno. Ja
+		 *		se nao houver igualdade, o valor da posicao fica maior que a
+		 *		variavel ultimo e entao a execucao sera redirecionada para
+		 *		lugar nenhum.
+		 *	Parametro dado e um tipo generico que representa o dado que tera a
+		 *		sua posicao procurada na lista.
+		 *	Retorna um inteiro que possui a posicao do valor passado como
+		 *		argumento.
+		 */
 		int posicao(T dado) {
 			int i = 0;
 
@@ -235,6 +281,16 @@ class Lista {
 				return i;
 		}
 
+		/**
+		 *  Funcao contem
+		 * 	Percorre toda a estrutura e para cada elemento dela compara o
+		 *		elemento com o dado passado como argumento atraves da funcao
+		 *		igual. Se houver igualdade, entao o laco e parado.
+		 *	Parametro dado e um tipo generico que representa o dado que sera
+		 * 		procurado na lista.
+		 *	Retorna um valor booleano que indica se a lista possui ou nao o
+		 *		valor passado.
+		 */
 		bool contem(T dado) {
 			for (int i = 0; i <= ultimo; i++)
 				if (igual(dado, dados[i]))
@@ -243,20 +299,42 @@ class Lista {
 			return false;
 		}
 
+		/**
+		 *	Funcao igual
+		 *  Verifica se o primeiro dado e igual ao segundo dado.
+		 *  Parametro dado1 e um tipo generico que representa o primeiro dado.
+		 *	Parametro dado2 e um tipo generico que representa o segundo dado.
+		 *  Retorna o valor booleano que resulta da comparacao.
+		 */
 		bool igual(T dado1, T dado2) {
 			return dado1 == dado2;
 		}
 
+		/**
+		 *	Funcao maior
+		 * 	Verifica se o primeiro dado e maior que o segundo dado.
+		 *  Parametro dado1 e um tipo generico que representa o primeiro dado.
+		 *	Parametro dado2 e um tipo generico que representa o segundo dado.
+		 *  Retorna o valor booleano que resulta da comparacao.
+		 */
 		bool maior(T dado1, T dado2) {
 			return dado1 > dado2;
 		}
 
+		/**
+		 *  Funcao menor
+		 *	Verifica se o primeiro dado e menor que o segundo dado.
+		 *  Parametro dado1 e um tipo generico que representa o primeiro dado.
+		 *	Parametro dado2 e um tipo generico que representa o segundo dado.
+		 *  Retorna o valor booleano que resulta da comparacao.
+		 */
 		bool menor(T dado1, T dado2) {
 			return dado1 < dado2;
 		}
 
-		/** Funcao listaCheia
-		 *  Verifica se a lista esta cheia atraves de uma comparacao entre o
+		/**
+		 *  Funcao listaCheia
+		 *	Verifica se a lista esta cheia atraves de uma comparacao entre o
 		 * 		atributo ultimo e o atributo maxLista - 1.
 		 *  Nao possui parametro.
 		 *  Retorna o valor booleano que resulta da comparacao.
@@ -265,8 +343,9 @@ class Lista {
 			return ultimo == maxLista - 1;
 		}
 
-		/** Funcao listaVazia
-		 *  Verifica se a lista esta vazia atraves de uma comparacao entre o
+		/**
+		 *  Funcao listaVazia
+		 * 	Verifica se a lista esta vazia atraves de uma comparacao entre o
 		 * 		atributo ultimo e a constante -1.
 		 *  Nao possui parametro.
 		 *  Retorna o valor booleano que resulta da comparacao.
@@ -275,8 +354,9 @@ class Lista {
 			return ultimo == -1;
 		}
 
-		/** Funcao destroiLista
-		 *  Limpa / inicializa / destroi a lista atraves do atributo ultimo.
+		/**
+		 *  Funcao destroiLista
+		 * 	Limpa / inicializa / destroi a lista atraves do atributo ultimo.
 		 *	Nao ha o processo de apagar os dados limpados da lista, os mesmos
 		 * 		serao sobrescritos por alguma funcao adiciona*.
 		 *  Nao possui parametro.
