@@ -255,14 +255,33 @@ class Lista {
 			return dado1 < dado2;
 		}
 
+		/** Funcao listaCheia
+		 *  Verifica se a lista esta cheia atraves de uma comparacao entre o
+		 * 		atributo ultimo e o atributo maxLista - 1.
+		 *  Nao possui parametro.
+		 *  Retorna o valor booleano que resulta da comparacao.
+		 */
 		bool listaCheia() {
 			return ultimo == maxLista - 1;
 		}
 
+		/** Funcao listaVazia
+		 *  Verifica se a lista esta vazia atraves de uma comparacao entre o
+		 * 		atributo ultimo e a constante -1.
+		 *  Nao possui parametro.
+		 *  Retorna o valor booleano que resulta da comparacao.
+		 */
 		bool listaVazia() {
 			return ultimo == -1;
 		}
 
+		/** Funcao destroiLista
+		 *  Limpa / inicializa / destroi a lista atraves do atributo ultimo.
+		 *	Nao ha o processo de apagar os dados limpados da lista, os mesmos
+		 * 		serao sobrescritos por alguma funcao adiciona*.
+		 *  Nao possui parametro.
+		 *  Nao possui retorno.
+		 */
 		void destroiLista() {
 			ultimo = -1;
 		}
