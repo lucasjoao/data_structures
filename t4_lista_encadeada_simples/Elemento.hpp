@@ -23,6 +23,10 @@ class Elemento {
 		void setProximo(Elemento<T> *next) {
 			_next = next;
 		}
+
+	private:
+		T *info;
+		Elemento<T> *_next;
 };
 
 #endif
