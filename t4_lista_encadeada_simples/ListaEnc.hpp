@@ -3,8 +3,22 @@
 template<typename T>
 class ListaEnc {
 	public:
+		/**
+		 *  se head e nulo, quer dizer que nao houve espaco na memoria
+		 */
 		ListaEnc() {
-
+			/*
+			head = new Elemento<T>(T *info, Elemento<T> *next);
+			if (head != NULL) {
+				size = 0;
+				head = NULL;
+			}
+			*/
+			ListaEnc *a = new ListaEnc();
+			if (a != NULL) {
+				a->size = 0;
+				a->head = NULL;
+			}
 		}
 
 		~ListaEnc() {
@@ -67,7 +81,7 @@ class ListaEnc {
 
 		}
 
-		bool igual(T dado1, Tdado2) {
+		bool igual(T dado1, T dado2) {
 
 		}
 
