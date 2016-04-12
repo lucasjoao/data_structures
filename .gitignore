@@ -1,6 +1,6 @@
 ### Folders ###
 
-outputs/*
+**/outputs/*
 
 # Created by https://www.gitignore.io/api/c++,linux,sublimetext
 
