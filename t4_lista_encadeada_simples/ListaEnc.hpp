@@ -1,3 +1,8 @@
+/**
+ *  Copyright [2016] - Lucas João Martins
+ *
+ */
+
 #include "Elemento.hpp"
 
 template<typename T>
@@ -7,95 +12,85 @@ class ListaEnc {
 		 *  se head e nulo, quer dizer que nao houve espaco na memoria
 		 */
 		ListaEnc() {
-			/*
-			head = new Elemento<T>(T *info, Elemento<T> *next);
-			if (head != NULL) {
-				size = 0;
-				head = NULL;
-			}
-			*/
-			ListaEnc *a = new ListaEnc();
-			if (a != NULL) {
-				a->size = 0;
-				a->head = NULL;
+			ListaEnc *list = new ListaEnc();
+			if (list != NULL) {
+				list->size = 0;
+				list->head = NULL;
 			}
 		}
 
-		~ListaEnc() {
+		~ListaEnc() {}
 
-		}
-
-		// inicio
 		void adicionaNoInicio(const T &dado) {
+			Elemento<T> *novo = new Elemento<T>(dado, NULL);
 
+			if (novo == NULL) {
+				throw "problema";
+			} else {
+				novo->setProximo(head);
+				head = novo;
+				size += 1;
+			}
 		}
 
 		T retiraDoInicio() {
+			T *volta;
+			// Elemento<T> *saiu;
 
+			if (listaVazia()) {
+				return T(NULL);
+			} else {
+				/*
+				saiu = head;
+				*volta = saiu->getInfo();
+				head = saiu->getProximo();
+				size -= 1;
+				saiu->~Elemento();
+				return *volta;
+				*/
+				// CONSIGO MELHORAR ISSO PARA SO UMA VAR???
+				*volta = head->getInfo();
+				head = head->getProximo();
+				size -= 1;
+				saiu->~Elemento();
+				return *volta;
+			}
 		}
 
-		void eliminaDoInicio() {
-
-		}
+		void eliminaDoInicio() {}
 
 		//posicao
-		void adicionaNaPosicao(const T &dado, int pos) {
+		void adicionaNaPosicao(const T &dado, int pos) {}
 
-		}
+		int posicao(const T &dado) const {}
 
-		int posicao(const T &dado) const {
+		T *posicaoMem(const T &dado) const {}
 
-		}
+		bool contem(const T &dado) {}
 
-		T *posicaoMem(const T &dado) const {
-
-		}
-
-		bool contem(const T &dado) {
-
-		}
-
-		T retiraDaPosicao(int pos) {
-
-		}
+		T retiraDaPosicao(int pos) {}
 
 		//fim
-		void adiciona(const T &dado) {
+		void adiciona(const T &dado) {}
 
-		}
-
-		T retira() {
-
-		}
+		T retira() {}
 
 		//especifico
-		T retiraEspecifico(const T &dado) {
+		T retiraEspecifico(const T &dado) {}
 
-		}
-
-		void adicionaEmOrdem(const T &data) {
-
-		}
+		void adicionaEmOrdem(const T &data) {}
 
 		bool listaVazia() const {
-
+			return size == 0;
 		}
 
-		bool igual(T dado1, T dado2) {
+		bool igual(T dado1, T dado2) {}
 
-		}
+		bool maior(T dado1, T dado2) {}
 
-		bool maior(T dado1, T dado2) {
+		bool menor(T dado1, T dado2) {}
 
-		}
-
-		bool menor(T dado1, T dado2) {
-
-		}
-
-		void destroiLista() {
-
-		}
+		void destroiLista() {}
 
 	private:
 		Elemento<T> *head;
