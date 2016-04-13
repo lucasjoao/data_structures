@@ -22,45 +22,88 @@ class ListaEnc {
 		~ListaEnc() {}
 
 		void adicionaNoInicio(const T &dado) {
-			Elemento<T> *novo = new Elemento<T>(dado, NULL);
+			Elemento<T> *novoElemento = new Elemento<T>(dado, NULL);
 
-			if (novo == NULL) {
+			if (novoElemento == NULL) {
 				throw "problema";
 			} else {
-				novo->setProximo(head);
-				head = novo;
+				novoElemento->setProximo(head);
+				head = novoElemento;
 				size += 1;
 			}
 		}
 
 		T retiraDoInicio() {
-			T *volta;
-			// Elemento<T> *saiu;
+			//  Elemento<T> *saiu;
 
 			if (listaVazia()) {
 				return T(NULL);
 			} else {
+				T *tmpInfo;
 				/*
 				saiu = head;
-				*volta = saiu->getInfo();
+				*tmpInfo = saiu->getInfo();
 				head = saiu->getProximo();
 				size -= 1;
 				saiu->~Elemento();
-				return *volta;
+				return *tmpInfo;
 				*/
-				// CONSIGO MELHORAR ISSO PARA SO UMA VAR???
-				*volta = head->getInfo();
+
+				*tmpInfo = head->getInfo();
 				head = head->getProximo();
 				size -= 1;
-				saiu->~Elemento();
-				return *volta;
+				return *tmpInfo;
 			}
 		}
 
-		void eliminaDoInicio() {}
+		void eliminaDoInicio() {
+			//  Elemento<T> *tmpElemento;
 
-		//posicao
-		void adicionaNaPosicao(const T &dado, int pos) {}
+			if (listaVazia()) {
+				throw "problema";
+			} else {
+				/*
+				tmpElemento = head;
+				head = tmpElemento->getProximo();
+				size -= 1;
+				delete tmpElemento->getInfo();
+				delete tmpElemento;
+				return size;
+				*/
+
+				delete head->getInfo();
+				head = head->getProximo();
+				size -= 1;
+				return size;
+			}
+		}
+
+		void adicionaNaPosicao(const T &dado, int pos) {
+			if (pos > size + 1) {
+				throw "problema";
+			} else {
+				if (pos == 1) {
+					adicionaNoInicio(dado);
+				} else {
+					//  Elemento<T> *novoElemento = new Elemento<T>(dado, NULL);
+					//  Elemento <T> *antElemento;
+					Elemento<T> *novoElemento, *antElemento;
+
+					if (novoElemento == NULL) {
+						throw "problema";
+					} else {
+						antElemento = head;
+
+						for (int i = 0; i <= pos - 2; i++)
+							antElemento = antElemento->getProximo();
+
+						novoElemento =  new Elemento<T>(dado, antElemento->getProximo());
+						antElemento->setProximo(novoElemento);
+						size += 1;
+					}
+				}
+			}
+		}
 
 		int posicao(const T &dado) const {}
 
