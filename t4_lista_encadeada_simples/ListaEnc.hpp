@@ -3,6 +3,23 @@
  *
  */
 
+/**
+ *  TODO
+ duvidas trabalho
+	conceito de destrutor melhor
+	definições estranhas no elemento.hpp
+	nullptr vs null
+	revisar cada função para saber se eu conseguiria explicar e fazer um refactoring
+	se tempo permitir, tentar não usar o null
+	como se chama um destrutor?
+	keyword delete
+	implementação de um destroi para o eliminaDoInicio
+	entender com calma o for do algoritmo do adicionaNaPosicao
+colocar para assistir vídeo aula no lugar daquela aula fuleira do mestrando
+add para aprender passagem por nome e coisas do tipo
+
+ */
+
 #include "Elemento.hpp"
 
 template<typename T>
