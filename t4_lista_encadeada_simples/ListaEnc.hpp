@@ -15,8 +15,10 @@
 	keyword delete
 	implementação de um destroi para o eliminaDoInicio
 	entender com calma o for do algoritmo do adicionaNaPosicao
+mudar ordem das paradas
+comentar que posicao antigo do lista.hpp tem problema
 colocar para assistir vídeo aula no lugar daquela aula fuleira do mestrando
-add para aprender passagem por nome e coisas do tipo
+add para aprender passagem por valor, por referência e por nome (?). Essa última existe?
 
  */
 
@@ -36,7 +38,9 @@ class ListaEnc {
 			}
 		}
 
-		~ListaEnc() {}
+		~ListaEnc() {
+			delete head;
+		}
 
 		void adicionaNoInicio(const T &dado) {
 			Elemento<T> *novoElemento = new Elemento<T>(dado, NULL);
@@ -102,19 +106,20 @@ class ListaEnc {
 				if (pos == 1) {
 					adicionaNoInicio(dado);
 				} else {
-					//  Elemento<T> *novoElemento = new Elemento<T>(dado, NULL);
-					//  Elemento <T> *antElemento;
-					Elemento<T> *novoElemento, *antElemento;
+					Elemento<T> *novoElemento = new Elemento<T>(dado, NULL);
+					Elemento<T> *antElemento;
+					//  Elemento<T> *novoElemento, *antElemento;
 
 					if (novoElemento == NULL) {
 						throw "problema";
 					} else {
 						antElemento = head;
 
-						for (int i = 0; i <= pos - 2; i++)
+						for (int i = 0; i < pos - 2; i++)
 							antElemento = antElemento->getProximo();
 
-						novoElemento =  new Elemento<T>(dado, antElemento->getProximo());
+						//  novoElemento =  new Elemento<T>(dado, antElemento->getProximo());
+						novoElemento->setProximo(antElemento->getProximo());
 						antElemento->setProximo(novoElemento);
 						size += 1;
 					}
@@ -122,33 +127,134 @@ class ListaEnc {
 			}
 		}
 
-		int posicao(const T &dado) const {}
+		int posicao(const T &dado) const {
+			Elemento<T> *antElemento = head;
+			int i = 0;
+
+			T tmp = dado;
+
+			for (; i <= size; i++) {
+				antElemento = antElemento->getProximo();
+
+				if (igual(antElemento->getInfo(), tmp))
+					break;
+			}
+
+			if (i > size)
+				throw "problema";
+			else
+				return i;
+
+			/*
+			if (!contem(dado)) {
+				throw "problema";
+			} else {
+				Elemento<T> *antElemento = head;
+				int i = 0;
+
+				for (; i <= size; i++) {
+					antElemento = antElemento->getProximo();
+
+					if (igual(antElemento->getInfo(), dado))
+						break;
+				}
+
+				return i;
+			}*/
+		}
 
 		T *posicaoMem(const T &dado) const {}
 
-		bool contem(const T &dado) {}
+		bool contem(const T &dado) {
+			Elemento<T> *antElemento = head;
 
-		T retiraDaPosicao(int pos) {}
+			for (int i = 0; i <= size; i++) {
+				antElemento = antElemento->getProximo();
 
-		//fim
-		void adiciona(const T &dado) {}
+				if (igual(antElemento->getInfo(), dado))
+					return true;
+			}
 
-		T retira() {}
+			return false;
+		}
 
-		//especifico
 		T retiraEspecifico(const T &dado) {}
 
-		void adicionaEmOrdem(const T &data) {}
+		T retiraDaPosicao(int pos) {
+			if (pos > size) {
+				return T(NULL);
+			} else {
+				if (pos == 1) {
+					return retiraDoInicio();
+				} else {
+					Elemento<T> *antElemento, *elimElemento;
+					T volta;
+
+					antElemento = head;
+
+					for (int i = 0; i < pos - 2; i++)
+						antElemento = antElemento->getProximo();
+
+					elimElemento = antElemento->getProximo();
+					volta = elimElemento->getInfo();
+					antElemento->setProximo(elimElemento->getProximo());
+					size -= 1;
+					delete elimElemento;
+					return volta;
+
+				}
+			}
+		}
+
+		void adiciona(const T &dado) {
+			if (listaVazia())
+				adicionaNoInicio(dado);
+			else
+				adicionaNaPosicao(dado, size);
+		}
+
+		T retira() {
+			if (listaVazia())
+				return T(NULL);
+			else
+				return retiraDaPosicao(size);
+		}
+
+		void adicionaEmOrdem(const T &dado) {
+			if (listaVazia()) {
+				adicionaNoInicio(dado);
+			} else {
+				Elemento<T> *antElemento = head;
+
+				int i = 0;
+
+				for (; i <= size; i++) {
+					antElemento = antElemento->getProximo();
+
+					if (maior(antElemento->getInfo(), dado) ||
+						antElemento->getProximo() == NULL)
+							break;
+				}
+
+				adicionaNaPosicao(dado, i+1);
+			}
+		}
 
 		bool listaVazia() const {
 			return size == 0;
 		}
 
-		bool igual(T dado1, T dado2) {}
+		bool igual(T dado1, T dado2) {
+			return dado1 == dado2;
+		}
 
-		bool maior(T dado1, T dado2) {}
+		bool maior(T dado1, T dado2) {
+			return dado1 > dado2;
+		}
 
-		bool menor(T dado1, T dado2) {}
+		bool menor(T dado1, T dado2) {
+			return dado1 < dado2;
+		}
 
 		void destroiLista() {}
 
