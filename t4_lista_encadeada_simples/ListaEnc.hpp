@@ -16,6 +16,7 @@
 	implementação de um destroi para o eliminaDoInicio
 	entender com calma o for do algoritmo do adicionaNaPosicao
 mudar ordem das paradas
+const_cast
 comentar que posicao antigo do lista.hpp tem problema
 colocar para assistir vídeo aula no lugar daquela aula fuleira do mestrando
 add para aprender passagem por valor, por referência e por nome (?). Essa última existe?
@@ -131,12 +132,14 @@ class ListaEnc {
 			Elemento<T> *antElemento = head;
 			int i = 0;
 
-			T tmp = dado;
-
 			for (; i <= size; i++) {
 				antElemento = antElemento->getProximo();
 
-				if (igual(antElemento->getInfo(), tmp))
+				/*
+				if (const_cast<ListaEnc *>(this)->igual(antElemento->getInfo(), tmp))
+					break;
+				*/
+				if (antElemento->getInfo() == dado)
 					break;
 			}
 
