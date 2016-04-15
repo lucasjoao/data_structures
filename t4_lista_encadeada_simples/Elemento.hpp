@@ -1,12 +1,15 @@
+/**
+ *  Copyright [2016] - Lucas João Martins
+ *
+ */
+
 #ifndef ELEMENTO_HPP
 #define ELEMENTO_HPP
 
 template<typename T>
 class Elemento {
 	public:
-		Elemento(const T &info, Elemento<T> *next) : info(new T(info)), _next(next) {
-
-		}
+		Elemento(const T &info, Elemento<T> *next) : info(new T(info)), _next(next) {}
 
 		~Elemento() {
 			delete info;

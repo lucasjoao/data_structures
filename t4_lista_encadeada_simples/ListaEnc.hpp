@@ -17,6 +17,7 @@
 	entender com calma o for do algoritmo do adicionaNaPosicao
 const_cast
 entender função ponteiro
+http://stackoverflow.com/questions/2346806/what-is-segmentation-fault
 comentar que posicao antigo do lista.hpp tem problema
 colocar para assistir vídeo aula no lugar daquela aula fuleira do mestrando
 add para aprender passagem por valor, por referência e por nome (?). Essa última existe?
@@ -119,11 +120,11 @@ class ListaEnc {
 
 		T retiraDoInicio() {
 			//  Elemento<T> *saiu;
+			T tmpInfo;
 
 			if (listaVazia()) {
 				return T(NULL);
 			} else {
-				T *tmpInfo;
 				/*
 				saiu = head;
 				*tmpInfo = saiu->getInfo();
@@ -133,10 +134,10 @@ class ListaEnc {
 				return *tmpInfo;
 				*/
 
-				*tmpInfo = head->getInfo();
+				tmpInfo = head->getInfo();
 				head = head->getProximo();
 				size -= 1;
-				return *tmpInfo;
+				return tmpInfo;
 			}
 		}
 
@@ -161,7 +162,6 @@ class ListaEnc {
 					size -= 1;
 					delete elimElemento;
 					return volta;
-
 				}
 			}
 		}
