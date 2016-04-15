@@ -29,19 +29,13 @@ add para aprender passagem por valor, por referência e por nome (?). Essa últi
 template<typename T>
 class ListaEnc {
 	public:
-		/**
-		 *  se head e nulo, quer dizer que nao houve espaco na memoria
-		 */
 		ListaEnc() {
-			ListaEnc *list = new ListaEnc();
-			if (list != NULL) {
-				list->size = 0;
-				list->head = NULL;
-			}
+			size = 0;
+			head = nullptr;
 		}
 
 		~ListaEnc() {
-			delete head;
+			destroiLista();
 		}
 
 		void adiciona(const T &dado) {
@@ -202,7 +196,7 @@ class ListaEnc {
 			} else {
 				Elemento<T> *atualElemento, *antElemento = head;
 
-				while (atualElemento != NULL) {
+				while (atualElemento != nullptr) {
 					antElemento = atualElemento;
 					atualElemento = atualElemento->getProximo();
 					antElemento->~Elemento();
