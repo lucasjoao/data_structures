@@ -16,6 +16,7 @@
 	implementação de um destroi para o eliminaDoInicio
 	entender com calma o for do algoritmo do adicionaNaPosicao
 const_cast
+entender função ponteiro
 comentar que posicao antigo do lista.hpp tem problema
 colocar para assistir vídeo aula no lugar daquela aula fuleira do mestrando
 add para aprender passagem por valor, por referência e por nome (?). Essa última existe?
@@ -165,7 +166,13 @@ class ListaEnc {
 			}
 		}
 
-		T retiraEspecifico(const T &dado) {}
+		T retiraEspecifico(const T &dado) {
+			if (listaVazia()) {
+				return T(NULL);
+			} else {
+				return retiraDaPosicao(posicao(dado));
+			}
+		}
 
 		void eliminaDoInicio() {
 			//  Elemento<T> *tmpElemento;
@@ -189,7 +196,22 @@ class ListaEnc {
 			}
 		}
 
-		void destroiLista() {}
+		void destroiLista() {
+			if (listaVazia()) {
+				delete head;
+			} else {
+				Elemento<T> *atualElemento, *antElemento = head;
+
+				while (atualElemento != NULL) {
+					antElemento = atualElemento;
+					atualElemento = atualElemento->getProximo();
+					antElemento->~Elemento();
+					delete antElemento;
+				}
+
+				delete head;
+			}
+		}
 
 		int posicao(const T &dado) const {
 			Elemento<T> *antElemento = head;
@@ -229,7 +251,27 @@ class ListaEnc {
 			}*/
 		}
 
-		T *posicaoMem(const T &dado) const {}
+		T *posicaoMem(const T &dado) const {
+			Elemento<T> *antElemento = head;
+			//  T &pos;
+			int i = 0;
+
+			for (; i <= size; i++) {
+				antElemento = antElemento->getProximo();
+
+				/*
+				if (const_cast<ListaEnc *>(this)->igual(antElemento->getInfo(), tmp))
+					break;
+				*/
+				if (antElemento->getInfo() == dado)
+					break;
+			}
+
+			if (i > size)
+				throw "problema";
+			else
+				return &antElemento;
+		}
 
 		bool contem(const T &dado) {
 			Elemento<T> *antElemento = head;
