@@ -3,27 +3,6 @@
  *
  */
 
-/**
- *  TODO
- duvidas trabalho
-	conceito de destrutor melhor
-	definições estranhas no elemento.hpp
-	nullptr vs NULL
-	revisar cada função para saber se eu conseguiria explicar e fazer um refactoring
-	se tempo permitir, tentar não usar o nullptr
-	como se chama um destrutor?
-	keyword delete
-	implementação de um destroi para o eliminaDoInicio
-	entender com calma o for do algoritmo do adicionaNaPosicao
-const_cast
-entender função ponteiro
-http://stackoverflow.com/questions/2346806/what-is-segmentation-fault
-comentar que posicao antigo do lista.hpp tem problema
-colocar para assistir vídeo aula no lugar daquela aula fuleira do mestrando
-add para aprender passagem por valor, por referência e por nome (?). Essa última existe?
-
- */
-
 #include "Elemento.hpp"
 
 template<typename T>
@@ -35,10 +14,7 @@ class ListaEnc {
 		}
 
 		~ListaEnc() {
-			// if (listaVazia())
-				delete head;
-			// else
-				// destroiLista();
+			destroiLista();
 		}
 
 		void adiciona(const T &dado) {
@@ -49,14 +25,41 @@ class ListaEnc {
 		}
 
 		void adicionaNoInicio(const T &dado) {
-			Elemento<T> *novoElemento = new Elemento<T>(dado, nullptr);
+			Elemento<T> *tmpElemento = new Elemento<T>(dado, nullptr);
 
-			if (novoElemento == nullptr) {
+			if (tmpElemento == nullptr) {
 				throw "problema";
 			} else {
-				novoElemento->setProximo(head);
-				head = novoElemento;
+				tmpElemento->setProximo(head);
+				head = tmpElemento;
 				size += 1;
+			}
+		}
+
+		void adicionaNaPosicao(const T &dado, int pos) {
+			if (pos > size) {
+				throw "problema";
+			} else {
+				if (pos == 0) {
+					adicionaNoInicio(dado);
+				} else {
+					Elemento<T> *tmpElemento = new Elemento<T>(dado, nullptr);
+					Elemento<T> *antElemento;
+
+					if (tmpElemento == nullptr) {
+						throw "problema";
+					} else {
+						antElemento = head;
+
+						while (--pos != 0)
+							antElemento = antElemento->getProximo();
+
+						tmpElemento->setProximo(antElemento->getProximo());
+						antElemento->setProximo(tmpElemento);
+
+						size += 1;
+					}
+				}
 			}
 		}
 
@@ -64,47 +67,18 @@ class ListaEnc {
 			if (listaVazia()) {
 				adicionaNoInicio(dado);
 			} else {
-				Elemento<T> *antElemento = head;
+				Elemento<T> *tmpElemento = head;
 
 				int i = 0;
-
-				for (; i <= size; i++) {
-					antElemento = antElemento->getProximo();
-
-					if (maior(antElemento->getInfo(), dado) ||
-						antElemento->getProximo() == nullptr)
+				for (; i < size; i++) {
+					if (maior(tmpElemento->getInfo(), dado) ||
+						tmpElemento->getProximo() == nullptr)
 							break;
+
+					tmpElemento = tmpElemento->getProximo();
 				}
 
-				adicionaNaPosicao(dado, i+1);
-			}
-		}
-
-		void adicionaNaPosicao(const T &dado, int pos) {
-			if (pos > size + 1) {
-				throw "problema";
-			} else {
-				if (pos == 1) {
-					adicionaNoInicio(dado);
-				} else {
-					Elemento<T> *novoElemento = new Elemento<T>(dado, nullptr);
-					Elemento<T> *antElemento;
-					//  Elemento<T> *novoElemento, *antElemento;
-
-					if (novoElemento == nullptr) {
-						throw "problema";
-					} else {
-						antElemento = head;
-
-						for (int i = 0; i < pos - 2; i++)
-							antElemento = antElemento->getProximo();
-
-						//  novoElemento =  new Elemento<T>(dado, antElemento->getProximo());
-						novoElemento->setProximo(antElemento->getProximo());
-						antElemento->setProximo(novoElemento);
-						size += 1;
-					}
-				}
+				adicionaNaPosicao(dado, i);
 			}
 		}
 
@@ -112,53 +86,43 @@ class ListaEnc {
 			if (listaVazia())
 				throw "problema";
 			else
-				return retiraDaPosicao(size);
+				return retiraDaPosicao(size-1);
 		}
 
 		T retiraDoInicio() {
-			//  Elemento<T> *saiu;
-			T tmpInfo;
-
 			if (listaVazia()) {
 				throw "problema";
 			} else {
-				/*
-				saiu = head;
-				*tmpInfo = saiu->getInfo();
-				head = saiu->getProximo();
-				size -= 1;
-				saiu->~Elemento();
-				return *tmpInfo;
-				*/
-
-				tmpInfo = head->getInfo();
+				Elemento<T> *tmpElemento = head;
+				T tmpInfo = head->getInfo();
 				head = head->getProximo();
 				size -= 1;
+				delete tmpElemento;
 				return tmpInfo;
 			}
 		}
 
 		T retiraDaPosicao(int pos) {
-			if (pos > size) {
+			if (pos >= size) {
 				throw "problema";
 			} else {
-				if (pos == 1) {
+				if (pos == 0) {
 					return retiraDoInicio();
 				} else {
-					Elemento<T> *antElemento, *elimElemento;
-					T volta;
+					Elemento<T> *antElemento, *tmpElemento;
+					T tmpInfo;
 
 					antElemento = head;
 
-					for (int i = 0; i < pos - 2; i++)
+					while (--pos != 0)
 						antElemento = antElemento->getProximo();
 
-					elimElemento = antElemento->getProximo();
-					volta = elimElemento->getInfo();
-					antElemento->setProximo(elimElemento->getProximo());
+					tmpElemento = antElemento->getProximo();
+					tmpInfo = tmpElemento->getInfo();
+					antElemento->setProximo(tmpElemento->getProximo());
 					size -= 1;
-					delete elimElemento;
-					return volta;
+					delete tmpElemento;
+					return tmpInfo;
 				}
 			}
 		}
@@ -172,112 +136,67 @@ class ListaEnc {
 		}
 
 		void eliminaDoInicio() {
-			//  Elemento<T> *tmpElemento;
-
-			if (listaVazia()) {
-				throw "problema";
-			} else {
-				/*
-				tmpElemento = head;
-				head = tmpElemento->getProximo();
-				size -= 1;
-				delete tmpElemento->getInfo();
-				delete tmpElemento;
-				return size;
-				*/
-
-				delete head->getInfo();
-				head = head->getProximo();
-				size -= 1;
-				return size;
-			}
+			delete head;
+			head = head->getProximo();
 		}
 
 		void destroiLista() {
 			if (listaVazia()) {
 				delete head;
 			} else {
-				Elemento<T> *atualElemento, *antElemento = head;
+				Elemento<T> *tmpElemento = head;
 
-				while (atualElemento != nullptr) {
-					antElemento = atualElemento;
-					atualElemento = atualElemento->getProximo();
-					antElemento->~Elemento();
-					delete antElemento;
+				while (tmpElemento != nullptr) {
+					tmpElemento = tmpElemento->getProximo();
+					eliminaDoInicio();
+					size -= 1;
 				}
-
-				delete head;
 			}
 		}
 
 		int posicao(const T &dado) const {
-			Elemento<T> *antElemento = head;
+			Elemento<T> *tmpElemento = head;
+
 			int i = 0;
 
-			for (; i <= size; i++) {
-				antElemento = antElemento->getProximo();
+			for (; i < size; i++) {
+				if (tmpElemento->getInfo() == dado)
+					break;
 
-				/*
-				if (const_cast<ListaEnc *>(this)->igual(antElemento->getInfo(), tmp))
-					break;
-				*/
-				if (antElemento->getInfo() == dado)
-					break;
+				tmpElemento = tmpElemento->getProximo();
 			}
 
-			if (i > size)
+			if (i == size)
 				throw "problema";
 			else
 				return i;
-
-			/*
-			if (!contem(dado)) {
-				throw "problema";
-			} else {
-				Elemento<T> *antElemento = head;
-				int i = 0;
-
-				for (; i <= size; i++) {
-					antElemento = antElemento->getProximo();
-
-					if (igual(antElemento->getInfo(), dado))
-						break;
-				}
-
-				return i;
-			}*/
 		}
 
 		T *posicaoMem(const T &dado) const {
-			Elemento<T> *antElemento = head;
-			//  T &pos;
+			Elemento<T> *tmpElemento = head;
+
 			int i = 0;
-
-			for (; i <= size; i++) {
-				antElemento = antElemento->getProximo();
-
-				/*
-				if (const_cast<ListaEnc *>(this)->igual(antElemento->getInfo(), tmp))
+			for (; i < size; i++) {
+				if (tmpElemento->getInfo() == dado)
 					break;
-				*/
-				if (antElemento->getInfo() == dado)
-					break;
+
+				 tmpElemento = tmpElemento->getProximo();
 			}
 
 			if (i > size)
 				throw "problema";
 			else
-				return &antElemento;
+				return &tmpElemento;
 		}
 
 		bool contem(const T &dado) {
-			Elemento<T> *antElemento = head;
+			Elemento<T> *tmpElemento = head;
 
-			for (int i = 0; i <= size; i++) {
-				antElemento = antElemento->getProximo();
-
-				if (antElemento->getInfo() == dado)
+			while (tmpElemento != nullptr) {
+				if (tmpElemento->getInfo() == dado)
 					return true;
+
+				tmpElemento = tmpElemento->getProximo();
 			}
 
 			return false;
