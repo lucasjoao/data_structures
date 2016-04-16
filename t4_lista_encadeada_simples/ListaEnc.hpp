@@ -8,9 +8,9 @@
  duvidas trabalho
 	conceito de destrutor melhor
 	definições estranhas no elemento.hpp
-	nullptr vs null
+	nullptr vs NULL
 	revisar cada função para saber se eu conseguiria explicar e fazer um refactoring
-	se tempo permitir, tentar não usar o null
+	se tempo permitir, tentar não usar o nullptr
 	como se chama um destrutor?
 	keyword delete
 	implementação de um destroi para o eliminaDoInicio
@@ -35,7 +35,10 @@ class ListaEnc {
 		}
 
 		~ListaEnc() {
-			destroiLista();
+			// if (listaVazia())
+				delete head;
+			// else
+				// destroiLista();
 		}
 
 		void adiciona(const T &dado) {
@@ -46,9 +49,9 @@ class ListaEnc {
 		}
 
 		void adicionaNoInicio(const T &dado) {
-			Elemento<T> *novoElemento = new Elemento<T>(dado, NULL);
+			Elemento<T> *novoElemento = new Elemento<T>(dado, nullptr);
 
-			if (novoElemento == NULL) {
+			if (novoElemento == nullptr) {
 				throw "problema";
 			} else {
 				novoElemento->setProximo(head);
@@ -69,7 +72,7 @@ class ListaEnc {
 					antElemento = antElemento->getProximo();
 
 					if (maior(antElemento->getInfo(), dado) ||
-						antElemento->getProximo() == NULL)
+						antElemento->getProximo() == nullptr)
 							break;
 				}
 
@@ -84,11 +87,11 @@ class ListaEnc {
 				if (pos == 1) {
 					adicionaNoInicio(dado);
 				} else {
-					Elemento<T> *novoElemento = new Elemento<T>(dado, NULL);
+					Elemento<T> *novoElemento = new Elemento<T>(dado, nullptr);
 					Elemento<T> *antElemento;
 					//  Elemento<T> *novoElemento, *antElemento;
 
-					if (novoElemento == NULL) {
+					if (novoElemento == nullptr) {
 						throw "problema";
 					} else {
 						antElemento = head;
@@ -107,7 +110,7 @@ class ListaEnc {
 
 		T retira() {
 			if (listaVazia())
-				return T(NULL);
+				throw "problema";
 			else
 				return retiraDaPosicao(size);
 		}
@@ -117,7 +120,7 @@ class ListaEnc {
 			T tmpInfo;
 
 			if (listaVazia()) {
-				return T(NULL);
+				throw "problema";
 			} else {
 				/*
 				saiu = head;
@@ -137,7 +140,7 @@ class ListaEnc {
 
 		T retiraDaPosicao(int pos) {
 			if (pos > size) {
-				return T(NULL);
+				throw "problema";
 			} else {
 				if (pos == 1) {
 					return retiraDoInicio();
@@ -162,7 +165,7 @@ class ListaEnc {
 
 		T retiraEspecifico(const T &dado) {
 			if (listaVazia()) {
-				return T(NULL);
+				throw "problema";
 			} else {
 				return retiraDaPosicao(posicao(dado));
 			}
@@ -273,7 +276,7 @@ class ListaEnc {
 			for (int i = 0; i <= size; i++) {
 				antElemento = antElemento->getProximo();
 
-				if (igual(antElemento->getInfo(), dado))
+				if (antElemento->getInfo() == dado)
 					return true;
 			}
 
