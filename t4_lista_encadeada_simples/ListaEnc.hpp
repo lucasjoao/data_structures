@@ -170,6 +170,17 @@ class ListaEnc {
 			}
 		}
 
+		/**
+		 *	Funcao retira
+		 *  Se a lista nao estiver vazia, entao retorna uma chamada para a
+		 *		funcao retiraDaPosicao realizar o processo de remocao na
+		 *		posicao tamanho - 1.
+		 *  Verifica o status da lista atraves da funcao listaVazia.
+		 *  Se houver problema na verificacao, redireciona a execucao para
+		 *  	lugar nenhum.
+		 *  Nao possui parametro.
+		 *  Retorna o tipo generico que representa o dado retirado da lista.
+		 */
 		T retira() {
 			if (listaVazia())
 				throw "problema";
@@ -177,6 +188,20 @@ class ListaEnc {
 				return retiraDaPosicao(size-1);
 		}
 
+		/**
+		 * 	Funcao retiraDoInicio
+		 *  Se a lista nao estiver vazia, entao salva temporariamente o dado
+		 *		que sera retirado com o auxilio de um vertice temporario,
+		 *		define o novo head como o elemento para qual o head que sera
+		 *		deletado apontava, diminui o tamanho da estrutura e deleta o
+		 *		nodo temporario.
+		 *  Verifica o status da lista atraves da funcao listaVazia.
+		 *  Se houver problema na verificacao, redireciona a execucao para
+		 *  	lugar nenhum.
+		 *  Nao possui parametro.
+		 *  Retorna o tipo generico que representa o dado retirado da lista, o
+		 *  	que foi salvo temporariamente durante o processo.
+		 */
 		T retiraDoInicio() {
 			if (listaVazia()) {
 				throw "problema";
@@ -190,6 +215,27 @@ class ListaEnc {
 			}
 		}
 
+		/**
+		 *  Funcao retiraDaPosicao
+		 *  Se a posicao for valida e ser a zero, chama a funcao
+		 *		retiraDoInicio para realizar o processo de remocao do dado. Se
+		 *		a posicao nao for a zero, entao caminha ate o vertice anterior
+		 *		ao da posicao em que se pretende deletar com outro elemento
+		 *		temporario. Ao chegar nessa posicao, salva temporariamente o
+		 *		dado e o vertice que serao deletados, aponta o vertice,
+		 *		anterior ao nodo que sera deletado, para o vertice seguinte,
+		 *		ao que sera deletado. Por fim, diminui o numero que indica o
+		 *		tamanho da lista e deleta o vertice.
+		 *	Verifica se e uma posicao valida ao comparar a posicao desejada
+		 *		com o atual tamanho da lista, ja que a posicao deve ser menor
+		 *		ou igual ao tamanho da lista.
+		 *  Se houver problema na verificacao, redireciona a execucao para
+		 *  	lugar nenhum.
+		 *	Parametro posicao e um inteiro que indica a posicao em que deve-se
+		 *		tentar retirar o dado.
+		 *  Retorna o tipo generico que representa o dado retirado da lista, o
+		 *		que foi salvo temporariamente durante o processo.
+		 */
 		T retiraDaPosicao(int pos) {
 			if (pos >= size) {
 				throw "problema";
@@ -248,6 +294,17 @@ class ListaEnc {
 			head = head->getProximo();
 		}
 
+		/**
+		 *	Funcao destroiLista
+		 *  Se a lista estiver vazia, entao deleta o head. Caso contrario,
+		 *		entao caminha por todos os elementos não nulos da estrutura com
+		 *		o auxilio de um vertice temporario e para cada um deles
+		 *		diminui o tamanho atual da lista e chama a funcao
+		 *		eliminaDoInicio que e responsavel por deletar o nodo.
+		 *	Verifica o status da lista atraves da funcao listaVazia.
+		 *	Nao possui argumento.
+		 *  Nao possui retorno.
+		 */
 		void destroiLista() {
 			if (listaVazia()) {
 				delete head;
@@ -262,6 +319,20 @@ class ListaEnc {
 			}
 		}
 
+		/**
+		 *  Funcao constante posicao
+		 *	Caminha por todos os vertices da estrutura e para cada um deles
+		 *		compara o elemento com o dado passado como argumento. Se
+		 *		houver igualdade, entao o laco e parado, e, a posicao
+		 *		onde houve igualdade e armazenada para um futuro retorno. Ja
+		 *		se nao houver igualdade, o valor da posicao fica igua a
+		 *		variavel size e entao a execucao sera redirecionada para
+		 *		lugar nenhum.
+  		 *	Parametro dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que deve ser procurado na lista.
+		 *	Retorna um inteiro que possui a posicao do valor passado como
+		 *		argumento.
+		 */
 		int posicao(const T &dado) const {
 			Elemento<T> *tmpElemento = head;
 
@@ -280,6 +351,20 @@ class ListaEnc {
 				return i;
 		}
 
+		/**
+		 *  Funcao ponteiro constante posicaoMem
+		 *	Caminha por todos os vertices da estrutura e para cada um deles
+		 *		compara o elemento com o dado passado como argumento. Se
+		 *		houver igualdade, entao o laco e parado, e, a posicao
+		 *		onde houve igualdade e armazenada para um futuro retorno. Ja
+		 *		se nao houver igualdade, o valor da posicao fica igua a
+		 *		variavel size e entao a execucao sera redirecionada para
+		 *		lugar nenhum.
+  		 *	Parametro dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que deve ser procurado na lista.
+		 *	Retorna um inteiro que possui a posicao na memoria do valor
+		 *		passado como argumento.
+		 */
 		T *posicaoMem(const T &dado) const {
 			Elemento<T> *tmpElemento = head;
 
@@ -291,7 +376,7 @@ class ListaEnc {
 				 tmpElemento = tmpElemento->getProximo();
 			}
 
-			if (i > size)
+			if (i == size)
 				throw "problema";
 			else
 				return &tmpElemento;
