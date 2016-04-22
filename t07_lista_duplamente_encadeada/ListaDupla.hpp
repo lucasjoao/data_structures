@@ -69,7 +69,24 @@ class ListaDupla {
 				adicionaNaPosicaoDuplo(dado, size);
 		}
 
-		void adicionaEmOrdem(const T &data) {}
+		void adicionaEmOrdem(const T &data) {
+			if (listaVazia()) {
+				adicionaNoInicioDuplo(data);
+			} else {
+				Elemento<T> *tmpElemento = head;
+
+				int i = 0;
+				for (; i < size; i++) {
+					if (maior(tmpElemento->getInfo(), data) ||
+						tmpElemento->getProximo() == nullptr)
+							break;
+
+					tmpElemento = tmpElemento->getProximo();
+				}
+
+				adicionaNaPosicaoDuplo(data, i);
+			}
+		}
 
 		T retiraDoInicioDuplo() {}
 

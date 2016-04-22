@@ -107,7 +107,7 @@ TEST_F(TesteLista, ListaAdicionaPosicaoExcep2) {
 	ASSERT_ANY_THROW(l.adicionaNaPosicaoDuplo(i+1, i+2));
 }
 
-/*TEST_F(TesteLista, ListaAdicionaOrdem) {
+TEST_F(TesteLista, ListaAdicionaOrdem) {
 	int i;
 	for (i = 0; i < tam ; i++) {
 	 l.adicionaEmOrdem(tam-i);
@@ -116,7 +116,7 @@ TEST_F(TesteLista, ListaAdicionaPosicaoExcep2) {
 }
 
 
-TEST_F(TesteLista, ListaRemove) {
+/*TEST_F(TesteLista, ListaRemove) {
 	int i;
 	for (i = 0; i < tam ; i++) {
 	 l.adicionaDuplo(i);
