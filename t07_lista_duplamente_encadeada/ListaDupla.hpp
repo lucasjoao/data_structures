@@ -167,11 +167,39 @@ class ListaDupla {
 				return i;
 		}
 
-		T* posicaoMemDuplo(const T &dado) const {}
+		T* posicaoMemDuplo(const T &dado) const {
+			Elemento<T> *tmpElemento = head;
 
-		T mostra(int pos) {}
+			int i = 0;
+			for (; i < size; i++) {
+				if (tmpElemento->getInfo() == dado)
+					break;
 
-		int verUltimo() {}
+				 tmpElemento = tmpElemento->getProximo();
+			}
+
+			if (i == size)
+				throw "problema";
+			else
+				return &tmpElemento;
+		}
+
+		T mostra(int pos) {
+			if (pos >= size) {
+				throw "problema";
+			} else {
+				Elemento<T> *tmpElemento = head;
+
+				while (pos-- != 0)
+					tmpElemento = tmpElemento->getProximo();
+
+				return tmpElemento->getInfo();
+			}
+		}
+
+		int verUltimo() {
+			return size - 1;
+		}
 
 		bool listaVazia() const {
 			return size == 0;
