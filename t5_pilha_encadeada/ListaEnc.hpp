@@ -449,12 +449,13 @@ class ListaEnc {
 			return dado1 < dado2;
 		}
 
+		/**
+		 *  Funcao getter getHead
+		 *	Retorna o ponteiro do objeto cabeca da lista.
+		 *  Nao possui parametro.
+		 */
 		Elemento<T>* getHead() {
 			return head;
-		}
-
-		int getSize() {
-			return size;
 		}
 
 	private:
