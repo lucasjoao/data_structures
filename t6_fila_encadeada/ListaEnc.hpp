@@ -16,7 +16,8 @@ class ListaEnc {
 		/**
 		 *  Construtor
 		 *	Inicializa a lista ao dizer que seu tamanho e zero ao mesmo tempo
-		 * 		em que o head (primeiro vertice) aponta para nullptr.
+		 * 		em que o head (primeiro vertice) e o tail (ultimo vertice)
+		 *		apontam para nullptr.
 		 */
 		ListaEnc() {
 			size = 0;
@@ -459,22 +460,55 @@ class ListaEnc {
 			return head;
 		}
 
+		/**
+		 *  Funcao getter getTail
+		 *	Retorna o ponteiro do objeto final da lista.
+		 *  Nao possui parametro.
+		 */
 		Elemento<T>* getTail() {
 			return tail;
 		}
 
+		/**
+		 *  Funcao getter getSize
+		 *	Retorna o inteiro que indica o atual tamanho da lista.
+		 *  Nao possui parametro.
+		 */
 		int getSize() {
 			return size;
 		}
 
+		/**
+		 *  Funcao setter setHead
+		 *	Atribui o argumento passado para o ponteiro que contem o elemento
+		 *		da primeira posicao.
+		 *  Parametro passado por nome e um elemento que representa o novo
+		 *		head.
+		 * 	Nao possui retorno.
+		 */
 		void setHead(Elemento<T> *arg_head) {
 			head = arg_head;
 		}
 
+		/**
+		 *  Funcao setter setTail
+		 *	Atribui o argumento passado para o ponteiro que contem o elemento
+		 *		da ultima posicao.
+		 *  Parametro passado por nome e um elemento que representa o novo
+		 *		tail.
+		 * 	Nao possui retorno.
+		 */
 		void setTail(Elemento<T> *arg_tail) {
 			tail = arg_tail;
 		}
 
+		/**
+		 *  Funcao setter setSize
+		 *	Atribui o argumento passado para o inteiro que indica o atual
+		 *		tamanho da lista.
+		 *  Parametro passado e um inteiro com o novo tamanho.
+		 * 	Nao possui retorno.
+		 */
 		void setSize(int arg_size) {
 			size = arg_size;
 		}
