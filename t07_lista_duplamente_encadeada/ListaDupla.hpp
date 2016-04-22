@@ -141,7 +141,13 @@ class ListaDupla {
 				return retiraDaPosicaoDuplo(size-1);
 		}
 
-		T retiraEspecificoDuplo(const T &dado) {}
+		T retiraEspecificoDuplo(const T &dado) {
+			if (listaVazia()) {
+				throw "problema";
+			} else {
+				return retiraDaPosicaoDuplo(posicaoDuplo(dado));
+			}
+		}
 
 		int posicaoDuplo(const T& dado) const {
 			Elemento<T> *tmpElemento = head;

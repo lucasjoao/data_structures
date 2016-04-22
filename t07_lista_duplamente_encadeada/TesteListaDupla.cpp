@@ -160,7 +160,7 @@ TEST_F(TesteLista, ListaRemovePosicaoExcep2) {
 	ASSERT_ANY_THROW(l.retiraDaPosicaoDuplo(1));
 }
 
-/*TEST_F(TesteLista, ListaRemoveEspecifico) {
+TEST_F(TesteLista, ListaRemoveEspecifico) {
 	int i;
 	for (i = 0; i < tam ; i++) {
 	 l.adicionaDuplo(i);
@@ -203,4 +203,4 @@ TEST_F(TesteLista, Igual) {
 
 TEST_F(TesteLista, IgualNeg) {
 	ASSERT_FALSE(l.igual(2, 1));
-}*/
+}
