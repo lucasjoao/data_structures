@@ -31,7 +31,36 @@ class ListaDupla {
 			}
 		}
 
-		void adicionaNaPosicaoDuplo(const T &dado, int pos) {}
+		void adicionaNaPosicaoDuplo(const T &dado, int pos) {
+			if (pos > size) {
+				throw "problema";
+			} else {
+				if (pos == 0) {
+					adicionaNoInicioDuplo(dado);
+				} else {
+					Elemento<T> *tmp = new Elemento<T>(dado, nullptr, nullptr);
+					Elemento<T> *antElemento;
+
+					if (tmp == nullptr) {
+						throw "problema";
+					} else {
+						antElemento = head;
+
+						while (--pos != 0)
+							antElemento = antElemento->getProximo();
+
+						tmp->setProximo(antElemento->getProximo());
+
+						if (tmp->getProximo() != nullptr)
+							tmp->getProximo()->setBack(tmp);
+
+						antElemento->setProximo(tmp);
+						tmp->setBack(antElemento);
+						size += 1;
+					}
+				}
+			}
+		}
 
 		void adicionaDuplo(const T &dado) {
 			if (listaVazia())
@@ -50,7 +79,23 @@ class ListaDupla {
 
 		T retiraEspecificoDuplo(const T &dado) {}
 
-		int posicaoDuplo(const T& dado) const {}
+		int posicaoDuplo(const T& dado) const {
+			Elemento<T> *tmpElemento = head;
+
+			int i = 0;
+
+			for (; i < size; i++) {
+				if (tmpElemento->getInfo() == dado)
+					break;
+
+				tmpElemento = tmpElemento->getProximo();
+			}
+
+			if (i == size)
+				throw "problema";
+			else
+				return i;
+		}
 
 		T* posicaoMemDuplo(const T &dado) const {}
 
@@ -79,9 +124,13 @@ class ListaDupla {
 			return dado1 == dado2;
 		}
 
-		bool maior(T dado1, T dado2) {}
+		bool maior(T dado1, T dado2) {
+			return dado1 > dado2;
+		}
 
-		bool menor(T dado1, T dado2) {}
+		bool menor(T dado1, T dado2) {
+			return dado1 < dado2;
+		}
 
 		void destroiListaDuplo() {
 			if (listaVazia()) {
