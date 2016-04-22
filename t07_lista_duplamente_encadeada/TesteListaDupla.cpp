@@ -116,7 +116,7 @@ TEST_F(TesteLista, ListaAdicionaOrdem) {
 }
 
 
-/*TEST_F(TesteLista, ListaRemove) {
+TEST_F(TesteLista, ListaRemove) {
 	int i;
 	for (i = 0; i < tam ; i++) {
 	 l.adicionaDuplo(i);
@@ -128,7 +128,7 @@ TEST_F(TesteLista, ListaRemoveExcep) {
 	ASSERT_ANY_THROW(l.retiraDuplo());
 }
 
-TEST_F(TesteLista, ListaRemoveInicio) {
+/*TEST_F(TesteLista, ListaRemoveInicio) {
 	int i;
 	for (i = 0; i < tam ; i++) {
 	 l.adicionaDuplo(i);

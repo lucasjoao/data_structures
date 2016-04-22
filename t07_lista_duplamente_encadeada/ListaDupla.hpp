@@ -90,9 +90,41 @@ class ListaDupla {
 
 		T retiraDoInicioDuplo() {}
 
-		T retiraDaPosicaoDuplo(int pos) {}
+		T retiraDaPosicaoDuplo(int pos) {
+			if (pos >= size) {
+				throw "problema";
+			} else {
+				if (pos == 0) {
+					return retiraDoInicioDuplo();
+				} else {
+					Elemento<T> *antElemento, *tmpElemento;
+					T tmpInfo;
 
-		T retiraDuplo() {}
+					antElemento = head;
+
+					while (--pos != 0)
+						antElemento = antElemento->getProximo();
+
+					tmpElemento = antElemento->getProximo();
+					tmpInfo = tmpElemento->getInfo();
+					antElemento->setProximo(tmpElemento->getProximo());
+
+					if (tmpElemento->getProximo() != nullptr)
+						tmpElemento->getProximo()->setBack(antElemento);
+
+					size -= 1;
+					delete tmpElemento;
+					return tmpInfo;
+				}
+			}
+		}
+
+		T retiraDuplo() {
+			if (listaVazia())
+				throw "problema";
+			else
+				return retiraDaPosicaoDuplo(size-1);
+		}
 
 		T retiraEspecificoDuplo(const T &dado) {}
 
