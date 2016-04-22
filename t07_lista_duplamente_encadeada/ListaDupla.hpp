@@ -83,9 +83,24 @@ class ListaDupla {
 
 		bool menor(T dado1, T dado2) {}
 
-		void destroiListaDuplo() {}
+		void destroiListaDuplo() {
+			if (listaVazia()) {
+				delete head;
+			} else {
+				Elemento<T> *tmpElemento = head;
 
-		void eliminaDoInicioDuplo() {}
+				while (tmpElemento != nullptr) {
+					tmpElemento = tmpElemento->getProximo();
+					eliminaDoInicioDuplo();
+					size -= 1;
+				}
+			}
+		}
+
+		void eliminaDoInicioDuplo() {
+			delete head;
+			head = head->getProximo();
+		}
 	private:
 		Elemento<T> *head;
 		int size;

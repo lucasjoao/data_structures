@@ -51,13 +51,13 @@ TEST_F(TesteLista, ListaContemNeg) {
 	ASSERT_FALSE(lobj.contemDuplo(o2));
 }
 
-/*TEST_F(TesteLista, ListaDestroi) {
+TEST_F(TesteLista, ListaDestroi) {
 	l.adicionaDuplo(1);
 	l.destroiListaDuplo();
 	ASSERT_TRUE(l.listaVazia());
 }
 
-TEST_F(TesteLista, ListaPosicao) {
+/*TEST_F(TesteLista, ListaPosicao) {
 	int i;
 	for (i = 0; i < tam ; i++) {
 	 l.adicionaDuplo(i);
