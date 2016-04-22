@@ -13,13 +13,32 @@ class ListaDupla {
 			head = nullptr;
 		}
 
-		~ListaDupla() {}
+		~ListaDupla() {
+			destroiListaDuplo();
+		}
 
-		void adicionaNoInicioDuplo(const T &dado) {}
+		void adicionaNoInicioDuplo(const T &dado) {
+			Elemento<T> *tmpElemento = new Elemento<T>(dado, nullptr, nullptr);
+
+			if (tmpElemento == nullptr) {
+				throw "problema";
+			} else {
+				tmpElemento->setProximo(head);
+				if (head != nullptr)
+					head->setBack(tmpElemento);
+				head = tmpElemento;
+				size += 1;
+			}
+		}
 
 		void adicionaNaPosicaoDuplo(const T &dado, int pos) {}
 
-		void adicionaDuplo(const T &dado) {}
+		void adicionaDuplo(const T &dado) {
+			if (listaVazia())
+				adicionaNoInicioDuplo(dado);
+			else
+				adicionaNaPosicaoDuplo(dado, size);
+		}
 
 		void adicionaEmOrdem(const T &data) {}
 
