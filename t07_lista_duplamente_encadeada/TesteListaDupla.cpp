@@ -73,14 +73,6 @@ TEST_F(TesteLista, ListaPosicaoExcep) {
 	ASSERT_ANY_THROW(l.posicaoDuplo(tam+2));
 }
 
-/*TEST_F(TesteLista, ListaAdiciona) {
-	int i;
-	for (i = 0; i < tam ; i++) {
-	 l.adiciona(i);
-	}
-	ASSERT_ANY_THROW(l.adiciona(i+1));
-}*/
-
 TEST_F(TesteLista, ListaAdicionaInicio) {
 	int i;
 	for (i = 0; i < tam-1 ; i++) {

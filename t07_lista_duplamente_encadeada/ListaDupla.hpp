@@ -5,9 +5,13 @@
 
 #include "ElementoDuplo.hpp"
 
+template<typename T>
 class ListaDupla {
 	public:
-		ListaDupla() {}
+		ListaDupla() {
+			size = 0;
+			head = nullptr;
+		}
 
 		~ListaDupla() {}
 
@@ -25,7 +29,7 @@ class ListaDupla {
 
 		T retiraDuplo() {}
 
-		T retiraEspecificoDuplo() {}
+		T retiraEspecificoDuplo(const T &dado) {}
 
 		int posicaoDuplo(const T& dado) const {}
 
@@ -35,7 +39,9 @@ class ListaDupla {
 
 		int verUltimo() {}
 
-		bool listaVazia() const {}
+		bool listaVazia() const {
+			return size == 0;
+		}
 
 		bool contemDuplo(const T &dado) {}
 
