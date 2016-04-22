@@ -13,33 +13,31 @@ class ListaDupla {
 
 		void adicionaNoInicioDuplo(const T &dado) {}
 
-		T retiraDoInicioDuplo() {}
-
-		void eliminaDoInicioDuplo() {}
-
 		void adicionaNaPosicaoDuplo(const T &dado, int pos) {}
 
-		int posicaoDuplo(const T& dado) const {}
+		void adicionaDuplo(const T &dado) {}
 
-		T* posicaoMemDuplo(const T &dado) const {}
+		void adicionaEmOrdem(const T &data) {}
 
-		bool contemDuplo(const T &dado) {}
+		T retiraDoInicioDuplo() {}
 
 		T retiraDaPosicaoDuplo(int pos) {}
-
-		void adicionaDuplo(const T &dado) {}
 
 		T retiraDuplo() {}
 
 		T retiraEspecificoDuplo() {}
 
-		T mostra(int pos) {}
+		int posicaoDuplo(const T& dado) const {}
 
-		void adicionaEmOrdem(const T &data) {}
+		T* posicaoMemDuplo(const T &dado) const {}
+
+		T mostra(int pos) {}
 
 		int verUltimo() {}
 
 		bool listaVazia() const {}
+
+		bool contemDuplo(const T &dado) {}
 
 		bool igual(T dado1, T dado2) {}
 
@@ -48,4 +46,9 @@ class ListaDupla {
 		bool menor(T dado1, T dado2) {}
 
 		void destroiListaDuplo() {}
+
+		void eliminaDoInicioDuplo() {}
+	private:
+		Elemento<T> *head;
+		int size;
 };
