@@ -8,7 +8,7 @@
 
 /**
  *  Classe Elemento
- *	Implementa o elemento/vertice da lista encadeada simples atraves de
+ *	Implementa o elemento/vertice da lista duplamente encadeada atraves de
  *		template.
  */
 template<typename T>
@@ -16,21 +16,28 @@ class Elemento {
 	public:
 		/**
 		 *  Construtor
-		 *	Inicializa o vertice ao informar para qual nodo ele aponta e qual
-		 *		dado a posicao ira possuir.
+		 *	Inicializa o vertice ao informar para qual nodo ele aponta para
+		 *		frente e para tras e qual dado a posicao ira possuir.
 		 *	Parametro info passado por referencia e um tipo generico constante
 		 *		que representa a informacao que sera adicionada para o vertice.
+		 *	Parametro back passado por nome e um elemento que representa a
+		 *		posicao atras para qual o vertice instanciado pelo construtor
+		 *		aponta.
 		 *	Parametro next passado por nome e um elemento que representa a
 		 *		posicao para qual o vertice instanciado pelo construtor aponta.
 		 */
-		Elemento(const T &info, Elemento<T> *next) : info(new T(info)), _next(next) {}
+		Elemento(const T &info, Elemento<T> *back, Elemento<T> *next) {
+			_info = new T(info);
+			_back = back;
+			_next = next;
+		}
 
 		/**
 		 *  Destrutor
 		 *	Deleta o tipo generico info.
 		 */
 		~Elemento() {
-			delete info;
+			delete _info;
 		}
 
 		/**
@@ -47,7 +54,15 @@ class Elemento {
 		 *		vertice.
 		 */
 		T getInfo() const {
-			return *info;
+			return *_info;
+		}
+
+		/**
+		 *  Funcao getter constante getBack
+		 *  Retorna o ponteiro do vertice anterior para qual o elemento aponta.
+		 */
+		Elemento<T>* getBack() const {
+			return _back;
 		}
 
 		/**
@@ -62,9 +77,23 @@ class Elemento {
 			_next = next;
 		}
 
+		/**
+		 *  Funcao setter setBack
+		 *	Atribui o argumento passado para a variavel que contem o vertice
+		 *		anterior.
+		 *  Parametro back passado por nome e um elemento que representa o dado
+		 *		para qual o vertice deve passar a apontar para tras.
+		 * 	Nao possui retorno.
+		 */
+		void setBack(Elemento<T> *back) {
+			_back = back;
+		}
+
 	private:
-		T *info;			 //!< tipo generico que possui a info do nodo
+		T *_info;			 //!< tipo generico que possui a info do nodo
 		Elemento<T> *_next;  //!< obj que aponta ao proximo elemento do vertice
+		Elemento<T> *_back;  //!< obj que aponta ao vertice anterior
+
 };
 
 #endif
