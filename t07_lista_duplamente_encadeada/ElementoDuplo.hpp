@@ -93,7 +93,6 @@ class Elemento {
 		T *_info;			 //!< tipo generico que possui a info do nodo
 		Elemento<T> *_next;  //!< obj que aponta ao proximo elemento do vertice
 		Elemento<T> *_back;  //!< obj que aponta ao vertice anterior
-
 };
 
 #endif

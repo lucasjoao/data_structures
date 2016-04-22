@@ -220,6 +220,7 @@ class ListaDupla {
 			delete head;
 			head = head->getProximo();
 		}
+
 	private:
 		Elemento<T> *head;
 		int size;
