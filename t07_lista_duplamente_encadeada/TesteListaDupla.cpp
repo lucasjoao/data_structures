@@ -34,7 +34,7 @@ TEST_F(TesteLista, ListaVaziaNeg) {
 	ASSERT_FALSE(lobj.listaVazia());
 }
 
-/*TEST_F(TesteLista, ListaContem) {
+TEST_F(TesteLista, ListaContem) {
 	Objeto* o = new Objeto();
 	l.adicionaDuplo(1);
 	ASSERT_TRUE(l.contemDuplo(1));
@@ -51,7 +51,7 @@ TEST_F(TesteLista, ListaContemNeg) {
 	ASSERT_FALSE(lobj.contemDuplo(o2));
 }
 
-TEST_F(TesteLista, ListaDestroi) {
+/*TEST_F(TesteLista, ListaDestroi) {
 	l.adicionaDuplo(1);
 	l.destroiListaDuplo();
 	ASSERT_TRUE(l.listaVazia());

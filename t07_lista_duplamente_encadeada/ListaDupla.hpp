@@ -62,9 +62,22 @@ class ListaDupla {
 			return size == 0;
 		}
 
-		bool contemDuplo(const T &dado) {}
+		bool contemDuplo(const T &dado) {
+			Elemento<T> *tmpElemento = head;
 
-		bool igual(T dado1, T dado2) {}
+			while (tmpElemento != nullptr) {
+				if (igual(tmpElemento->getInfo(), dado))
+					return true;
+
+				tmpElemento = tmpElemento->getProximo();
+			}
+
+			return false;
+		}
+
+		bool igual(T dado1, T dado2) {
+			return dado1 == dado2;
+		}
 
 		bool maior(T dado1, T dado2) {}
 
