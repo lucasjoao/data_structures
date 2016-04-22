@@ -21,6 +21,7 @@ class ListaEnc {
 		ListaEnc() {
 			size = 0;
 			head = nullptr;
+			tail = nullptr;
 		}
 
 		/**
@@ -458,7 +459,28 @@ class ListaEnc {
 			return head;
 		}
 
+		Elemento<T>* getTail() {
+			return tail;
+		}
+
+		int getSize() {
+			return size;
+		}
+
+		void setHead(Elemento<T> *arg_head) {
+			head = arg_head;
+		}
+
+		void setTail(Elemento<T> *arg_tail) {
+			tail = arg_tail;
+		}
+
+		void setSize(int arg_size) {
+			size = arg_size;
+		}
+
 	private:
 		Elemento<T> *head;  //!< objeto cabeca da lista, ocupa a primeira pos
+		Elemento<T> *tail;   //!< objeto final da lista, ocupa a ultima posicao
 		int size;			//!< indica o atual tamanho da lista
 };
