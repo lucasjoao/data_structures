@@ -88,7 +88,22 @@ class ListaDupla {
 			}
 		}
 
-		T retiraDoInicioDuplo() {}
+		T retiraDoInicioDuplo() {
+			if (listaVazia()) {
+				throw "problema";
+			} else {
+				Elemento<T> *tmpElemento = head;
+				T tmpInfo = head->getInfo();
+				head = head->getProximo();
+
+				if (head != nullptr)
+					head->setBack(nullptr);
+
+				size -= 1;
+				delete tmpElemento;
+				return tmpInfo;
+			}
+		}
 
 		T retiraDaPosicaoDuplo(int pos) {
 			if (pos >= size) {
