@@ -181,6 +181,22 @@ class ListaDupla {
 			}
 		}
 
+		/**
+		 * 	Funcao retiraDoInicioDuplo
+		 *  Se a lista nao estiver vazia, entao salva temporariamente o dado
+		 *		que sera retirado com o auxilio de um vertice temporario,
+		 *		define o novo head como o elemento para qual o head que sera
+		 *		deletado apontava e se o head existir, ou seja, nao
+		 *		for nulo, entao aponta o anterior do head para o elemento
+		 *		temporario. Por fim, diminui o tamanho da estrutura e deleta o
+		 *		nodo temporario.
+		 *  Verifica o status da lista atraves da funcao listaVazia.
+		 *  Se houver problema na verificacao, redireciona a execucao para
+		 *  	lugar nenhum.
+		 *  Nao possui parametro.
+		 *  Retorna o tipo generico que representa o dado retirado da lista, o
+		 *  	que foi salvo temporariamente durante o processo.
+		 */
 		T retiraDoInicioDuplo() {
 			if (listaVazia()) {
 				throw "problema";
@@ -198,6 +214,30 @@ class ListaDupla {
 			}
 		}
 
+		/**
+		 *  Funcao retiraDaPosicaoDuplo
+		 *  Se a posicao for valida e ser a zero, chama a funcao
+		 *		retiraDoInicioDuplo para realizar o processo de remocao do
+		 *		dado. Se a posicao nao for a zero, entao caminha ate o vertice
+		 *		anterior ao da posicao em que se pretende deletar com outro
+		 *		elemento temporario. Ao chegar nessa posicao, salva
+		 *		temporariamente o dado e o vertice que serao deletados, aponta
+		 *		o vertice, anterior ao nodo que sera deletado, para o vertice
+		 *		seguinte, ao que sera deletado. Se o proximo vertice existir,
+		 *		ou seja, for diferente de um nullptr, entao aponta o anterior
+		 *		dele para o vertice anterior ao da posicao que sera deletada.
+		 *		Por fim, diminui o numero que indica o tamanho da lista e
+		 *		deleta o vertice.
+		 *	Verifica se e uma posicao valida ao comparar a posicao desejada
+		 *		com o atual tamanho da lista, ja que a posicao deve ser menor
+		 *		ao tamanho da lista.
+		 *  Se houver problema na verificacao, redireciona a execucao para
+		 *  	lugar nenhum.
+		 *	Parametro posicao e um inteiro que indica a posicao em que deve-se
+		 *		tentar retirar o dado.
+		 *  Retorna o tipo generico que representa o dado retirado da lista, o
+		 *		que foi salvo temporariamente durante o processo.
+		 */
 		T retiraDaPosicaoDuplo(int pos) {
 			if (pos >= size) {
 				throw "problema";
@@ -245,6 +285,19 @@ class ListaDupla {
 				return retiraDaPosicaoDuplo(size-1);
 		}
 
+		/**
+		 *  Funcao retiraEspecificoDuplo
+		 *  Se a lista nao estiver vazia, entao chama a funcao posicaoDuplo
+		 *		para ter o local do dado passado como argumento e passa esse
+		 *		local para a funcao retiraDaPosicaoDuplo que fara o processo
+		 *		de retirada do dado.
+		 *  Verifica o status da lista atraves da funcao listaVazia.
+		 *  Se houver problema na verificacao, redireciona a execucao para
+		 *  	lugar nenhum.
+  		 *	Parametro dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que deve ser retirado da lista.
+		 *	Retorna uma chamada para a funcao retiraDaPosicaoDuplo.
+		 */
 		T retiraEspecificoDuplo(const T &dado) {
 			if (listaVazia()) {
 				throw "problema";
@@ -318,8 +371,18 @@ class ListaDupla {
 		}
 
 		/**
-		 *  write here
-		 *  and more here
+		 *  Funcao mostra
+		 *  Se for uma posicao valida, entao caminha ate o vertice da posicao
+		 *		desejada com o auxilio de um ponteiro temporario e retorna a
+		 *		informacao que o elemento dessa posicao contem.
+		 *  Verifica se e uma posicao valida ao comparar a posicao desejada
+		 *		com o atual tamanho da lista, ja que a posicao deve ser menor
+		 *		que o tamanho da lista.
+		 *	Se houver problema na verificacao, redireciona a execucao para
+		 *		lugar nenhum.
+		 *	Retorna um tipo generico que representa o dado na posicao.
+		 *	Parametro pos e o inteiro que indica a posicao que deve mostrar a
+		 *		info que ela possui.
 		 */
 		T mostra(int pos) {
 			if (pos >= size) {
