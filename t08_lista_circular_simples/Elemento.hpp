@@ -14,6 +14,8 @@
 template<typename T>
 class Elemento {
 	public:
+		Elemento(Elemento<T> *next) : _next(next) {}
+
 		/**
 		 *  Construtor
 		 *	Inicializa o vertice ao informar para qual nodo ele aponta e qual

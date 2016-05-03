@@ -8,16 +8,17 @@ class ListaCirc {
 		 *	Inicializa a lista ao dizer que seu tamanho e zero ao mesmo tempo
 		 * 		em que o head (primeiro vertice) aponta para nullptr.
 		 */
-		ListaEnc() {
+		ListaCirc() {
 			size = 0;
 			head = nullptr;
+			sentinel = new Elemento<T>(head);
 		}
 
 		/**
 		 *  Destrutor
 		 *	Chama a funcao destroiLista.
 		 */
-		~ListaEnc() {
+		~ListaCirc() {
 			destroiLista();
 		}
 
@@ -477,6 +478,6 @@ class ListaCirc {
 
 	private:
 		Elemento<T> *head;  //!< objeto cabeca da lista, ocupa a primeira pos
+		Elemento<T> *sentinel;
 		int size;			//!< indica o atual tamanho da lista
-
-}
+};
