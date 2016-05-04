@@ -11,9 +11,7 @@ class ListaCirc {
 		ListaCirc() {
 			size = 0;
 			head = nullptr;
-			// sentinel = new Elemento<T>(sentinel);
-			// head = new Elemento<T>(sentinel);
-			//head->setProximo(sentinel);
+			sentinel = nullptr;
 		}
 
 		/**
@@ -67,7 +65,9 @@ class ListaCirc {
 			} else {
 				tmpElemento->setProximo(head);
 				head = tmpElemento;
+				// sentinel->setProximo()
 				size += 1;
+				// delete tmpElemento;
 			}
 		}
 
@@ -301,6 +301,7 @@ class ListaCirc {
 		void destroiLista() {
 			if (listaVazia()) {
 				delete head;
+				delete sentinel;
 			} else {
 				Elemento<T> *tmpElemento = head;
 
@@ -309,6 +310,8 @@ class ListaCirc {
 					eliminaDoInicio();
 					size -= 1;
 				}
+
+				delete sentinel;
 			}
 		}
 
@@ -431,6 +434,7 @@ class ListaCirc {
 				tmpElemento = tmpElemento->getProximo();
 			}
 
+			delete tmpElemento;
 			return false;
 		}
 
