@@ -11,7 +11,9 @@ class ListaCirc {
 		ListaCirc() {
 			size = 0;
 			head = nullptr;
-			sentinel = new Elemento<T>(head);
+			// sentinel = new Elemento<T>(sentinel);
+			// head = new Elemento<T>(sentinel);
+			//head->setProximo(sentinel);
 		}
 
 		/**
@@ -58,7 +60,7 @@ class ListaCirc {
 		 *  Nao possui retorno.
 		 */
 		void adicionaNoInicio(const T &dado) {
-			Elemento<T> *tmpElemento = new Elemento<T>(dado, nullptr);
+			Elemento<T> *tmpElemento = new Elemento<T>(dado, sentinel);
 
 			if (tmpElemento == nullptr) {
 				throw "problema";
@@ -103,7 +105,7 @@ class ListaCirc {
 				if (pos == 0) {
 					adicionaNoInicio(dado);
 				} else {
-					Elemento<T> *tmpElemento = new Elemento<T>(dado, nullptr);
+					Elemento<T> *tmpElemento = new Elemento<T>(dado, sentinel);
 					Elemento<T> *antElemento;
 
 					if (tmpElemento == nullptr) {
