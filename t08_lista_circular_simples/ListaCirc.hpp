@@ -63,7 +63,9 @@ class ListaCirc {
 			if (tmpElemento == nullptr) {
 				throw "problema";
 			} else {
-				tmpElemento->setProximo(head);
+			    if (size != 0)
+					tmpElemento->setProximo(head);
+
 				head = tmpElemento;
 				size += 1;
 			}
