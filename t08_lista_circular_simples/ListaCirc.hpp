@@ -65,9 +65,7 @@ class ListaCirc {
 			} else {
 				tmpElemento->setProximo(head);
 				head = tmpElemento;
-				// sentinel->setProximo()
 				size += 1;
-				// delete tmpElemento;
 			}
 		}
 
@@ -121,6 +119,7 @@ class ListaCirc {
 
 						size += 1;
 					}
+
 				}
 			}
 		}
