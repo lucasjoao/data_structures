@@ -1,12 +1,30 @@
+/*!
+ *  \brief ListaCirc.hpp
+ *	\copyright Copyright [2016], Lucas Joao Martins
+ *  \author Lucas Joao Martins
+ *
+ *	Implementa a estrutura de dados lista circular atraves de template.
+ */
+
+
+/**
+	todo:
+		- implementar sentinela nos métodos que precisa
+		- mudar documentação (falta os que começam com **)
+		- algo a mais?
+		- mudar snippet
+ */
+
 #include "Elemento.hpp"
 
 template <typename T>
 class ListaCirc {
 	public:
-		/**
-		 *  Construtor
-		 *	Inicializa a lista ao dizer que seu tamanho e zero ao mesmo tempo
-		 * 		em que o head (primeiro vertice) aponta para nullptr.
+		/*!
+		 *  \brief Construtor
+		 *
+		 *	Inicializa a lista com tamanho zero, head aponta para nullptr e
+		 *		sentinela aponta para head.
 		 */
 		ListaCirc() {
 			size = 0;
@@ -14,26 +32,24 @@ class ListaCirc {
 			sentinel = new Elemento<T>(0, head);
 		}
 
-		/**
-		 *  Destrutor
-		 *	Chama a funcao destroiLista.
+		/*!
+		 *  \brief Destrutor
+		 *	\sa destroiLista()
 		 */
 		~ListaCirc() {
 			destroiLista();
 		}
 
-		/**
-		 *  Funcao adiciona
-		 *  Se a lista estiver vazia, entao chama a funcao adicionaNoInicio
-		 * 		para realizar o processo de adicao do dado recebido como
-		 *		argumento. Caso contrario, entao chama a funcao
-		 *		adicionaNaPosicao para realizar o processo de adicao do dado
-		 *		recebido como argumento na posicao correspondente ao atual
-		 *		tamanho da lista.
-		 *	Verifica o status da lista atraves da funcao listaVazia.
-		 *	Parametro dado passado por referencia e um tipo generico constante
+		/*!
+		 *  \brief Funcao adiciona
+		 *	\param dado passado por referencia e um tipo generico constante
 		 *		que representa o dado a ser adicionado na lista.
-		 *	Nao possui retorno.
+		 *	\return nao possui retorno
+		 *	\sa listaVazia(), adicionaNoInicio(...) e adicionaNaPosicao(...)
+		 *
+		 *
+		 *  Se a lista estiver vazia, entao adiciona no inicio. Caso contrario
+		 *		adiciona no fim (ultima posicao que corresponde ao size).
 		 */
 		void adiciona(const T &dado) {
 			if (listaVazia())
@@ -43,7 +59,7 @@ class ListaCirc {
 		}
 
 		/**
-		 *  Funcao adicionaNoInicio
+		 *  \brief Funcao adicionaNoInicio
 		 *  Istancia um novo Elemento temporario que aponta para um nullptr e
 		 *		possui o dado passado como argumento, e, se houver espaco na
 		 *		memoria para alocar essa instanciacao, entao aponta o elemento
@@ -53,7 +69,7 @@ class ListaCirc {
 		 *		temporario e igual a um nullptr.
 		 *  Se houver problema na verificacao, redireciona a execucao para
 		 *  	lugar nenhum.
- 		 *	Parametro dado passado por referencia e um tipo generico constante
+ 		 *	\param dado passado por referencia e um tipo generico constante
 		 *		que representa o dado que ficara na primeira posicao da lista.
 		 *  Nao possui retorno.
 		 */
@@ -78,7 +94,7 @@ class ListaCirc {
 		}
 
 		/**
-		 *  Funcao adicionaNaPosicao
+		 *  \brief Funcao adicionaNaPosicao
 		 *  Se a posicao for valida e ser a zero, chama a funcao
 		 *		adicionaNoInicio para realizar o processo de adicao com o dado
 		 *		recebido como argumento. Se a posicao nao for a zero, entao
@@ -98,9 +114,9 @@ class ListaCirc {
 		 *		temporario e igual a um nullptr.
 		 *  Se houver problema em alguma das duas verificacoes, redireciona a
 		 *		execucao para lugar nenhum.
- 		 *	Parametro dado passado por referencia e um tipo generico constante
+ 		 *	\param dado passado por referencia e um tipo generico constante
 		 *		que representa o dado que ficara na primeira posicao da lista.
- 		 *	Parametro pos e um inteiro que indica a posicao em que deve-se
+ 		 *	\param pos e um inteiro que indica a posicao em que deve-se
 		 *		tentar adicionar o dado.
 		 *  Nao possui retorno.
 		 */
@@ -133,7 +149,7 @@ class ListaCirc {
 		}
 
 		/**
-		 *  Funcao adicionaEmOrdem
+		 *  \brief Funcao adicionaEmOrdem
 		 *  Se a lista estiver vazia, entao chama a funcao adicionaNoInicio
 		 * 		para realizar o processo de adicao do dado recebido como
 		 *		argumento. Caso contrario, entao caminha por todos vertices da
@@ -147,7 +163,7 @@ class ListaCirc {
 		 *	 	processo de adicao fica por conta da funcao adicionaNaPosicao
 		 *		que e chamada por ultimo.
 		 *  Verifica o status da lista atraves da funcao listaVazia.
-  		 *	Parametro dado passado por referencia e um tipo generico constante
+  		 *	\param dado passado por referencia e um tipo generico constante
 		 *		que representa o dado que entrara na lista.
 		 *  Nao possui retorno.
 		 */
@@ -172,14 +188,14 @@ class ListaCirc {
 
 		/**
 		 *	Funcao retira
-		 *  Se a lista nao estiver vazia, entao retorna uma chamada para a
+		 *  Se a lista nao estiver vazia, entao \return uma chamada para a
 		 *		funcao retiraDaPosicao realizar o processo de remocao na
 		 *		posicao tamanho - 1.
 		 *  Verifica o status da lista atraves da funcao listaVazia.
 		 *  Se houver problema na verificacao, redireciona a execucao para
 		 *  	lugar nenhum.
-		 *  Nao possui parametro.
-		 *  Retorna o tipo generico que representa o dado retirado da lista.
+		 *  Nao possui \param.
+		 *  \return o tipo generico que representa o dado retirado da lista.
 		 */
 		T retira() {
 			if (listaVazia())
@@ -198,8 +214,8 @@ class ListaCirc {
 		 *  Verifica o status da lista atraves da funcao listaVazia.
 		 *  Se houver problema na verificacao, redireciona a execucao para
 		 *  	lugar nenhum.
-		 *  Nao possui parametro.
-		 *  Retorna o tipo generico que representa o dado retirado da lista, o
+		 *  Nao possui \param.
+		 *  \return o tipo generico que representa o dado retirado da lista, o
 		 *  	que foi salvo temporariamente durante o processo.
 		 */
 		T retiraDoInicio() {
@@ -216,7 +232,7 @@ class ListaCirc {
 		}
 
 		/**
-		 *  Funcao retiraDaPosicao
+		 *  \brief Funcao retiraDaPosicao
 		 *  Se a posicao for valida e ser a zero, chama a funcao
 		 *		retiraDoInicio para realizar o processo de remocao do dado. Se
 		 *		a posicao nao for a zero, entao caminha ate o vertice anterior
@@ -231,9 +247,9 @@ class ListaCirc {
 		 *		ou igual ao tamanho da lista.
 		 *  Se houver problema na verificacao, redireciona a execucao para
 		 *  	lugar nenhum.
-		 *	Parametro posicao e um inteiro que indica a posicao em que deve-se
+		 *	\param posicao e um inteiro que indica a posicao em que deve-se
 		 *		tentar retirar o dado.
-		 *  Retorna o tipo generico que representa o dado retirado da lista, o
+		 *  \return o tipo generico que representa o dado retirado da lista, o
 		 *		que foi salvo temporariamente durante o processo.
 		 */
 		T retiraDaPosicao(int pos) {
@@ -262,7 +278,7 @@ class ListaCirc {
 		}
 
 		/**
-		 *  Funcao retiraEspecifico
+		 *  \brief Funcao retiraEspecifico
 		 *  Se a lista nao estiver vazia, entao chama a funcao posicao para ter
 		 *		o local do dado passado como argumento e passa esse local para
 		 *		a funcao retiraEspecifico que fara o processo de retirada do
@@ -270,9 +286,9 @@ class ListaCirc {
 		 *  Verifica o status da lista atraves da funcao listaVazia.
 		 *  Se houver problema na verificacao, redireciona a execucao para
 		 *  	lugar nenhum.
-  		 *	Parametro dado passado por referencia e um tipo generico constante
+  		 *	\param dado passado por referencia e um tipo generico constante
 		 *		que representa o dado que deve ser retirado da lista.
-		 *	Retorna uma chamada para a funcao retiraDaPosicao.
+		 *	\return uma chamada para a funcao retiraDaPosicao.
 		 */
 		T retiraEspecifico(const T &dado) {
 			if (listaVazia()) {
@@ -283,7 +299,7 @@ class ListaCirc {
 		}
 
 		/**
-		 *  Funcao eliminaDoInicio
+		 *  \brief Funcao eliminaDoInicio
 		 *	Deleta o head e diz que o atual head e o elemento que o antigo
 		 *		head apontava.
 		 *	Nao possui argumento.
@@ -322,7 +338,7 @@ class ListaCirc {
 		}
 
 		/**
-		 *  Funcao constante posicao
+		 *  \brief Funcao constante posicao
 		 *	Caminha por todos os vertices da estrutura e para cada um deles
 		 *		compara o elemento com o dado passado como argumento. Se
 		 *		houver igualdade, entao o laco e parado, e, a posicao
@@ -330,9 +346,9 @@ class ListaCirc {
 		 *		se nao houver igualdade, o valor da posicao fica igua a
 		 *		variavel size e entao a execucao sera redirecionada para
 		 *		lugar nenhum.
-  		 *	Parametro dado passado por referencia e um tipo generico constante
+  		 *	\param dado passado por referencia e um tipo generico constante
 		 *		que representa o dado que deve ser procurado na lista.
-		 *	Retorna um inteiro que possui a posicao do valor passado como
+		 *	\return um inteiro que possui a posicao do valor passado como
 		 *		argumento.
 		 */
 		int posicao(const T &dado) const {
@@ -353,8 +369,13 @@ class ListaCirc {
 				return i;
 		}
 
-		/**
-		 *  Funcao ponteiro constante posicaoMem
+		/*!
+		 *  \brief Funcao ponteiro constante posicaoMem
+  		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que deve ser procurado na lista.
+		 *	\return um inteiro que possui a posicao na memoria do valor
+		 *		passado como argumento.
+		 *
 		 *	Caminha por todos os vertices da estrutura e para cada um deles
 		 *		compara o elemento com o dado passado como argumento. Se
 		 *		houver igualdade, entao o laco e parado, e, a posicao
@@ -362,10 +383,6 @@ class ListaCirc {
 		 *		se nao houver igualdade, o valor da posicao fica igua a
 		 *		variavel size e entao a execucao sera redirecionada para
 		 *		lugar nenhum.
-  		 *	Parametro dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que deve ser procurado na lista.
-		 *	Retorna um inteiro que possui a posicao na memoria do valor
-		 *		passado como argumento.
 		 */
 		T *posicaoMem(const T &dado) const {
 			Elemento<T> *tmpElemento = head;
@@ -384,19 +401,16 @@ class ListaCirc {
 				return &tmpElemento;
 		}
 
-		/**
-		 *  Funcao mostra
+		/*!
+		 *  \brief Funcao mostra
+		 *	\param pos e o inteiro que indica a posicao que deve mostrar a
+		 *		info que ela possui.
+		 *	\return um tipo generico que representa o dado na posicao.
+		 *
 		 *  Se for uma posicao valida, entao caminha ate o vertice da posicao
 		 *		desejada com o auxilio de um ponteiro temporario e retorna a
-		 *		informacao que o elemento dessa posicao contem.
-		 *  Verifica se e uma posicao valida ao comparar a posicao desejada
-		 *		com o atual tamanho da lista, ja que a posicao deve ser menor
-		 *		que o tamanho da lista.
-		 *	Se houver problema na verificacao, redireciona a execucao para
-		 *		lugar nenhum.
-		 *	Retorna um tipo generico que representa o dado na posicao.
-		 *	Parametro pos e o inteiro que indica a posicao que deve mostrar a
-		 *		info que ela possui.
+		 *		informacao que o elemento dessa posicao contem. Posicao deve
+		 *		ser menor que o tamanho da lista.
 		 */
 		T mostra(int pos) {
 			if (pos >= size) {
@@ -411,24 +425,26 @@ class ListaCirc {
 			}
 		}
 
-		/**
-		 *  Funcao verUltimo
-		 *  Retorna a posicao do ultimo elemento na lista.
-		 *  Nao possui parametro.
+		/*!
+		 *  \brief Funcao verUltimo
+		 *  \param nao possui.
+		 *  \return a posicao do ultimo elemento na lista.
 		 */
 		int verUltimo() {
 			return size - 1;
 		}
 
-		/**
-		 *  Funcao contem
+		/*!
+		 *  \brief Funcao contem
+		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que sera procurado na lista.
+		 *	\return um valor booleano que indica se a lista possui ou nao o
+		 *		valor passado.
+		 *	\sa igual(...)
+		 *
 		 * 	Caminha por todos vertices da estrutura e para cada um deles
 		 *		compara o elemento com o dado passado como argumento atraves
 		 *		da funcao igual. Se houver igualdade, entao o laco e parado.
-		 *	Parametro dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que sera procurado na lista.
-		 *	Retorna um valor booleano que indica se a lista possui ou nao o
-		 *		valor passado.
 		 */
 		bool contem(const T &dado) {
 			Elemento<T> *tmpElemento = head;
@@ -447,52 +463,56 @@ class ListaCirc {
 			return false;
 		}
 
-		/**
-		 *  Funcao constante listaVazia
+		/*!
+		 *  \brief Funcao constante listaVazia
+		 *  \param nao possui.
+		 *  \return o valor booleano que resulta da comparacao.
+		 *
 		 * 	Verifica se a lista esta vazia ao checar se o atributo size e igual
 		 *		a zero.
-		 *  Nao possui parametro.
-		 *  Retorna o valor booleano que resulta da comparacao.
 		 */
 		bool listaVazia() const {
 			return size == 0;
 		}
 
-		/**
-		 *	Funcao igual
+		/*!
+		 *	\brief Funcao igual
+		 *  \param dado1 e um tipo generico que representa o primeiro dado.
+		 *	\param dado2 e um tipo generico que representa o segundo dado.
+		 *  \return o valor booleano que resulta da comparacao.
+		 *
 		 *  Verifica se o primeiro dado e igual ao segundo dado.
-		 *  Parametro dado1 e um tipo generico que representa o primeiro dado.
-		 *	Parametro dado2 e um tipo generico que representa o segundo dado.
-		 *  Retorna o valor booleano que resulta da comparacao.
 		 */
 		bool igual(T dado1, T dado2) {
 			return dado1 == dado2;
 		}
 
-		/**
-		 *	Funcao maior
+		/*!
+		 *	\brief Funcao maior
+		 *  \param dado1 e um tipo generico que representa o primeiro dado.
+		 *	\param dado2 e um tipo generico que representa o segundo dado.
+		 *  \return o valor booleano que resulta da comparacao.
+		 *
 		 * 	Verifica se o primeiro dado e maior que o segundo dado.
-		 *  Parametro dado1 e um tipo generico que representa o primeiro dado.
-		 *	Parametro dado2 e um tipo generico que representa o segundo dado.
-		 *  Retorna o valor booleano que resulta da comparacao.
 		 */
 		bool maior(T dado1, T dado2) {
 			return dado1 > dado2;
 		}
 
-		/**
-		 *  Funcao menor
+		/*!
+		 *  \brief Funcao menor
+		 *  \param dado1 e um tipo generico que representa o primeiro dado.
+		 *	\param dado2 e um tipo generico que representa o segundo dado.
+		 *  \return o valor booleano que resulta da comparacao.
+		 *
 		 *	Verifica se o primeiro dado e menor que o segundo dado.
-		 *  Parametro dado1 e um tipo generico que representa o primeiro dado.
-		 *	Parametro dado2 e um tipo generico que representa o segundo dado.
-		 *  Retorna o valor booleano que resulta da comparacao.
 		 */
 		bool menor(T dado1, T dado2) {
 			return dado1 < dado2;
 		}
 
 	private:
-		Elemento<T> *head;  //!< objeto cabeca da lista, ocupa a primeira pos
-		Elemento<T> *sentinel;
-		int size;			//!< indica o atual tamanho da lista
+		Elemento<T> *head;      //!< objeto cabeca da lista
+		Elemento<T> *sentinel;  //!< objeto sentinela da lista
+		int size;				//!< indica o atual tamanho da lista
 };
