@@ -11,7 +11,7 @@ class ListaCirc {
 		ListaCirc() {
 			size = 0;
 			head = nullptr;
-			sentinel = nullptr;
+			sentinel = new Elemento<T>(0, head);
 		}
 
 		/**
@@ -58,16 +58,22 @@ class ListaCirc {
 		 *  Nao possui retorno.
 		 */
 		void adicionaNoInicio(const T &dado) {
-			Elemento<T> *tmpElemento = new Elemento<T>(dado, sentinel);
+			Elemento<T> *tmpElemento = new Elemento<T>(dado, nullptr);
 
 			if (tmpElemento == nullptr) {
 				throw "problema";
 			} else {
-			    if (size != 0)
-					tmpElemento->setProximo(head);
+				sentinel->setProximo(tmpElemento);
 
-				head = tmpElemento;
-				size += 1;
+			    if (size != 0) {
+					tmpElemento->setProximo(head);
+					head = tmpElemento;
+			    } else {
+					head = tmpElemento;
+					head->setProximo(sentinel);
+			    }
+
+			    size += 1;
 			}
 		}
 
@@ -286,6 +292,7 @@ class ListaCirc {
 		void eliminaDoInicio() {
 			delete head;
 			head = head->getProximo();
+			sentinel->setProximo(head);
 		}
 
 		/**
@@ -302,17 +309,15 @@ class ListaCirc {
 		void destroiLista() {
 			if (listaVazia()) {
 				delete head;
-				delete sentinel;
 			} else {
 				Elemento<T> *tmpElemento = head;
 
-				while (tmpElemento != nullptr) {
+				while (size != 0){
 					tmpElemento = tmpElemento->getProximo();
+					sentinel->setProximo(tmpElemento);
 					eliminaDoInicio();
 					size -= 1;
 				}
-
-				delete sentinel;
 			}
 		}
 
@@ -428,14 +433,17 @@ class ListaCirc {
 		bool contem(const T &dado) {
 			Elemento<T> *tmpElemento = head;
 
-			while (tmpElemento != nullptr) {
+			while (size != 0) {
 				if (igual(tmpElemento->getInfo(), dado))
 					return true;
 
 				tmpElemento = tmpElemento->getProximo();
+				size -= 1;
 			}
 
-			delete tmpElemento;
+			if (size != 0)
+				delete tmpElemento;
+
 			return false;
 		}
 
