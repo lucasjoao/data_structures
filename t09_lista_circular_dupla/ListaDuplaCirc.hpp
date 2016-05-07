@@ -1,22 +1,21 @@
-/**
- *  Copyright [2016] - Lucas Joao Martins
- *  ListaDupla.hpp
+/*!
+ *  \brief ListaDuplaCirc.hpp
+ *	\copyright Copyright [2016], Lucas Joao Martins
+ *  \author Lucas Joao Martins
+ *
+ *	Implementa a estrutura lista duplamente circular atraves de template.
  */
 
 #include "ElementoDuplo.hpp"
 
-/**
- *  Classe ListaDupla
- *	Implementa a estrutura de dados lista duplamente encadeada atraves de
- *		template e ponteiros.
- */
 template<typename T>
 class ListaDuplaCirc {
 	public:
-		/**
-		 *  Construtor
-		 *	Inicializa a lista ao dizer que seu tamanho e zero ao mesmo tempo
-		 * 		em que o head (primeiro vertice) aponta para nullptr.
+		/*!
+		 *  \brief Construtor
+		 *
+		 *	Inicializa a lista com tamanho zero, head aponta para nullptr e
+		 *		sentinela aponta para head.
 		 */
 		ListaDuplaCirc() {
 			size = 0;
@@ -24,30 +23,44 @@ class ListaDuplaCirc {
 			sentinel = new Elemento<T>(0, nullptr, head);
 		}
 
-		/**
-		 *  Destrutor
-		 *	Chama a funcao destroiListaDuplo.
+		/*!
+		 *  \brief Destrutor
+		 *	\sa destroiListaDuplo()
 		 */
 		~ListaDuplaCirc() {
 			destroiListaDuplo();
 		}
 
-		/**
-		 *  Funcao adicionaNoInicioDuplo
-		 *  Istancia um novo Elemento temporario que aponta para um nullptr e
-		 *		possui o dado passado como argumento, e, se houver espaco na
-		 *		memoria para alocar essa instanciacao, entao aponta o elemento
-		 *		temporario para o head atual e se o head existir, ou seja, nao
-		 *		for nulo, entao aponta o anterior do head para o elemento
-		 *		temporario. Por fim, define o elemento temporario como head e
-		 *		aumenta o numero que indica o tamanho da lista.
-		 *  Verifica a situacao da memoria ao comparar se o novo elemento
-		 *		temporario e igual a um nullptr.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
- 		 *	Parametro dado passado por referencia e um tipo generico constante
+		/*!
+		 *  \brief Funcao adicionaDuplo
+		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado a ser adicionado na lista.
+		 *	\return nao possui retorno
+		 *	\sa listaVazia(), adicionaNoInicioDuplo(...) e
+		 *		adicionaNaPosicaoDuplo(...)
+		 *
+		 *  Se a lista estiver vazia, entao adiciona no inicio. Caso contrario
+		 *		adiciona no fim (ultima posicao que corresponde ao size).
+		 */
+		void adicionaDuplo(const T &dado) {
+			if (listaVazia())
+				adicionaNoInicioDuplo(dado);
+			else
+				adicionaNaPosicaoDuplo(dado, size);
+		}
+
+		/*!
+		 *  \brief Funcao adicionaNoInicioDuplo
+		 *	\param dado passado por referencia e um tipo generico constante
 		 *		que representa o dado que ficara na primeira posicao da lista.
-		 *  Nao possui retorno.
+		 *  \return nao possui.
+		 *
+		 *  Istancia um elemento tmp que aponta para um nullptr e
+		 *		possui o dado passado como argumento, e, se houver espaco na
+		 *		memoria para alocar essa instanciacao, entao faz o processo de
+		 *		adicao conforme o atual tamanho da lista. Verifica a situacao
+		 *		da memoria ao comparar se o novo elemento temporario e igual a
+		 *		um nullptr.
 		 */
 		void adicionaNoInicioDuplo(const T &dado) {
 			Elemento<T> *tmpElemento = new Elemento<T>(dado, nullptr, nullptr);
@@ -72,8 +85,15 @@ class ListaDuplaCirc {
 			}
 		}
 
-		/**
-		 *  Funcao adicionaNaPosicao
+		/*!
+		 *  \brief Funcao adicionaNaPosicaoDuplo
+		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que ficara na primeira posicao da lista.
+ 		 *	\param pos e um inteiro que indica a posicao em que deve-se
+		 *		tentar adicionar o dado.
+		 *  \return nao possui.
+		 *	\sa adicionaNoInicioDuplo(...)
+		 *
 		 *  Se a posicao for valida e ser a zero, chama a funcao
 		 *		adicionaNoInicioDuplo para realizar o processo de adicao com o
 		 *		dado recebido como argumento. Se a posicao nao for a zero,
@@ -89,18 +109,6 @@ class ListaDuplaCirc {
 		 *		apos o temporario existir, ou seja, for diferente de um
 		 *		nullptr, aponta o anterior dele para o elemento temporario.
 		 *		Por fim, aumenta o numero que indica o tamanho da lista.
-		 *	Verifica se e uma posicao valida ao comparar a posicao desejada
-		 *		com o atual tamanho da lista, ja que a posicao deve ser menor
-		 *		que o tamanho da lista.
-		 *  Verifica a situacao da memoria ao comparar se o novo elemento
-		 *		temporario e igual a um nullptr.
-		 *  Se houver problema em alguma das duas verificacoes, redireciona a
-		 *		execucao para lugar nenhum.
- 		 *	Parametro dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que ficara na primeira posicao da lista.
- 		 *	Parametro pos e um inteiro que indica a posicao em que deve-se
-		 *		tentar adicionar o dado.
-		 *  Nao possui retorno.
 		 */
 		void adicionaNaPosicaoDuplo(const T &dado, int pos) {
 			if (pos > size) {
@@ -133,28 +141,14 @@ class ListaDuplaCirc {
 			}
 		}
 
-		/**
-		 *  Funcao adicionaDuplo
-		 *  Se a lista estiver vazia, entao chama funcao adicionaNoInicioDuplo
-		 * 		para realizar o processo de adicao do dado recebido como
-		 *		argumento. Caso contrario, entao chama a funcao
-		 *		adicionaNaPosicaoDuplo para realizar a adicao do dado
-		 *		recebido como argumento na posicao correspondente ao atual
-		 *		tamanho da lista.
-		 *	Verifica o status da lista atraves da funcao listaVazia.
-		 *	Parametro dado passado por referencia e um tipo generico constante
-		 *		que representa o dado a ser adicionado na lista.
-		 *	Nao possui retorno.
-		 */
-		void adicionaDuplo(const T &dado) {
-			if (listaVazia())
-				adicionaNoInicioDuplo(dado);
-			else
-				adicionaNaPosicaoDuplo(dado, size);
-		}
-
-		/**
-		 *  Funcao adicionaEmOrdem
+		/*!
+		 *  \brief Funcao adicionaEmOrdem
+  		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que entrara na lista.
+		 *  \return nao possui.
+		 *	\sa listaVazia(), adicionaNoInicioDuplo(...), maior(...), e
+		 *		adicionaNaPosicaoDuplo(...)
+		 *
 		 *  Se a lista estiver vazia, entao chama funcao adicionaNoInicioDuplo
 		 * 		para realizar o processo de adicao do dado recebido como
 		 *		argumento. Caso contrario, entao caminha por todos vertices da
@@ -167,10 +161,6 @@ class ListaDuplaCirc {
 		 *		a ser inserido for maior que todos os outros elementos. A
 		 *	 	adicao fica por conta da funcao adicionaNaPosicaoDuplo que e
 		 *		chamada por ultimo.
-		 *  Verifica o status da lista atraves da funcao listaVazia.
-  		 *	Parametro dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que entrara na lista.
-		 *  Nao possui retorno.
 		 */
 		void adicionaEmOrdem(const T &data) {
 			if (listaVazia()) {
@@ -191,8 +181,30 @@ class ListaDuplaCirc {
 			}
 		}
 
-		/**
-		 * 	Funcao retiraDoInicioDuplo
+		/*!
+		 *	\brief Funcao retiraDuplo
+		 *  \param nao possui.
+		 *  \return o tipo generico que representa o dado retirado da lista.
+		 *	\sa listaVazia(), retiraDaPosicaoDuplo(...)
+		 *
+		 *  Se a lista nao estiver vazia, entao \return uma chamada para a
+		 *		funcao retiraDaPosicao realizar o processo de remocao na
+		 *		posicao tamanho - 1.
+		 */
+		T retiraDuplo() {
+			if (listaVazia())
+				throw "problema";
+			else
+				return retiraDaPosicaoDuplo(size-1);
+		}
+
+		/*!
+		 * 	\brief Funcao retiraDoInicioDuplo
+		 *  \param nao possui.
+		 *  \return o tipo generico que representa o dado retirado da lista, o
+		 *  	que foi salvo temporariamente durante o processo.
+		 *	\sa listaVazia()
+		 *
 		 *  Se a lista nao estiver vazia, entao salva temporariamente o dado
 		 *		que sera retirado com o auxilio de um vertice temporario,
 		 *		define o novo head como o elemento para qual o head que sera
@@ -200,12 +212,6 @@ class ListaDuplaCirc {
 		 *		for nulo, entao aponta o anterior do head para o elemento
 		 *		temporario. Por fim, diminui o tamanho da estrutura e deleta o
 		 *		nodo temporario.
-		 *  Verifica o status da lista atraves da funcao listaVazia.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
-		 *  Nao possui parametro.
-		 *  Retorna o tipo generico que representa o dado retirado da lista, o
-		 *  	que foi salvo temporariamente durante o processo.
 		 */
 		T retiraDoInicioDuplo() {
 			if (listaVazia()) {
@@ -225,8 +231,14 @@ class ListaDuplaCirc {
 			}
 		}
 
-		/**
-		 *  Funcao retiraDaPosicaoDuplo
+		/*!
+		 *  \brief Funcao retiraDaPosicaoDuplo
+		 *	\param posicao e um inteiro que indica a posicao em que deve-se
+		 *		tentar retirar o dado.
+		 *  \return o tipo generico que representa o dado retirado da lista, o
+		 *		que foi salvo temporariamente durante o processo.
+		 *	\sa retiraDoInicioDuplo()
+		 *
 		 *  Se a posicao for valida e ser a zero, chama a funcao
 		 *		retiraDoInicioDuplo para realizar o processo de remocao do
 		 *		dado. Se a posicao nao for a zero, entao caminha ate o vertice
@@ -239,15 +251,6 @@ class ListaDuplaCirc {
 		 *		dele para o vertice anterior ao da posicao que sera deletada.
 		 *		Por fim, diminui o numero que indica o tamanho da lista e
 		 *		deleta o vertice.
-		 *	Verifica se e uma posicao valida ao comparar a posicao desejada
-		 *		com o atual tamanho da lista, ja que a posicao deve ser menor
-		 *		ao tamanho da lista.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
-		 *	Parametro posicao e um inteiro que indica a posicao em que deve-se
-		 *		tentar retirar o dado.
-		 *  Retorna o tipo generico que representa o dado retirado da lista, o
-		 *		que foi salvo temporariamente durante o processo.
 		 */
 		T retiraDaPosicaoDuplo(int pos) {
 			if (pos >= size) {
@@ -278,36 +281,17 @@ class ListaDuplaCirc {
 			}
 		}
 
-		/**
-		 *	Funcao retiraDuplo
-		 *  Se a lista nao estiver vazia, entao retorna uma chamada para a
-		 *		funcao retiraDaPosicaoDuplo realizar o processo de remocao na
-		 *		posicao tamanho - 1.
-		 *  Verifica o status da lista atraves da funcao listaVazia.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
-		 *  Nao possui parametro.
-		 *  Retorna o tipo generico que representa o dado retirado da lista.
-		 */
-		T retiraDuplo() {
-			if (listaVazia())
-				throw "problema";
-			else
-				return retiraDaPosicaoDuplo(size-1);
-		}
-
-		/**
-		 *  Funcao retiraEspecificoDuplo
+		/*!
+		 *  \brief Funcao retiraEspecificoDuplo
+		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que deve ser retirado da lista.
+		 *	\return uma chamada para a funcao retiraDaPosicao.
+		 *	\sa listaVazia(), posicaoDuplo(...), retiraDaPosicaoDuplo(...)
+		 *
 		 *  Se a lista nao estiver vazia, entao chama a funcao posicaoDuplo
 		 *		para ter o local do dado passado como argumento e passa esse
 		 *		local para a funcao retiraDaPosicaoDuplo que fara o processo
 		 *		de retirada do dado.
-		 *  Verifica o status da lista atraves da funcao listaVazia.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
-  		 *	Parametro dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que deve ser retirado da lista.
-		 *	Retorna uma chamada para a funcao retiraDaPosicaoDuplo.
 		 */
 		T retiraEspecificoDuplo(const T &dado) {
 			if (listaVazia()) {
@@ -317,9 +301,54 @@ class ListaDuplaCirc {
 			}
 		}
 
+		/*!
+		 *  \brief Funcao eliminaDoInicio
+		 *  \param nao possui.
+		 *	\return nao possui.
+		 *
+		 *	Deleta o head, diz que o atual head e o elemento que o antigo
+		 *		head apontava e aponta o sentinela para o novo head.
+		 */
+		void eliminaDoInicioDuplo() {
+			delete head;
+			head = head->getProximo();
+			sentinel->setProximo(head);
+		}
 
-		/**
-		 *  Funcao constante posicaoDuplo
+		/*!
+		 *	\brief Funcao destroiLista
+		 *	\param nao possui.
+		 *  \return nao possui.
+		 *	\sa eliminaDoInicioDuplo(), listaVazia()
+		 *
+		 *  Se a lista estiver vazia, entao deleta o head. Caso contrario,
+		 *		entao caminha por todos os elementos nao nulos da estrutura com
+		 *		o auxilio de um vertice temporario e para cada um deles
+		 *		diminui o tamanho atual da lista e chama a funcao
+		 *		eliminaDoInicio() que e responsavel por deletar o nodo.
+		 */
+		void destroiListaDuplo() {
+			if (listaVazia()) {
+				delete head;
+			} else {
+				Elemento<T> *tmpElemento = head;
+
+				while (size != 0) {
+					tmpElemento = tmpElemento->getProximo();
+					sentinel->setProximo(tmpElemento);
+					eliminaDoInicioDuplo();
+					size -= 1;
+				}
+			}
+		}
+
+		/*!
+		 *  \brief Funcao constante posicaoDuplo
+		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que deve ser procurado na lista.
+		 *	\return um inteiro que possui a posicao do valor passado como
+		 *		argumento.
+		 *
 		 *	Caminha por todos os vertices da estrutura e para cada um deles
 		 *		compara o elemento com o dado passado como argumento. Se
 		 *		houver igualdade, entao o laco e parado, e, a posicao
@@ -327,10 +356,6 @@ class ListaDuplaCirc {
 		 *		se nao houver igualdade, o valor da posicao fica igua a
 		 *		variavel size e entao a execucao sera redirecionada para
 		 *		lugar nenhum.
-  		 *	Parametro dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que deve ser procurado na lista.
-		 *	Retorna um inteiro que possui a posicao do valor passado como
-		 *		argumento.
 		 */
 		int posicaoDuplo(const T& dado) const {
 			Elemento<T> *tmpElemento = head;
@@ -350,8 +375,13 @@ class ListaDuplaCirc {
 				return i;
 		}
 
-		/**
-		 *  Funcao constante posicaoMemDuplo
+		/*!
+		 *  \brief Funcao constante posicaoMemDuplo
+		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que deve ser procurado na lista.
+		 *	\return um pointer inteiro que possui a posicao na memoria do valor
+		 *		passado como argumento.
+		 *
 		 *	Caminha por todos os vertices da estrutura e para cada um deles
 		 *		compara o elemento com o dado passado como argumento. Se
 		 *		houver igualdade, entao o laco e parado, e, a posicao
@@ -359,10 +389,6 @@ class ListaDuplaCirc {
 		 *		se nao houver igualdade, o valor da posicao fica igua a
 		 *		variavel size e entao a execucao sera redirecionada para
 		 *		lugar nenhum.
-  		 *	Parametro dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que deve ser procurado na lista.
-		 *	Retorna um ponteiro que possui a posicao na memoria do valor
-		 *		passado como argumento.
 		 */
 		T* posicaoMemDuplo(const T &dado) const {
 			Elemento<T> *tmpElemento = head;
@@ -381,19 +407,16 @@ class ListaDuplaCirc {
 				return &tmpElemento;
 		}
 
-		/**
-		 *  Funcao mostra
+		/*!
+		 *  \brief Funcao mostra
+		 *	\param pos e o inteiro que indica a posicao que deve mostrar a
+		 *		info que ela possui.
+		 *	\return um tipo generico que representa o dado na posicao.
+		 *
 		 *  Se for uma posicao valida, entao caminha ate o vertice da posicao
 		 *		desejada com o auxilio de um ponteiro temporario e retorna a
-		 *		informacao que o elemento dessa posicao contem.
-		 *  Verifica se e uma posicao valida ao comparar a posicao desejada
-		 *		com o atual tamanho da lista, ja que a posicao deve ser menor
-		 *		que o tamanho da lista.
-		 *	Se houver problema na verificacao, redireciona a execucao para
-		 *		lugar nenhum.
-		 *	Retorna um tipo generico que representa o dado na posicao.
-		 *	Parametro pos e o inteiro que indica a posicao que deve mostrar a
-		 *		info que ela possui.
+		 *		informacao que o elemento dessa posicao contem. Posicao deve
+		 *		ser menor que o tamanho da lista.
 		 */
 		T mostra(int pos) {
 			if (pos >= size) {
@@ -408,35 +431,26 @@ class ListaDuplaCirc {
 			}
 		}
 
-		/**
-		 *  Funcao verUltimo
-		 *  Retorna a posicao do ultimo elemento na lista.
-		 *  Nao possui parametro.
+		/*!
+		 *  \brief Funcao verUltimo
+		 *  \param nao possui.
+		 *  \return a posicao do ultimo elemento na lista.
 		 */
 		int verUltimo() {
 			return size - 1;
 		}
 
-		/**
-		 *  Funcao constante listaVazia
-		 * 	Verifica se a lista esta vazia ao checar se o atributo size e igual
-		 *		a zero.
-		 *  Nao possui parametro.
-		 *  Retorna o valor booleano que resulta da comparacao.
-		 */
-		bool listaVazia() const {
-			return size == 0;
-		}
-
-		/**
-		 *  Funcao contemDuplo
+		/*!
+		 *  \brief Funcao contemDuplo
+		 * 	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que sera procurado na lista.
+		 *	\return um valor booleano que indica se a lista possui ou nao o
+		 *		valor passado.
+		 *	\sa igual(...)
+		 *
 		 * 	Caminha por todos vertices da estrutura e para cada um deles
 		 *		compara o elemento com o dado passado como argumento atraves
 		 *		da funcao igual. Se houver igualdade, entao o laco e parado.
-		 *	Parametro dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que sera procurado na lista.
-		 *	Retorna um valor booleano que indica se a lista possui ou nao o
-		 *		valor passado.
 		 */
 		bool contemDuplo(const T &dado) {
 			Elemento<T> *tmpElemento = head;
@@ -455,76 +469,52 @@ class ListaDuplaCirc {
 			return false;
 		}
 
-		/**
-		 *	Funcao igual
+		/*!
+		 *  \brief Funcao constante listaVazia
+		 *  \param nao possui.
+		 *  \return o valor booleano que resulta da comparacao.
+		 *
+		 * 	Verifica se a lista esta vazia ao checar se o atributo size e igual
+		 *		a zero.
+		 */
+		bool listaVazia() const {
+			return size == 0;
+		}
+
+		/*!
+		 *	\brief Funcao igual
+		 *  \param dado1 e um tipo generico que representa o primeiro dado.
+		 *	\param dado2 e um tipo generico que representa o segundo dado.
+		 *  \return o valor booleano que resulta da comparacao.
+		 *
 		 *  Verifica se o primeiro dado e igual ao segundo dado.
-		 *  Parametro dado1 e um tipo generico que representa o primeiro dado.
-		 *	Parametro dado2 e um tipo generico que representa o segundo dado.
-		 *  Retorna o valor booleano que resulta da comparacao.
 		 */
 		bool igual(T dado1, T dado2) {
 			return dado1 == dado2;
 		}
 
-		/**
-		 *	Funcao maior
+		/*!
+		 *	\brief Funcao maior
+		 *  \param dado1 e um tipo generico que representa o primeiro dado.
+		 *	\param dado2 e um tipo generico que representa o segundo dado.
+		 *  \return o valor booleano que resulta da comparacao.
+		 *
 		 * 	Verifica se o primeiro dado e maior que o segundo dado.
-		 *  Parametro dado1 e um tipo generico que representa o primeiro dado.
-		 *	Parametro dado2 e um tipo generico que representa o segundo dado.
-		 *  Retorna o valor booleano que resulta da comparacao.
 		 */
 		bool maior(T dado1, T dado2) {
 			return dado1 > dado2;
 		}
 
-		/**
-		 *  Funcao menor
+		/*!
+		 *  \brief Funcao menor
+		 *  \param dado1 e um tipo generico que representa o primeiro dado.
+		 *	\param dado2 e um tipo generico que representa o segundo dado.
+		 *  \return o valor booleano que resulta da comparacao.
+		 *
 		 *	Verifica se o primeiro dado e menor que o segundo dado.
-		 *  Parametro dado1 e um tipo generico que representa o primeiro dado.
-		 *	Parametro dado2 e um tipo generico que representa o segundo dado.
-		 *  Retorna o valor booleano que resulta da comparacao.
 		 */
 		bool menor(T dado1, T dado2) {
 			return dado1 < dado2;
-		}
-
-		/**
-		 *	Funcao destroiListaDuplo
-		 *  Se a lista estiver vazia, entao deleta o head. Caso contrario,
-		 *		entao caminha por todos os elementos não nulos da estrutura com
-		 *		o auxilio de um vertice temporario e para cada um deles
-		 *		diminui o tamanho atual da lista e chama a funcao
-		 *		eliminaDoInicioDuplo que e responsavel por deletar o nodo.
-		 *	Verifica o status da lista atraves da funcao listaVazia.
-		 *	Nao possui argumento.
-		 *  Nao possui retorno.
-		 */
-		void destroiListaDuplo() {
-			if (listaVazia()) {
-				delete head;
-			} else {
-				Elemento<T> *tmpElemento = head;
-
-				while (size != 0) {
-					tmpElemento = tmpElemento->getProximo();
-					sentinel->setProximo(tmpElemento);
-					eliminaDoInicioDuplo();
-					size -= 1;
-				}
-			}
-		}
-
-		/**
-		 *  Funcao eliminaDoInicioDuplo
-		 *	Deleta o head e diz que o atual head e o elemento que o antigo
-		 *		head apontava.
-		 *	Nao possui argumento.
-		 *  Nao possui retorno.
-		 */
-		void eliminaDoInicioDuplo() {
-			delete head;
-			head = head->getProximo();
-			sentinel->setProximo(head);
 		}
 
 	private:
