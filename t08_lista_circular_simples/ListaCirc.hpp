@@ -6,15 +6,6 @@
  *	Implementa a estrutura de dados lista circular atraves de template.
  */
 
-
-/**
-	todo:
-		- implementar sentinela nos métodos que precisa
-		- mudar documentação (falta os que começam com **)
-		- algo a mais?
-		- mudar snippet
- */
-
 #include "Elemento.hpp"
 
 template <typename T>
@@ -47,7 +38,6 @@ class ListaCirc {
 		 *	\return nao possui retorno
 		 *	\sa listaVazia(), adicionaNoInicio(...) e adicionaNaPosicao(...)
 		 *
-		 *
 		 *  Se a lista estiver vazia, entao adiciona no inicio. Caso contrario
 		 *		adiciona no fim (ultima posicao que corresponde ao size).
 		 */
@@ -58,20 +48,18 @@ class ListaCirc {
 				adicionaNaPosicao(dado, size);
 		}
 
-		/**
+		/*!
 		 *  \brief Funcao adicionaNoInicio
-		 *  Istancia um novo Elemento temporario que aponta para um nullptr e
-		 *		possui o dado passado como argumento, e, se houver espaco na
-		 *		memoria para alocar essa instanciacao, entao aponta o elemento
-		 *		temporario para o head atual, define o elemento temporario
-		 *		como head e aumenta o numero que indica o tamanho da lista.
-		 *  Verifica a situacao da memoria ao comparar se o novo elemento
-		 *		temporario e igual a um nullptr.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
  		 *	\param dado passado por referencia e um tipo generico constante
 		 *		que representa o dado que ficara na primeira posicao da lista.
-		 *  Nao possui retorno.
+		 *  \return nao possui.
+		 *
+		 *  Istancia um elemento tmp que aponta para um nullptr e
+		 *		possui o dado passado como argumento, e, se houver espaco na
+		 *		memoria para alocar essa instanciacao, entao faz o processo de
+		 *		adicao conforme o atual tamanho da lista. Verifica a situacao
+		 *		da memoria ao comparar se o novo elemento temporario e igual a
+		 *		um nullptr.
 		 */
 		void adicionaNoInicio(const T &dado) {
 			Elemento<T> *tmpElemento = new Elemento<T>(dado, nullptr);
@@ -93,8 +81,15 @@ class ListaCirc {
 			}
 		}
 
-		/**
+		/*!
 		 *  \brief Funcao adicionaNaPosicao
+ 		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que ficara na primeira posicao da lista.
+ 		 *	\param pos e um inteiro que indica a posicao em que deve-se
+		 *		tentar adicionar o dado.
+		 *  \return nao possui.
+		 *	\sa adicionaNoInicio(...)
+		 *
 		 *  Se a posicao for valida e ser a zero, chama a funcao
 		 *		adicionaNoInicio para realizar o processo de adicao com o dado
 		 *		recebido como argumento. Se a posicao nao for a zero, entao
@@ -107,18 +102,6 @@ class ListaCirc {
 		 *		temporario criado e aponta esse ultimo para o vertice seguinte
 		 *		ao da posicao anterior. Por fim, aumenta o numero que indica o
 		 *		tamanho da lista.
-		 *	Verifica se e uma posicao valida ao comparar a posicao desejada
-		 *		com o atual tamanho da lista, ja que a posicao deve ser menor
-		 *		que o tamanho da lista.
-		 *  Verifica a situacao da memoria ao comparar se o novo elemento
-		 *		temporario e igual a um nullptr.
-		 *  Se houver problema em alguma das duas verificacoes, redireciona a
-		 *		execucao para lugar nenhum.
- 		 *	\param dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que ficara na primeira posicao da lista.
- 		 *	\param pos e um inteiro que indica a posicao em que deve-se
-		 *		tentar adicionar o dado.
-		 *  Nao possui retorno.
 		 */
 		void adicionaNaPosicao(const T &dado, int pos) {
 			if (pos > size) {
@@ -127,7 +110,7 @@ class ListaCirc {
 				if (pos == 0) {
 					adicionaNoInicio(dado);
 				} else {
-					Elemento<T> *tmpElemento = new Elemento<T>(dado, sentinel);
+					Elemento<T> *tmpElemento = new Elemento<T>(dado, nullptr);
 					Elemento<T> *antElemento;
 
 					if (tmpElemento == nullptr) {
@@ -143,13 +126,18 @@ class ListaCirc {
 
 						size += 1;
 					}
-
 				}
 			}
 		}
 
-		/**
+		/*!
 		 *  \brief Funcao adicionaEmOrdem
+  		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que entrara na lista.
+		 *  \return nao possui.
+		 *	\sa listaVazia(), adicionaNoInicio(...), maior(...), e
+		 *		adicionaNaPosicao(...)
+		 *
 		 *  Se a lista estiver vazia, entao chama a funcao adicionaNoInicio
 		 * 		para realizar o processo de adicao do dado recebido como
 		 *		argumento. Caso contrario, entao caminha por todos vertices da
@@ -162,10 +150,6 @@ class ListaCirc {
 		 *		a ser inserido for maior que todos os outros elementos. O
 		 *	 	processo de adicao fica por conta da funcao adicionaNaPosicao
 		 *		que e chamada por ultimo.
-		 *  Verifica o status da lista atraves da funcao listaVazia.
-  		 *	\param dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que entrara na lista.
-		 *  Nao possui retorno.
 		 */
 		void adicionaEmOrdem(const T &dado) {
 			if (listaVazia()) {
@@ -186,16 +170,15 @@ class ListaCirc {
 			}
 		}
 
-		/**
-		 *	Funcao retira
+		/*!
+		 *	\brief Funcao retira
+		 *  \param nao possui.
+		 *  \return o tipo generico que representa o dado retirado da lista.
+		 *	\sa listaVazia(), retiraDaPosicao(...)
+		 *
 		 *  Se a lista nao estiver vazia, entao \return uma chamada para a
 		 *		funcao retiraDaPosicao realizar o processo de remocao na
 		 *		posicao tamanho - 1.
-		 *  Verifica o status da lista atraves da funcao listaVazia.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
-		 *  Nao possui \param.
-		 *  \return o tipo generico que representa o dado retirado da lista.
 		 */
 		T retira() {
 			if (listaVazia())
@@ -204,19 +187,18 @@ class ListaCirc {
 				return retiraDaPosicao(size-1);
 		}
 
-		/**
-		 * 	Funcao retiraDoInicio
+		/*!
+		 * 	\brief Funcao retiraDoInicio
+		 *  \param nao possui.
+		 *  \return o tipo generico que representa o dado retirado da lista, o
+		 *  	que foi salvo temporariamente durante o processo.
+		 *	\sa listaVazia()
+		 *
 		 *  Se a lista nao estiver vazia, entao salva temporariamente o dado
 		 *		que sera retirado com o auxilio de um vertice temporario,
 		 *		define o novo head como o elemento para qual o head que sera
-		 *		deletado apontava, diminui o tamanho da estrutura e deleta o
-		 *		nodo temporario.
-		 *  Verifica o status da lista atraves da funcao listaVazia.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
-		 *  Nao possui \param.
-		 *  \return o tipo generico que representa o dado retirado da lista, o
-		 *  	que foi salvo temporariamente durante o processo.
+		 *		deletado apontava, arruma o sentinela, diminui o tamanho da
+		 *		estrutura e deleta o nodo temporario.
 		 */
 		T retiraDoInicio() {
 			if (listaVazia()) {
@@ -224,15 +206,24 @@ class ListaCirc {
 			} else {
 				Elemento<T> *tmpElemento = head;
 				T tmpInfo = head->getInfo();
+
 				head = head->getProximo();
+				sentinel->setProximo(head);
 				size -= 1;
+
 				delete tmpElemento;
 				return tmpInfo;
 			}
 		}
 
-		/**
+		/*!
 		 *  \brief Funcao retiraDaPosicao
+		 *	\param posicao e um inteiro que indica a posicao em que deve-se
+		 *		tentar retirar o dado.
+		 *  \return o tipo generico que representa o dado retirado da lista, o
+		 *		que foi salvo temporariamente durante o processo.
+		 *	\sa retiraDoInicio()
+		 *
 		 *  Se a posicao for valida e ser a zero, chama a funcao
 		 *		retiraDoInicio para realizar o processo de remocao do dado. Se
 		 *		a posicao nao for a zero, entao caminha ate o vertice anterior
@@ -242,15 +233,6 @@ class ListaCirc {
 		 *		anterior ao nodo que sera deletado, para o vertice seguinte,
 		 *		ao que sera deletado. Por fim, diminui o numero que indica o
 		 *		tamanho da lista e deleta o vertice.
-		 *	Verifica se e uma posicao valida ao comparar a posicao desejada
-		 *		com o atual tamanho da lista, ja que a posicao deve ser menor
-		 *		ou igual ao tamanho da lista.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
-		 *	\param posicao e um inteiro que indica a posicao em que deve-se
-		 *		tentar retirar o dado.
-		 *  \return o tipo generico que representa o dado retirado da lista, o
-		 *		que foi salvo temporariamente durante o processo.
 		 */
 		T retiraDaPosicao(int pos) {
 			if (pos >= size) {
@@ -277,18 +259,17 @@ class ListaCirc {
 			}
 		}
 
-		/**
+		/*!
 		 *  \brief Funcao retiraEspecifico
+  		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que deve ser retirado da lista.
+		 *	\return uma chamada para a funcao retiraDaPosicao.
+		 *	\sa listaVazia(), posicao(...), retiraDaPosicao(...)
+		 *
 		 *  Se a lista nao estiver vazia, entao chama a funcao posicao para ter
 		 *		o local do dado passado como argumento e passa esse local para
 		 *		a funcao retiraEspecifico que fara o processo de retirada do
 		 *		dado.
-		 *  Verifica o status da lista atraves da funcao listaVazia.
-		 *  Se houver problema na verificacao, redireciona a execucao para
-		 *  	lugar nenhum.
-  		 *	\param dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que deve ser retirado da lista.
-		 *	\return uma chamada para a funcao retiraDaPosicao.
 		 */
 		T retiraEspecifico(const T &dado) {
 			if (listaVazia()) {
@@ -298,12 +279,13 @@ class ListaCirc {
 			}
 		}
 
-		/**
+		/*!
 		 *  \brief Funcao eliminaDoInicio
-		 *	Deleta o head e diz que o atual head e o elemento que o antigo
-		 *		head apontava.
-		 *	Nao possui argumento.
-		 *  Nao possui retorno.
+		 *  \param nao possui.
+		 *	\return nao possui.
+		 *
+		 *	Deleta o head, diz que o atual head e o elemento que o antigo
+		 *		head apontava e aponta o sentinela para o novo head.
 		 */
 		void eliminaDoInicio() {
 			delete head;
@@ -311,16 +293,17 @@ class ListaCirc {
 			sentinel->setProximo(head);
 		}
 
-		/**
-		 *	Funcao destroiLista
+		/*!
+		 *	\brief Funcao destroiLista
+		 *	\param nao possui.
+		 *  \return nao possui.
+		 *	\sa eliminaDoInicio(), listaVazia()
+		 *
 		 *  Se a lista estiver vazia, entao deleta o head. Caso contrario,
-		 *		entao caminha por todos os elementos não nulos da estrutura com
+		 *		entao caminha por todos os elementos nao nulos da estrutura com
 		 *		o auxilio de um vertice temporario e para cada um deles
 		 *		diminui o tamanho atual da lista e chama a funcao
-		 *		eliminaDoInicio que e responsavel por deletar o nodo.
-		 *	Verifica o status da lista atraves da funcao listaVazia.
-		 *	Nao possui argumento.
-		 *  Nao possui retorno.
+		 *		eliminaDoInicio() que e responsavel por deletar o nodo.
 		 */
 		void destroiLista() {
 			if (listaVazia()) {
@@ -328,7 +311,7 @@ class ListaCirc {
 			} else {
 				Elemento<T> *tmpElemento = head;
 
-				while (size != 0){
+				while (size != 0) {
 					tmpElemento = tmpElemento->getProximo();
 					sentinel->setProximo(tmpElemento);
 					eliminaDoInicio();
@@ -337,8 +320,13 @@ class ListaCirc {
 			}
 		}
 
-		/**
+		/*!
 		 *  \brief Funcao constante posicao
+  		 *	\param dado passado por referencia e um tipo generico constante
+		 *		que representa o dado que deve ser procurado na lista.
+		 *	\return um inteiro que possui a posicao do valor passado como
+		 *		argumento.
+		 *
 		 *	Caminha por todos os vertices da estrutura e para cada um deles
 		 *		compara o elemento com o dado passado como argumento. Se
 		 *		houver igualdade, entao o laco e parado, e, a posicao
@@ -346,10 +334,6 @@ class ListaCirc {
 		 *		se nao houver igualdade, o valor da posicao fica igua a
 		 *		variavel size e entao a execucao sera redirecionada para
 		 *		lugar nenhum.
-  		 *	\param dado passado por referencia e um tipo generico constante
-		 *		que representa o dado que deve ser procurado na lista.
-		 *	\return um inteiro que possui a posicao do valor passado como
-		 *		argumento.
 		 */
 		int posicao(const T &dado) const {
 			Elemento<T> *tmpElemento = head;
