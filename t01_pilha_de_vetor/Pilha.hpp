@@ -31,6 +31,14 @@ class Pilha {
 			dados = new T[t];
 		}
 
+		/*!
+		 *  \brief Destrutor
+		 */
+
+		~Pilha() {
+			delete[] dados;
+		}
+
 		/** Função empilha
 		 *  Se a pilha não estiver cheia, então aumenta o número do topo e
 		 *  	coloca um elemento no novo topo.
