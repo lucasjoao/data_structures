@@ -3,10 +3,6 @@
  *  ListaDupla.hpp
  */
 
- // todo
- // 1. verificar cada método para alterar lógica
- // 2. documentar tudo
-
 #include "ElementoDuplo.hpp"
 
 /**
@@ -25,6 +21,7 @@ class ListaDuplaCirc {
 		ListaDuplaCirc() {
 			size = 0;
 			head = nullptr;
+			sentinel = new Elemento<T>(0, nullptr, head);
 		}
 
 		/**
@@ -58,11 +55,20 @@ class ListaDuplaCirc {
 			if (tmpElemento == nullptr) {
 				throw "problema";
 			} else {
-				tmpElemento->setProximo(head);
-				if (head != nullptr)
+				sentinel->setProximo(tmpElemento);
+				tmpElemento->setBack(sentinel);
+
+			    if (size != 0) {
+					tmpElemento->setProximo(head);
 					head->setBack(tmpElemento);
-				head = tmpElemento;
-				size += 1;
+					head = tmpElemento;
+			    } else {
+					head = tmpElemento;
+					head->setProximo(sentinel);
+					sentinel->setBack(head);
+			    }
+
+			    size += 1;
 			}
 		}
 
@@ -207,10 +213,11 @@ class ListaDuplaCirc {
 			} else {
 				Elemento<T> *tmpElemento = head;
 				T tmpInfo = head->getInfo();
-				head = head->getProximo();
 
+				head = head->getProximo();
+				sentinel->setProximo(head);
 				if (head != nullptr)
-					head->setBack(nullptr);
+					head->setBack(sentinel);
 
 				size -= 1;
 				delete tmpElemento;
@@ -434,12 +441,16 @@ class ListaDuplaCirc {
 		bool contemDuplo(const T &dado) {
 			Elemento<T> *tmpElemento = head;
 
-			while (tmpElemento != nullptr) {
+			while (size != 0) {
 				if (igual(tmpElemento->getInfo(), dado))
 					return true;
 
 				tmpElemento = tmpElemento->getProximo();
+				size -= 1;
 			}
+
+			if (size != 0)
+				delete tmpElemento;
 
 			return false;
 		}
@@ -494,8 +505,9 @@ class ListaDuplaCirc {
 			} else {
 				Elemento<T> *tmpElemento = head;
 
-				while (tmpElemento != nullptr) {
+				while (size != 0) {
 					tmpElemento = tmpElemento->getProximo();
+					sentinel->setProximo(tmpElemento);
 					eliminaDoInicioDuplo();
 					size -= 1;
 				}
@@ -512,9 +524,11 @@ class ListaDuplaCirc {
 		void eliminaDoInicioDuplo() {
 			delete head;
 			head = head->getProximo();
+			sentinel->setProximo(head);
 		}
 
 	private:
-		Elemento<T> *head;  //!< objeto cabeca da lista, ocupa a primeira pos
-		int size;			//!< indica o atual tamanho da lista
+		Elemento<T> *head;  	//!< objeto cabeca da lista
+		Elemento<T> *sentinel;  //!< objeto sentinela da lista
+		int size;				//!< indica o atual tamanho da lista
 };
