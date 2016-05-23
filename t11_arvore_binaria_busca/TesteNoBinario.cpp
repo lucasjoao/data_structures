@@ -41,19 +41,19 @@ TEST_F(NoBinarioTest, getDado) {
 TEST_F(NoBinarioTest, busca) {
     ASSERT_EQ(10, *(inteiro->busca(10, inteiro)));
 
-    // ASSERT_NO_THROW(inteiro->inserir(5, inteiro));
-    // ASSERT_EQ(5, *(inteiro->busca(5, inteiro)));
+    ASSERT_NO_THROW(inteiro->inserir(5, inteiro));
+    ASSERT_EQ(5, *(inteiro->busca(5, inteiro)));
 
-    // ASSERT_NO_THROW(inteiro->inserir(20, inteiro));
-    // ASSERT_EQ(20, *(inteiro->busca(20, inteiro)));
+    ASSERT_NO_THROW(inteiro->inserir(20, inteiro));
+    ASSERT_EQ(20, *(inteiro->busca(20, inteiro)));
 
-    // ASSERT_NO_THROW(inteiro->inserir(3, inteiro));
-    // ASSERT_EQ(3, *(inteiro->busca(3, inteiro)));
+    ASSERT_NO_THROW(inteiro->inserir(3, inteiro));
+    ASSERT_EQ(3, *(inteiro->busca(3, inteiro)));
 
-    // ASSERT_NO_THROW(inteiro->inserir(16, inteiro));
-    // ASSERT_EQ(16, *(inteiro->busca(16, inteiro)));
+    ASSERT_NO_THROW(inteiro->inserir(16, inteiro));
+    ASSERT_EQ(16, *(inteiro->busca(16, inteiro)));
 
-    // ASSERT_ANY_THROW(inteiro->busca(14, inteiro));
+    ASSERT_ANY_THROW(inteiro->busca(14, inteiro));
 }
 
 TEST_F(NoBinarioTest, inserir) {

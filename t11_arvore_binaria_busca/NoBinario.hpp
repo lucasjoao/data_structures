@@ -3,7 +3,6 @@
 
 #include <cstdlib>
 #include <vector>
-#include <iostream>
 
 template<typename T>
 class NoBinario {
@@ -28,12 +27,16 @@ class NoBinario {
 			return direita;
 		}
 
-		NoBinario<T> *setEsquerda(NoBinario<T> *esq) {
+		void setEsquerda(NoBinario<T> *esq) {
 			esquerda = esq;
 		}
 
-		NoBinario<T> *setDireita(NoBinario<T> *dir) {
+		void setDireita(NoBinario<T> *dir) {
 			direita = dir;
+		}
+
+		void setDado(T *data) {
+			dado = data;
 		}
 
 		T *busca(const T &dado, NoBinario<T> *arv) {
@@ -44,8 +47,10 @@ class NoBinario {
 					arv = arv->getEsquerda();
 			}
 
-			// if ()
-			return arv->getDado();
+			if (arv == nullptr)
+				throw "nodo não encontrado!";
+			else
+				return arv->getDado();
 		}
 
 		NoBinario<T> *inserir(const T &dado, NoBinario<T> *arv) {
@@ -54,33 +59,108 @@ class NoBinario {
 			if (dado < *arv->getDado()) {  //!< insere a esquerda
 				if (arv->getEsquerda() == nullptr) {
 					tmpArv = new NoBinario<T>(dado);
-					arv->setEsquerda(tmpArv);
+					if (semEspaco(tmpArv))
+						throw "sem espaço na memória!";
+					else
+						arv->setEsquerda(tmpArv);
 				} else {
 					arv = inserir(dado, arv->getEsquerda());
 				}
 			} else {                     //!< insere a direita
 				if (arv->getDireita() == nullptr) {
 					tmpArv = new NoBinario<T>(dado);
-					arv->setDireita(tmpArv);
+					if (semEspaco(tmpArv))
+						throw "sem espaço na memória!";
+					else
+						arv->setDireita(tmpArv);
 				} else {
 					arv = inserir(dado, arv->getDireita());
 				}
 			}
 		}
 
-		NoBinario<T> *remover(NoBinario<T> *arv, const T &dado) {}
+		bool semEspaco(NoBinario<T> *arv) {
+			return arv == nullptr ? true : false;
+		}
 
-		NoBinario<T> *minimo(NoBinario<T> *nodo) {}
+		NoBinario<T> *remover(NoBinario<T> *arv, const T &dado) {
+			NoBinario<T> *tmpArv;
+			NoBinario<T> *filhoArv;
 
-		void preOrdem(NoBinario<T> *nodo) {
-			if (nodo != nullptr) {
-				// printf("a");
+			if (arv == nullptr) {
+				return arv;
+			} else {
+				if (dado < *arv->getDado()) {
+					arv->setEsquerda(remover(arv->getEsquerda(), dado));
+					return arv;
+				} else {
+					if (*arv->getDado() < dado) {
+						arv->setDireita(remover(arv->getEsquerda(), dado));
+						return arv;
+					} else {
+						if (arv->getEsquerda() != nullptr							&& arv->getDireita() != nullptr) {
+
+							tmpArv = minimo(arv->getDireita());
+							arv->setDado(tmpArv->getDado());
+							arv->setDireita(remover(						arv->getDireita(), *arv->getDado()));
+							return arv;
+						} else {
+							tmpArv = arv;
+							if (arv->getDireita() != nullptr) {
+								filhoArv = arv->getDireita();
+								return filhoArv;
+							} else {
+								if (arv->getEsquerda() != nullptr) {
+									filhoArv = arv->getEsquerda();
+									return filhoArv;
+								} else {
+									delete arv;
+									return nullptr;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 
-		void emOrdem(NoBinario<T> *nodo) {}
+		NoBinario<T> *minimo(NoBinario<T> *nodo) {
+			bool esquerdaNull = nodo->getEsquerda() == nullptr;
+			bool direitaNull = nodo->getDireita() == nullptr;
 
-		void posOrdem(NoBinario<T> *nodo) {}
+			if (esquerdaNull && direitaNull) {
+				return nodo;
+			} else {
+				if (esquerdaNull)
+					return minimo(nodo->getDireita());
+				else
+					return minimo(nodo->getEsquerda());
+			}
+		}
+
+		void preOrdem(NoBinario<T> *nodo) {
+			if (nodo != nullptr) {
+				elementos.push_back(nodo);
+				preOrdem(nodo->getEsquerda());
+				preOrdem(nodo->getDireita());
+			}
+		}
+
+		void emOrdem(NoBinario<T> *nodo) {
+			if (nodo != nullptr) {
+				emOrdem(nodo->getEsquerda());
+				elementos.push_back(nodo);
+				emOrdem(nodo->getDireita());
+			}
+		}
+
+		void posOrdem(NoBinario<T> *nodo) {
+			if (nodo != nullptr) {
+				posOrdem(nodo->getEsquerda());
+				posOrdem(nodo->getDireita());
+				elementos.push_back(nodo);
+			}
+		}
 
 	protected:
 		T *dado;
