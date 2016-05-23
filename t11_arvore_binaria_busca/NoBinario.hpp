@@ -128,6 +128,13 @@ class NoBinario {
 			bool esquerdaNull = nodo->getEsquerda() == nullptr;
 			bool direitaNull = nodo->getDireita() == nullptr;
 
+			//*************************** versao que pega o nodo com menor dado
+			if (esquerdaNull)
+				return nodo;
+			else
+				return minimo(nodo->getEsquerda());
+
+			/**************************** versao que pega o nodo de maior nivel
 			if (esquerdaNull && direitaNull) {
 				return nodo;
 			} else {
@@ -136,6 +143,7 @@ class NoBinario {
 				else
 					return minimo(nodo->getEsquerda());
 			}
+			******************************************************************/
 		}
 
 		void preOrdem(NoBinario<T> *nodo) {
