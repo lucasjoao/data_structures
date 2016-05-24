@@ -168,49 +168,53 @@ class NoBinario {
 					arv = inserir(dado, arv->getDireita());
 				}
 			}
+
+			return arv;
 		}
 
+		/*!
+		 *  \brief Funcao remover
+		 *  \param referencia ao tipo generico constante dado do nodo
+		 *  \param arv passado por nome e um nodo binario que vai ser removido
+		 *  \return o ponteiro para o nodo binario
+		 *  \sa getDado(), checkNullptr(...), getEsquerda(), getDireita(),
+		 *		setEsquerda(...), setDireita(...), setDado(...), minimo(...)
+		 *
+		 *  Busca de forma recursiva o nodo a ser deletado e entao o deleta.
+		 */
 		NoBinario<T> *remover(NoBinario<T> *arv, const T &dado) {
-			NoBinario<T> *tmpArv;
+			NoBinario<T> *tmpArv = arv;
 			NoBinario<T> *filhoArv;
 
-			if (checkNullptr(arv)) {
-				return arv;
+			if (dado < *arv->getDado()) {
+				/* busca do nodo a ser removido */
+				arv->setEsquerda(remover(arv->getEsquerda(), dado));
+			} else if (*arv->getDado() < dado) {
+				/* busca do nodo a ser removido */
+				arv->setDireita(remover(arv->getDireita(), dado));
+			} else if (!checkNullptr(arv->getEsquerda())
+						&& !checkNullptr(arv->getDireita())) {
+				/* dois filhos */
+				tmpArv = minimo(arv->getDireita());
+				arv->setDado(tmpArv->getDado());
+				arv->setDireita(remover(arv->getDireita(), *arv->getDado()));
+			} else if (!checkNullptr(arv->getDireita())) {
+				/* filho na direita */
+				filhoArv = arv->getDireita();
+				delete tmpArv;
+				return filhoArv;
+			} else if (!checkNullptr(arv->getEsquerda())) {
+				/* filho na esquerda */
+				filhoArv = arv->getEsquerda();
+				delete tmpArv;
+				return filhoArv;
 			} else {
-				if (dado < *arv->getDado()) {
-					arv->setEsquerda(remover(arv->getEsquerda(), dado));
-					return arv;
-				} else {
-					if (*arv->getDado() < dado) {
-						arv->setDireita(remover(arv->getDireita(), dado));
-						return arv;
-					} else { // dois filhos
-						if (!checkNullptr(arv->getEsquerda())							&& !checkNullptr(arv->getDireita())) {
-
-							tmpArv = minimo(arv->getDireita());
-							arv->setDado(tmpArv->getDado());
-							arv->setDireita(remover(						arv->getDireita(), *arv->getDado()));
-							return arv;
-						} else { // um filho na direita
-							tmpArv = arv;
-							if (!checkNullptr(arv->getDireita())) {
-								filhoArv = arv->getDireita();
-								delete tmpArv;
-								return filhoArv;
-							} else { // um filho na esquerda
-								if (!checkNullptr(arv->getEsquerda())) {
-									filhoArv = arv->getEsquerda();
-									delete tmpArv;
-									return filhoArv;
-								} else { // sem filhos
-									delete tmpArv;
-									return nullptr;
-								}
-							}
-						}
-					}
-				}
+				/* sem filhos */
+				delete tmpArv;
+				return nullptr;
 			}
+
+			return arv;
 		}
 
 		/*!
@@ -229,6 +233,16 @@ class NoBinario {
 				return minimo(nodo->getEsquerda());
 		}
 
+		/*!
+		 *  \brief Funcao preOrdem
+		 *  \param parametro ao nodo binario que sera utilizado como base.
+		 *  \return nao possui.
+		 *  \sa checkNullptr(...), getDireita(), getEsquerda(),
+		 * 		vector::push_back(...)
+		 *
+		 *  Adiciona os nodos da arvore no vector elementos ao percorre-la em
+		 *		preordem.
+		 */
 		void preOrdem(NoBinario<T> *nodo) {
 			if (!checkNullptr(nodo)) {
 				elementos.push_back(nodo);
@@ -237,6 +251,16 @@ class NoBinario {
 			}
 		}
 
+		/*!
+		 *  \brief Funcao emOrdem
+		 *  \param parametro ao nodo binario que sera utilizado como base.
+		 *  \return nao possui.
+		 *  \sa checkNullptr(...), getDireita(), getEsquerda(),
+		 * 		vector::push_back(...)
+		 *
+		 *  Adiciona os nodos da arvore no vector elementos ao percorre-la em
+		 *		emordem.
+		 */
 		void emOrdem(NoBinario<T> *nodo) {
 			if (!checkNullptr(nodo)) {
 				emOrdem(nodo->getEsquerda());
@@ -245,6 +269,16 @@ class NoBinario {
 			}
 		}
 
+		/*!
+		 *  \brief Funcao posOrdem
+		 *  \param parametro ao nodo binario que sera utilizado como base.
+		 *  \return nao possui.
+		 *  \sa checkNullptr(...), getDireita(), getEsquerda(),
+		 * 		vector::push_back(...)
+		 *
+		 *  Adiciona os nodos da arvore no vector elementos ao percorre-la em
+		 *		posordem.
+		 */
 		void posOrdem(NoBinario<T> *nodo) {
 			if (!checkNullptr(nodo)) {
 				posOrdem(nodo->getEsquerda());
