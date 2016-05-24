@@ -53,6 +53,20 @@ class NoBinario {
 				return arv->getDado();
 		}
 
+		NoBinario<T> *buscaNodo(const T &dado, NoBinario<T> *arv) {
+			while (arv != nullptr && dado != *arv->getDado()) {
+				if (*arv->getDado() < dado)
+					arv = arv->getDireita();
+				else
+					arv = arv->getEsquerda();
+			}
+
+			if (arv == nullptr)
+				throw "nodo não encontrado!";
+			else
+				return arv;
+		}
+
 		NoBinario<T> *inserir(const T &dado, NoBinario<T> *arv) {
 			NoBinario<T> *tmpArv;
 
@@ -87,6 +101,24 @@ class NoBinario {
 			NoBinario<T> *tmpArv;
 			NoBinario<T> *filhoArv;
 
+			/*NoBinario<T> *tmpArv;
+			NoBinario<T> *rmArv = buscaNodo(dado, arv);
+
+			if (rmArv->getEsquerda() == nullptr && rmArv->getDireita() == nullptr) {
+				delete rmArv;
+				return nullptr;
+			} else if (rmArv->getEsquerda() != nullptr) {
+				tmpArv = rmArv;
+				rmArv = rmArv->getEsquerda();
+				delete tmpArv;
+				return rmArv;
+			} else {
+				tmpArv = rmArv;
+				rmArv = rmArv->getDireita();
+				delete tmpArv;
+				return rmArv;
+			}*/
+
 			if (arv == nullptr) {
 				return arv;
 			} else {
@@ -95,26 +127,28 @@ class NoBinario {
 					return arv;
 				} else {
 					if (*arv->getDado() < dado) {
-						arv->setDireita(remover(arv->getEsquerda(), dado));
+						arv->setDireita(remover(arv->getDireita(), dado));
 						return arv;
-					} else {
+					} else { // dois filhos
 						if (arv->getEsquerda() != nullptr							&& arv->getDireita() != nullptr) {
 
 							tmpArv = minimo(arv->getDireita());
 							arv->setDado(tmpArv->getDado());
 							arv->setDireita(remover(						arv->getDireita(), *arv->getDado()));
 							return arv;
-						} else {
+						} else { // um filho na direita
 							tmpArv = arv;
 							if (arv->getDireita() != nullptr) {
 								filhoArv = arv->getDireita();
+								delete tmpArv;
 								return filhoArv;
-							} else {
+							} else { // um filho na esquerda
 								if (arv->getEsquerda() != nullptr) {
 									filhoArv = arv->getEsquerda();
+									delete tmpArv;
 									return filhoArv;
-								} else {
-									delete arv;
+								} else { // sem filhos
+									delete tmpArv;
 									return nullptr;
 								}
 							}
