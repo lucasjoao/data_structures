@@ -12,7 +12,6 @@ avl:
 - implementar como geek for geek e wiki ensinam. Verificar herança
     - possíveis mudanças se muito problemas:
         - fazer inserção igual algoritmo do professor
-        - tirar herança
         - verificar deleção
 - passar nos testes
 - memory leaks

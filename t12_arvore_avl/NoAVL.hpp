@@ -4,13 +4,13 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
-#include "../t11_arvore_binaria_busca/NoBinario.hpp"
 
 template <typename T>
-class NoAVL : private NoBinario<T> {
+class NoAVL {
 	public:
 		explicit NoAVL(const T &dado)
-			: NoBinario<T>::NoBinario(dado), altura(0) {}
+			: dado(new T(dado)), esquerda(nullptr), direita(nullptr), altura(0)
+			{}
 
 		virtual ~NoAVL() { }
 
@@ -23,17 +23,15 @@ class NoAVL : private NoBinario<T> {
 		 *  \return o ponteiro para o dado do nodo.
 		 */
 		T *getDado() {
-			return NoBinario<T>::getDado();
+			return dado;
 		}
 
 		/*!
 		 *  \brief Funcao getter getElementos
 		 *  \return o vector de nodos binarios elementos.
 		 */
-
-		// VERIFICAR ISSO AQUI
-		void getElementos() {
-			NoBinario<T>::getElementos();
+		std::vector<NoAVL<T>*> getElementos() {
+			return elementos;
 		}
 
 		/*!
@@ -41,7 +39,7 @@ class NoAVL : private NoBinario<T> {
 		 *  \return o ponteiro para o nodo filho da esquerda.
 		 */
 		NoAVL<T> *getEsquerda() {
-			return (NoAVL<T> *) NoBinario<T>::getEsquerda();
+			return esquerda;
 		}
 
 		/*!
@@ -49,30 +47,100 @@ class NoAVL : private NoBinario<T> {
 		 *  \return o ponteiro para o nodo filho da direita.
 		 */
 		NoAVL<T> *getDireita() {
-			return (NoAVL<T> *) NoBinario<T>::getDireita();
+			return direita;
 		}
 
 		void setEsquerda(NoAVL<T> *esq) {
-			NoBinario<T>::setEsquerda(esq);
+			esquerda = esq;
 		}
 
 		void setDireita(NoAVL<T> *dir) {
-			NoBinario<T>::setDireita(dir);
+			direita = dir;
 		}
 
 		void setAltura(int alt) {
 			altura = alt;
 		}
 
-		T *busca(const T &dado, NoAVL<T> *arv) {
-			return NoBinario<T>::busca(dado, arv);
-		}
-
-		bool checkNullptr(NoBinario<T> *arv) {
+		bool checkNullptr(NoAVL<T> *arv) {
 			return arv == nullptr ? true : false;
 		}
 
-		NoAVL<T> *inserir(const T &dado, NoAVL<T> *arv) {
+		int alturaNo(NoAVL<T> *nodo) {
+			return nodo == nullptr ? -1 : nodo->getAltura();
+		}
+
+		NoAVL<T> *rotacaoEsqSimples(NoAVL<T> *arv) {
+			if (!checkNullptr(arv->getEsquerda())) {
+				NoAVL<T> *arvTmp = arv->getEsquerda();
+				arv->setEsquerda(arvTmp->getDireita());
+				arvTmp->setDireita(arv);
+
+				//
+				// DA DE QUEBRAR ESSAS LINHAS?
+				//
+				arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
+				arvTmp->setAltura(std::max(alturaNo(arvTmp->getEsquerda()), alturaNo(arvTmp->getDireita())) + 1);
+
+				return arvTmp;
+			} else {
+				throw "ERRO!";
+			}
+		}
+
+		NoAVL<T> *rotacaoDirSimples(NoAVL<T> *arv) {
+			if (!checkNullptr(arv->getDireita())) {
+				NoAVL<T> *arvTmp = arv->getDireita();
+				arv->setDireita(arvTmp->getEsquerda());
+				arvTmp->setEsquerda(arv);
+
+				//
+				// DA DE QUEBRAR ESSAS LINHAS?
+				//
+				arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
+				arvTmp->setAltura(std::max(alturaNo(arvTmp->getEsquerda()), alturaNo(arvTmp->getDireita())) + 1);
+
+				return arvTmp;
+			} else {
+				throw "ERRO!";
+			}
+		}
+
+		NoAVL<T> *rotacaoEsqDupla(NoAVL<T> *arv) {
+			if (!checkNullptr(arv->getEsquerda()) &&
+					!checkNullptr(arv->getEsquerda()->getDireita())) {
+				arv->setEsquerda(rotacaoDirSimples(arv->getEsquerda()));
+				return rotacaoEsqSimples(arv);
+			} else {
+				throw "ERRO!";
+			}
+		}
+
+		NoAVL<T> *rotacaoDirDupla(NoAVL<T> *arv) {
+			if (!checkNullptr(arv->getDireita()) &&
+					!checkNullptr(arv->getDireita()->getEsquerda())) {
+				arv->setDireita(rotacaoEsqSimples(arv->getDireita()));
+				return rotacaoDirSimples(arv);
+			} else {
+				throw "ERRO!";
+			}
+		}
+
+		T *busca(const T &dado, NoAVL<T> *arv) {
+			while (!checkNullptr(arv) && dado != *arv->getDado()) {
+				if (*arv->getDado() < dado)
+					arv = arv->getDireita();
+				else
+					arv = arv->getEsquerda();
+			}
+
+			if (checkNullptr(arv))
+				throw "nodo não encontrado!";
+			else
+				return arv->getDado();
+		}
+
+		/*NoAVL<T> *inserir(const T &dado, NoAVL<T> *arv) {
 			NoAVL<T> *tmpArv;
 
 			if (dado < *arv->getDado()) {  //!< insere a esquerda
@@ -120,143 +188,99 @@ class NoAVL : private NoBinario<T> {
 			// MELHORAR ESSA PARTE!!!
 			arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
 			return arv;
-		}
+		}*/
 
-		NoAVL<T> *remover(NoAVL<T> *arv, const T &dado) {
-			NoAVL<T> *tmpArv = arv;
-			NoAVL<T> *filhoArv;
+		// NoAVL<T> *remover(NoAVL<T> *arv, const T &dado) {
+		// 	NoAVL<T> *tmpArv = arv;
+		// 	NoAVL<T> *filhoArv;
 
-			if (dado < *arv->getDado()) {
-				/* busca do nodo a ser removido */
-				arv->setEsquerda(remover(arv->getEsquerda(), dado));
-			} else if (*arv->getDado() < dado) {
-				/* busca do nodo a ser removido */
-				arv->setDireita(remover(arv->getDireita(), dado));
-			} else if (!checkNullptr(arv->getEsquerda())
-						&& !checkNullptr(arv->getDireita())) {
-				/* dois filhos */
-				tmpArv = minimo(arv->getDireita());
-				arv->setDado(tmpArv->getDado());
-				arv->setDireita(remover(arv->getDireita(), *arv->getDado()));
-			} else if (!checkNullptr(arv->getDireita())) {
-				/* filho na direita */
-				filhoArv = arv->getDireita();
-				delete tmpArv;
-				return filhoArv;
-			} else if (!checkNullptr(arv->getEsquerda())) {
-				/* filho na esquerda */
-				filhoArv = arv->getEsquerda();
-				delete tmpArv;
-				return filhoArv;
-			} else {
-				/* sem filhos */
-				delete tmpArv;
-				return nullptr;
-			}
+		// 	if (dado < *arv->getDado()) {
+		// 		/* busca do nodo a ser removido */
+		// 		arv->setEsquerda(remover(arv->getEsquerda(), dado));
+		// 	} else if (*arv->getDado() < dado) {
+		// 		/* busca do nodo a ser removido */
+		// 		arv->setDireita(remover(arv->getDireita(), dado));
+		// 	} else if (!checkNullptr(arv->getEsquerda())
+		// 				&& !checkNullptr(arv->getDireita())) {
+		// 		/* dois filhos */
+		// 		tmpArv = minimo(arv->getDireita());
+		// 		arv->setDado(tmpArv->getDado());
+		// 		arv->setDireita(remover(arv->getDireita(), *arv->getDado()));
+		// 	} else if (!checkNullptr(arv->getDireita())) {
+		// 		/* filho na direita */
+		// 		filhoArv = arv->getDireita();
+		// 		delete tmpArv;
+		// 		return filhoArv;
+		// 	} else if (!checkNullptr(arv->getEsquerda())) {
+		// 		/* filho na esquerda */
+		// 		filhoArv = arv->getEsquerda();
+		// 		delete tmpArv;
+		// 		return filhoArv;
+		// 	} else {
+		// 		/* sem filhos */
+		// 		delete tmpArv;
+		// 		return nullptr;
+		// 	}
 
-			// arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
+		// 	// arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
 
-			// errado, não serve para todos -- arrumar!
-			if (abs((alturaNo(arv->getEsquerda()) - alturaNo(arv->getDireita()))) > 1) {
-				if (arv->getDireita() == nullptr) {
-					if (arv->getEsquerda()->getEsquerda() == nullptr)
-						arv = rotacaoEsqDupla(arv);
-					else
-						arv = rotacaoEsqSimples(arv);
-				} else if (arv->getEsquerda() == nullptr) {
-					if (arv->getDireita()->getDireita() == nullptr)
-						arv = rotacaoDirDupla(arv);
-					else
-						arv = rotacaoDirSimples(arv);
-				}
-			}
+		// 	// errado, não serve para todos -- arrumar!
+		// 	if (abs((alturaNo(arv->getEsquerda()) - alturaNo(arv->getDireita()))) > 1) {
+		// 		if (arv->getDireita() == nullptr) {
+		// 			if (arv->getEsquerda()->getEsquerda() == nullptr)
+		// 				arv = rotacaoEsqDupla(arv);
+		// 			else
+		// 				arv = rotacaoEsqSimples(arv);
+		// 		} else if (arv->getEsquerda() == nullptr) {
+		// 			if (arv->getDireita()->getDireita() == nullptr)
+		// 				arv = rotacaoDirDupla(arv);
+		// 			else
+		// 				arv = rotacaoDirSimples(arv);
+		// 		}
+		// 	}
 
-			arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
+		// 	arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
 
-			return arv;
-		}
+		// 	return arv;
+		// }
 
 		NoAVL<T> *minimo(NoAVL<T> *nodo) {
-			return (NoAVL<T> *) NoBinario<T>::minimo(nodo);
+			if (checkNullptr(nodo->getEsquerda()))
+				return nodo;
+			else
+				return minimo(nodo->getEsquerda());
 		}
 
 		void preOrdem(NoAVL<T> *nodo) {
-			NoBinario<T>::preOrdem(nodo);
+			if (!checkNullptr(nodo)) {
+				elementos.push_back(nodo);
+				preOrdem(nodo->getEsquerda());
+				preOrdem(nodo->getDireita());
+			}
 		}
 
 		void emOrdem(NoAVL<T> *nodo) {
-			NoBinario<T>::emOrdem(nodo);
+			if (!checkNullptr(nodo)) {
+				emOrdem(nodo->getEsquerda());
+				elementos.push_back(nodo);
+				emOrdem(nodo->getDireita());
+			}
 		}
 
 		void posOrdem(NoAVL<T> *nodo) {
-			NoBinario<T>::preOrdem(nodo);
-		}
-
-		int alturaNo(NoAVL<T> *nodo) {
-			return nodo == nullptr ? -1 : nodo->getAltura();
-		}
-
-		NoAVL<T> *rotacaoEsqSimples(NoAVL<T> *arv) {
-			if (arv->getEsquerda() != nullptr) {
-				NoAVL<T> *arvTmp = arv->getEsquerda();
-				arv->setEsquerda(arvTmp->getDireita());
-				arvTmp->setDireita(arv);
-
-				//
-				// DA DE QUEBRAR ESSAS LINHAS?
-				//
-				arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
-				arvTmp->setAltura(std::max(alturaNo(arvTmp->getEsquerda()), alturaNo(arvTmp->getDireita())) + 1);
-
-				return arvTmp;
-			} else {
-				throw "ERRO!";
-			}
-		}
-
-		NoAVL<T> *rotacaoDirSimples(NoAVL<T> *arv) {
-			if (arv->getDireita() != nullptr) {
-				NoAVL<T> *arvTmp = arv->getDireita();
-				arv->setDireita(arvTmp->getEsquerda());
-				arvTmp->setEsquerda(arv);
-
-				//
-				// DA DE QUEBRAR ESSAS LINHAS?
-				//
-				arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
-				arvTmp->setAltura(std::max(alturaNo(arvTmp->getEsquerda()), alturaNo(arvTmp->getDireita())) + 1);
-
-				return arvTmp;
-			} else {
-				throw "ERRO!";
-			}
-		}
-
-		NoAVL<T> *rotacaoEsqDupla(NoAVL<T> *arv) {
-			//
-			// DA DE QUEBRAR ESSAS LINHAS?
-			//
-			if (arv->getEsquerda() != nullptr && arv->getEsquerda()->getDireita() != nullptr) {
-				arv->setEsquerda(rotacaoDirSimples(arv->getEsquerda()));
-				return rotacaoEsqSimples(arv);
-			} else {
-				throw "ERRO!";
-			}
-		}
-
-		NoAVL<T> *rotacaoDirDupla(NoAVL<T> *arv) {
-			//
-			// DA DE QUEBRAR ESSAS LINHAS?
-			//
-			if (arv->getDireita() != nullptr && arv->getDireita()->getEsquerda() != nullptr) {
-				arv->setDireita(rotacaoEsqSimples(arv->getDireita()));
-				return rotacaoDirSimples(arv);
-			} else {
-				throw "ERRO!";
+			if (!checkNullptr(nodo)) {
+				posOrdem(nodo->getEsquerda());
+				posOrdem(nodo->getDireita());
+				elementos.push_back(nodo);
 			}
 		}
 
 	private:
-		int altura; //!< representa a altura do no avl
+		int altura; 					   //!< representa a altura do no avl
+		T *dado;						   //!< informacao generica do nodo
+		NoAVL<T> *esquerda;				   //!< nodo filho da esquerda
+		NoAVL<T> *direita;                 //!< nodo filho da direita
+		std::vector<NoAVL<T>*> elementos;  //!< elementos acessados durante
+										   // o percurso realizado
 };
 #endif
