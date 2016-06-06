@@ -70,17 +70,23 @@ class NoAVL {
 			return nodo == nullptr ? -1 : nodo->getAltura();
 		}
 
+		void fixAltura(NoAVL<T> *nodo) {
+			nodo->setAltura(std::max(alturaNo(nodo->getEsquerda()),
+				alturaNo(nodo->getDireita())) + 1);
+		}
+
+		int varBalanco(NoAVL<T> *nodo) {
+			return nodo->getEsquerda() - nodo->getDireita();
+		}
+
 		NoAVL<T> *rotacaoEsqSimples(NoAVL<T> *arv) {
 			if (!checkNullptr(arv->getEsquerda())) {
 				NoAVL<T> *arvTmp = arv->getEsquerda();
 				arv->setEsquerda(arvTmp->getDireita());
 				arvTmp->setDireita(arv);
 
-				//
-				// DA DE QUEBRAR ESSAS LINHAS?
-				//
-				arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
-				arvTmp->setAltura(std::max(alturaNo(arvTmp->getEsquerda()), alturaNo(arvTmp->getDireita())) + 1);
+				fixAltura(arv);
+				fixAltura(arvTmp);
 
 				return arvTmp;
 			} else {
@@ -94,11 +100,8 @@ class NoAVL {
 				arv->setDireita(arvTmp->getEsquerda());
 				arvTmp->setEsquerda(arv);
 
-				//
-				// DA DE QUEBRAR ESSAS LINHAS?
-				//
-				arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
-				arvTmp->setAltura(std::max(alturaNo(arvTmp->getEsquerda()), alturaNo(arvTmp->getDireita())) + 1);
+				fixAltura(arv);
+				fixAltura(arvTmp);
 
 				return arvTmp;
 			} else {
@@ -126,6 +129,24 @@ class NoAVL {
 			}
 		}
 
+		NoAVL<T> *balanceia(const T &dado, NoAVL<T> *arv) {
+			if (1 < varBalanco(arv)) {
+				if (dado < *arv->getEsquerda()->getDado())
+					arv = rotacaoEsqSimples(arv);
+				else
+					arv = rotacaoEsqDupla(arv);
+			} else if (varBalanco(arv) < -1) {
+				if (*arv->getDireita()->getDado() < dado)
+					arv = rotacaoDirSimples(arv);
+				else
+					arv = rotacaoDirDupla(arv);
+			} else {
+				throw "ERRO!";
+			}
+
+			return arv;
+		}
+
 		T *busca(const T &dado, NoAVL<T> *arv) {
 			while (!checkNullptr(arv) && dado != *arv->getDado()) {
 				if (*arv->getDado() < dado)
@@ -140,7 +161,7 @@ class NoAVL {
 				return arv->getDado();
 		}
 
-		/*NoAVL<T> *inserir(const T &dado, NoAVL<T> *arv) {
+		NoAVL<T> *inserir(const T &dado, NoAVL<T> *arv) {
 			NoAVL<T> *tmpArv;
 
 			if (dado < *arv->getDado()) {  //!< insere a esquerda
@@ -152,16 +173,6 @@ class NoAVL {
 						arv->setEsquerda(tmpArv);
 				} else {
 					arv = inserir(dado, arv->getEsquerda());
-
-					if (abs((alturaNo(arv->getEsquerda()) - alturaNo(arv->getDireita()))) > 1) {
-						if (arv->getEsquerda()->getEsquerda() == nullptr)
-							arv = rotacaoEsqDupla(arv);
-						else
-							arv = rotacaoEsqSimples(arv);
-					} // else {
-						// arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
-					// }
-					// MELHORAR ESSA PARTE!!!
 				}
 			} else {                       //!< insere a direita
 				if (checkNullptr(arv->getDireita())) {
@@ -172,23 +183,12 @@ class NoAVL {
 						arv->setDireita(tmpArv);
 				} else {
 					arv = inserir(dado, arv->getDireita());
-
-					if (abs((alturaNo(arv->getEsquerda()) - alturaNo(arv->getDireita()))) > 1) {
-						if (arv->getDireita()->getDireita() == nullptr)
-							arv = rotacaoDirDupla(arv);
-						else
-							arv = rotacaoDirSimples(arv);
-					} // else {
-						// arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
-					// }
-					// MELHORAR ESSA PARTE!!!
 				}
 			}
 
-			// MELHORAR ESSA PARTE!!!
-			arv->setAltura(std::max(alturaNo(arv->getEsquerda()), alturaNo(arv->getDireita())) + 1);
-			return arv;
-		}*/
+			fixAltura(arv);
+			return balanceia(dado, arv);
+		}
 
 		// NoAVL<T> *remover(NoAVL<T> *arv, const T &dado) {
 		// 	NoAVL<T> *tmpArv = arv;
