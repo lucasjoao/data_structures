@@ -1,5 +1,4 @@
 avl:
-- versão para tosseto
 - criar plano B
 - criar teste exemplo que trata todas adições
 - fazer adição funcionar no exemplo

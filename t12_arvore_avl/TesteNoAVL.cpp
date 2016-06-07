@@ -100,7 +100,7 @@ TEST_F(NoAVLTest, removerRotacaoSimplesDireita) {
     inteiro = inteiro->inserir(8, inteiro);
     inteiro = inteiro->inserir(3, inteiro);
     inteiro = inteiro->inserir(19, inteiro);
-    // inteiro = inteiro->remover(inteiro, 15);
+    inteiro = inteiro->remover(inteiro, 15);
     // Rotação simples à Direita
 
     ASSERT_EQ(3, inteiro->getAltura());
