@@ -1,3 +1,22 @@
+avl:
+- versão para tosseto
+- criar plano B
+- criar teste exemplo que trata todas adições
+- fazer adição funcionar no exemplo
+    - possíveis mudanças:
+        - varBalanco precisa tratar nullptr?
+        - gets são problemas?
+- fazer adição funcionar no jean
+- criar teste exemplo que trata todas deleções
+- fazer deleção funcionar no exemplo
+- fazer deleção funcionar no jean
+- passar em todos os testes
+- memory leaks
+- organizar código
+- quebrar linhas ou fazer funções para códigos recorrentes
+- comentar
+- enviar
+
 dúvidas:
 - qual solução seria melhor então?
     - responder claúdio
@@ -6,16 +25,5 @@ dúvidas:
 binária:
 - implementar destrutor
     - algo na wiki ou no geek?
+- verificar se funcionamento está correto através de um teste próprio
 
-avl:
-- implementar como geek for geek e wiki ensinam. Verificar herança
-    - possíveis mudanças se muito problemas:
-        - varBalanco precisa tratar nullptr?
-        - fazer inserção igual algoritmo do professor
-        - verificar deleção
-- passar nos testes
-- memory leaks
-- organizar código
-- quebrar linhas ou fazer funções para códigos recorrentes
-- comentar
-- enviar
