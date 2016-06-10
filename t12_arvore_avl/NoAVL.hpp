@@ -32,7 +32,14 @@ class NoAVL {
 		 *
 		 *	Destrutor virtual.
 		 */
-		virtual ~NoAVL() { }
+		virtual ~NoAVL() {
+			if (!checkNullptr(getEsquerda()))
+				delete esquerda;
+			else if (!checkNullptr(getDireita()))
+				delete direita;
+
+			delete dado;
+		}
 
 		/*!
 		 *  \brief Funcao getter getAltura
@@ -115,8 +122,8 @@ class NoAVL {
 		 *
 		 *	Atribui a info passada como a nova informacao do nodo.
 		 */
-		void setDado(T *data) {
-			dado = data;
+		void setDado(const T &data) {
+			*dado = data;
 		}
 
 		/*!
@@ -166,6 +173,9 @@ class NoAVL {
 		 *  Calcula o fator de balanceamento de um nodo.
 		 */
 		int varBalanco(NoAVL<T> *arv) {
+			if (checkNullptr(arv))
+				return 0;
+
 			return alturaNo(arv->getEsquerda()) - alturaNo(arv->getDireita());
 		}
 
@@ -269,14 +279,14 @@ class NoAVL {
 		 */
 		NoAVL<T> *balanceia(const T &dado, NoAVL<T> *arv) {
 			if (1 < varBalanco(arv)) {
-				if (dado < *arv->getEsquerda()->getDado())
+				if (0 <= varBalanco(arv->getEsquerda()))  //!< left left
 					arv = rotacaoEsqSimples(arv);
-				else
+				else                                      //!< left right
 					arv = rotacaoEsqDupla(arv);
 			} else if (varBalanco(arv) < -1) {
-				if (*arv->getDireita()->getDado() < dado)
+				if (varBalanco(arv->getDireita()) <= 0)  //!< right right
 					arv = rotacaoDirSimples(arv);
-				else
+				else                                     //!< right left
 					arv = rotacaoDirDupla(arv);
 			}
 
@@ -322,41 +332,15 @@ class NoAVL {
 		 *		da arv inserida.
 		 */
 		NoAVL<T> *inserir(const T &dado, NoAVL<T> *arv) {
-			NoAVL<T> *tmpArv;
-
-			if (dado < *arv->getDado()) {  //!< insere a esquerda
-				if (checkNullptr(arv->getEsquerda())) {
-					tmpArv = new NoAVL<T>(dado);
-					if (checkNullptr(tmpArv))
-						throw "sem espaço na memória!";
-					else
-						arv->setEsquerda(tmpArv);
-				} else {
-					// arv = inserir(dado, arv->getEsquerda());
-					arv->setEsquerda(inserir(dado, arv->getEsquerda()));
-				}
-			} else {                       //!< insere a direita
-				if (checkNullptr(arv->getDireita())) {
-					tmpArv = new NoAVL<T>(dado);
-					if (checkNullptr(tmpArv))
-						throw "sem espaço na memória!";
-					else
-						arv->setDireita(tmpArv);
-				} else {
-					// arv = inserir(dado, arv->getDireita());
-					arv->setDireita(inserir(dado, arv->getDireita()));
-				}
-			}
-
-			/*if (checkNullptr(arv)) {
+			if (checkNullptr(arv)) {
 				arv = new NoAVL<T>(dado);
 				if (checkNullptr(arv))
 					throw "sem espaço na memória!";
-			} else if (dado < *arv->getDado()) {
+			} else if (dado < *arv->getDado()) {  //!< insere a esquerda
 				arv->setEsquerda(inserir(dado, arv->getEsquerda()));
-			} else {
+			} else {                              //!< insere a direita
 				arv->setDireita(inserir(dado, arv->getDireita()));
-			}*/
+			}
 
 			fixAltura(arv);
 			return balanceia(dado, arv);
@@ -377,34 +361,28 @@ class NoAVL {
 		 */
 		NoAVL<T> *remover(NoAVL<T> *arv, const T &dado) {
 			NoAVL<T> *tmpArv = arv;
-			NoAVL<T> *filhoArv;
 
 			if (dado < *arv->getDado()) {
 				/* busca do nodo a ser removido */
 				arv->setEsquerda(remover(arv->getEsquerda(), dado));
-				// balanceia(dado, arv);
-				// fixAltura(arv);
+				arv = balanceia(dado, arv);
 			} else if (*arv->getDado() < dado) {
 				/* busca do nodo a ser removido */
 				arv->setDireita(remover(arv->getDireita(), dado));
-				// balanceia(dado, arv);
-				// fixAltura(arv);
+				arv = balanceia(dado, arv);
 			} else if (!checkNullptr(arv->getEsquerda())
 						&& !checkNullptr(arv->getDireita())) {
 				/* dois filhos */
 				tmpArv = minimo(arv->getDireita());
-				arv->setDado(tmpArv->getDado());
+				arv->setDado(*tmpArv->getDado());
 				arv->setDireita(remover(arv->getDireita(), *arv->getDado()));
+				arv = balanceia(dado, arv);
 			} else if (!checkNullptr(arv->getDireita())) {
 				/* filho na direita */
-				filhoArv = arv->getDireita();
-				// delete tmpArv;
-				return filhoArv;
+				arv = arv->getDireita();
 			} else if (!checkNullptr(arv->getEsquerda())) {
 				/* filho na esquerda */
-				filhoArv = arv->getEsquerda();
-				// delete tmpArv;
-				return filhoArv;
+				arv = arv->getEsquerda();
 			} else {
 				/* sem filhos */
 				delete tmpArv;
@@ -412,8 +390,7 @@ class NoAVL {
 			}
 
 			fixAltura(arv);
-			return balanceia(dado, arv);
-			// return arv;
+			return arv;
 		}
 
 		/*!
