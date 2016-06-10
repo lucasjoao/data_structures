@@ -30,7 +30,14 @@ class NoBinario {
 		 *
 		 *	Destrutor virtual.
 		 */
-		virtual ~NoBinario() {}
+		virtual ~NoBinario() {
+			if (!checkNullptr(getEsquerda()))
+				delete esquerda;
+			else if (!checkNullptr(getDireita()))
+				delete direita;
+
+			delete dado;
+		}
 
 		/*!
 		 *  \brief Funcao getter getDado
@@ -94,8 +101,8 @@ class NoBinario {
 		 *
 		 *	Atribui a info passada como a nova informacao do nodo.
 		 */
-		void setDado(T *data) {
-			dado = data;
+		void setDado(const T &data) {
+			*dado = data;
 		}
 
 		/*!
@@ -196,17 +203,15 @@ class NoBinario {
 						&& !checkNullptr(arv->getDireita())) {
 				/* dois filhos */
 				tmpArv = minimo(arv->getDireita());
-				arv->setDado(tmpArv->getDado());
+				arv->setDado(*tmpArv->getDado());
 				arv->setDireita(remover(arv->getDireita(), *arv->getDado()));
 			} else if (!checkNullptr(arv->getDireita())) {
 				/* filho na direita */
 				filhoArv = arv->getDireita();
-				delete tmpArv;
 				return filhoArv;
 			} else if (!checkNullptr(arv->getEsquerda())) {
 				/* filho na esquerda */
 				filhoArv = arv->getEsquerda();
-				delete tmpArv;
 				return filhoArv;
 			} else {
 				/* sem filhos */
