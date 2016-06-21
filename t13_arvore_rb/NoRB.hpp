@@ -157,6 +157,64 @@ class NoRB {
 			return arv == nullptr ? true : false;
 		}
 
+		NoRB<T> *rotacaoEsq(NoRB<T> *arv) {
+			if (!checkNullptr(arv->getPai())) {
+				NoRB<T> *paiTmp = arv->getPai();
+				NoRB<T> *arvTmp = arv->getDireita();
+
+				arvTmp->setPai(paiTmp);
+				arv->setDireita(arvTmp->getEsquerda());
+				arv->getDireita()->setPai(arv);
+				arvTmp->setEsquerda(arv);
+				arvTmp->getEsquerda()->setPai(arvTmp);
+
+				if (paiTmp->getEsquerda() == arv)
+					paiTmp->setEsquerda(arvTmp);
+				else if (paiTmp->getDireita() == arv)
+					paiTmp->setDireita(arvTmp);
+
+				return arvTmp;
+			} else {
+				throw "ERRO!";
+			}
+
+			// if (!checkNullptr(arv->getDireita())) {
+			// 	NoRB<T> *arvTmp = arv->getDireita();
+			// 	arv->setDireita(arvTmp->getEsquerda());
+			// 	arvTmp->setEsquerda(arv);
+
+			// 	fixAltura(arv);
+			// 	fixAltura(arvTmp);
+
+			// 	return arvTmp;
+			// } else {
+			// 	throw "ERRO!";
+			// }
+		}
+
+		NoRB<T> *rotacaoDir(NoRB<T> *arv) {
+			if (!checkNullptr(arv->getPai())) {
+				NoRB<T> *paiTmp = arv->getPai();
+				NoRB<T> *arvTmp = arv->getEsquerda();
+
+				arvTmp->setPai(paiTmp);
+				arv->setEsquerda(arvTmp->getDireita());
+				arv->getEsquerda()->setPai(arv);
+				arvTmp->setDireita(arv);
+				arvTmp->getDireita()->setPai(arvTmp);
+
+				if (paiTmp->getEsquerda() == arv)
+					paiTmp->setEsquerda(arvTmp);
+				else if (paiTmp->getDireita() == arv)
+					paiTmp->setDireita(arvTmp);
+
+				return arvTmp;
+			} else {
+				throw "ERRO!";
+			}
+		}
+
+
 		/*!
 		 *  \brief Funcao busca
 		 *  \param referencia ao tipo generico constante dado do nodo
@@ -205,6 +263,26 @@ class NoRB {
 			} else {                              //!< insere a direita
 				arv->setDireita(inserir(dado, arv->getDireita()));
 			}
+			arv->setCor(RB_RUBRO);
+
+			NoRB<T> *arvTmp = arv;
+			NoRB<T> *pai, avo;
+
+			while (!checkNullptr(arvTmp->getPai())) {
+				while (getCor(arvTmp->getPai())) {
+					pai = arvTmp->getPai();
+					avo = pai->getPai();
+
+				}
+			}
+
+			/* IMPLEMENTAR AQUI VVV
+			if (avo->esq == pai) {
+				passo_CE_esq(atual, pai, avo);
+			} else {
+				passo_CE_dir(atual, pai, avo);
+			}
+			*/
 
 			// fixAltura(arv);
 			// return balanceia(dado, arv);
