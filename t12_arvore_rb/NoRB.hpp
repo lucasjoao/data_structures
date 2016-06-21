@@ -1,10 +1,18 @@
 #ifndef NO_RB_HPP
 #define NO_RB_HPP
 
-#include <vector>
-
 #define RB_RUBRO true
 #define RB_NEGRO false
+
+/*!
+ *  \brief NoRB.hpp
+ *	\copyright Copyright [2016] <Lucas Joao Martins>
+ *  \author Lucas Joao Martins
+ *
+ *	Implementa arvore rb atraves de template.
+ */
+
+#include <vector>
 
 template <typename T>
 class NoRB {
@@ -14,11 +22,11 @@ class NoRB {
 		 *	\param referencia ao tipo generico constante dado do nodo
 		 *
 		 *	Inicializa a arvore, seta o dado do nodo conforme parametro,
-		 *		esquerda e direita sao nulos enquanto a altura e zero.
+		 *		esquerda, direita e pai sao nulos enquanto a cor e negra.
 		 */
 		explicit NoRB(const T &dado)
-			: dado(new T(dado)), esquerda(nullptr), direita(nullptr), altura(0)
-			 {}
+			: dado(new T(dado)), esquerda(nullptr), direita(nullptr),
+			  pai(nullptr), cor(RB_NEGRO) {}
 
 		/*!
 		 *  \brief Destrutor
@@ -35,11 +43,11 @@ class NoRB {
 		}
 
 		/*!
-		 *  \brief Funcao getter getAltura
-		 *  \return a altura do nodo.
+		 *  \brief Funcao getter getPai
+		 *  \return o pai do nodo.
 		 */
 		NoRB<T> *getPai() {
-			return altura;
+			return pai;
 		}
 
 		/*!
@@ -50,11 +58,17 @@ class NoRB {
 			return dado;
 		}
 
-		bool getCor(NoRB<T>*) {}
+		/*!
+		 *  \brief Funcao getter getCor
+		 *  \return a cor do nodo.
+		 */
+		bool getCor(NoRB<T> *nodo) {
+			return cor;
+		}
 
 		/*!
 		 *  \brief Funcao getter getElementos
-		 *  \return o vector de nodos avls elementos.
+		 *  \return o vector de nodos rbs elementos.
 		 */
 		std::vector<NoRB<T>*> getElementos() {
 			return elementos;
@@ -99,6 +113,28 @@ class NoRB {
 		}
 
 		/*!
+		 *  \brief Funcao setter setPai
+		 *  \param _pai passado por nome e um nodo rb.
+		 * 	\return nao possui.
+		 *
+		 *	Atribui o nodo passado como pai do nodo.
+		 */
+		void setPai(NoRB<T> *_pai) {
+			pai = _pai;
+		}
+
+		/*!
+		 *  \brief Funcao setter setCor
+		 *  \param valor booleano _cor.
+		 * 	\return nao possui.
+		 *
+		 *	Atribui a cor passada como nova cor do nodo.
+		 */
+		void setCor(bool _cor) {
+			cor = _cor;
+		}
+
+		/*!
 		 *  \brief Funcao setter setDado
 		 *  \param data passado por nome e um tipo generico que representa a
 		 *		info do nodo.
@@ -124,7 +160,7 @@ class NoRB {
 		/*!
 		 *  \brief Funcao busca
 		 *  \param referencia ao tipo generico constante dado do nodo
-		 *  \param arv passado por nome e um nodo avl que vai ser procurado
+		 *  \param arv passado por nome e um nodo rb que vai ser procurado
 		 *  \return um tipo generico que representa o dado do nodo encontrado
 		 *  \sa getDireita(), getEsquerda(), getDado(), checkNullptr(...)
 		 *
@@ -170,8 +206,9 @@ class NoRB {
 				arv->setDireita(inserir(dado, arv->getDireita()));
 			}
 
-			fixAltura(arv);
-			return balanceia(dado, arv);
+			// fixAltura(arv);
+			// return balanceia(dado, arv);
+			return arv;
 		}
 
 		/*!
@@ -193,18 +230,18 @@ class NoRB {
 			if (dado < *arv->getDado()) {
 				/* busca do nodo a ser removido */
 				arv->setEsquerda(remover(arv->getEsquerda(), dado));
-				arv = balanceia(dado, arv);
+				// arv = balanceia(dado, arv);
 			} else if (*arv->getDado() < dado) {
 				/* busca do nodo a ser removido */
 				arv->setDireita(remover(arv->getDireita(), dado));
-				arv = balanceia(dado, arv);
+				// arv = balanceia(dado, arv);
 			} else if (!checkNullptr(arv->getEsquerda())
 						&& !checkNullptr(arv->getDireita())) {
 				/* dois filhos */
 				tmpArv = minimo(arv->getDireita());
 				arv->setDado(*tmpArv->getDado());
 				arv->setDireita(remover(arv->getDireita(), *arv->getDado()));
-				arv = balanceia(dado, arv);
+				// arv = balanceia(dado, arv);
 			} else if (!checkNullptr(arv->getDireita())) {
 				/* filho na direita */
 				arv = arv->getDireita();
@@ -217,13 +254,13 @@ class NoRB {
 				return nullptr;
 			}
 
-			fixAltura(arv);
+			// fixAltura(arv);
 			return arv;
 		}
 
 		/*!
 		 *  \brief Funcao minimo
-		 *  \param ponteiro ao nodo avl que deve ser procurado
+		 *  \param ponteiro ao nodo rb que deve ser procurado
 		 *  \return o ponteiro para o nodo minimo da arvore
 		 *  \sa getEsquerda(), checkNullptr(...)
 		 *
@@ -239,7 +276,7 @@ class NoRB {
 
 		/*!
 		 *  \brief Funcao preOrdem
-		 *  \param parametro ao nodo avl que sera utilizado como base.
+		 *  \param parametro ao nodo rb que sera utilizado como base.
 		 *  \return nao possui.
 		 *  \sa checkNullptr(...), getDireita(), getEsquerda(),
 		 * 		vector::push_back(...)
@@ -257,7 +294,7 @@ class NoRB {
 
 		/*!
 		 *  \brief Funcao emOrdem
-		 *  \param parametro ao nodo avl que sera utilizado como base.
+		 *  \param parametro ao nodo rb que sera utilizado como base.
 		 *  \return nao possui.
 		 *  \sa checkNullptr(...), getDireita(), getEsquerda(),
 		 * 		vector::push_back(...)
@@ -275,7 +312,7 @@ class NoRB {
 
 		/*!
 		 *  \brief Funcao posOrdem
-		 *  \param parametro ao nodo avl que sera utilizado como base.
+		 *  \param parametro ao nodo rb que sera utilizado como base.
 		 *  \return nao possui.
 		 *  \sa checkNullptr(...), getDireita(), getEsquerda(),
 		 * 		vector::push_back(...)
@@ -295,11 +332,10 @@ class NoRB {
 		T *dado;						   //!< informacao generica do nodo
 		NoRB<T> *esquerda;				   //!< nodo filho da esquerda
 		NoRB<T> *direita;                  //!< nodo filho da direita
-		NoRB<T> *pai;
-		bool cor;
+		NoRB<T> *pai;                      //!< nodo ascendente (pai)
+		bool cor;	                       //!< cor do nodo
 		std::vector<NoRB<T>*> elementos;   //!< elementos acessados durante
 										   // o percurso realizado
-
 };
 
 #endif
