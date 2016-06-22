@@ -183,9 +183,6 @@ class NoRB {
 			// 	arv->setDireita(arvTmp->getEsquerda());
 			// 	arvTmp->setEsquerda(arv);
 
-			// 	fixAltura(arv);
-			// 	fixAltura(arvTmp);
-
 			// 	return arvTmp;
 			// } else {
 			// 	throw "ERRO!";
@@ -212,7 +209,54 @@ class NoRB {
 			} else {
 				throw "ERRO!";
 			}
+
+			// if (!checkNullptr(arv->getEsquerda())) {
+			// 	NoRB<T> *arvTmp = arv->getEsquerda();
+			// 	arv->setEsquerda(arvTmp->getDireita());
+			// 	arvTmp->setDireita(arv);
+
+			// 	return arvTmp;
+			// } else {
+			// 	throw "ERRO!";
+			// }
 		}
+
+		void ceEsq(NoRB<T> *arv, NoRB<T> *pai, NoRB<T> *avo) {
+			NoRB<T> *tio = avo->getDireita();
+			if (getCor(tio)) {
+				pai->setCor(RB_NEGRO);
+				avo->setCor(RB_RUBRO);
+				tio->setCor(RB_NEGRO);
+				arv = avo;
+			} else {
+				if (pai->getDireita() == arv) {
+					pai = rotacaoEsq(pai);
+					arv = arv->getEsquerda();
+				}
+				pai->setCor(RB_NEGRO);
+				avo->setCor(RB_RUBRO);
+				avo = rotacaoDir(avo);
+			}
+		}
+
+		void ceDir(NoRB<T> *arv, NoRB<T> *pai, NoRB<T> *avo) {
+			NoRB<T> *tio = avo->getEsquerda();
+			if (getCor(tio)) {
+				pai->setCor(RB_NEGRO);
+				avo->setCor(RB_RUBRO);
+				tio->setCor(RB_NEGRO);
+				arv = avo;
+			} else {
+				if (pai->getEsquerda() == arv) {
+					pai = rotacaoDir(pai);
+					arv = arv->getDireita();
+				}
+				pai->setCor(RB_NEGRO);
+				avo->setCor(RB_RUBRO);
+				avo = rotacaoEsq(avo);
+			}
+		}
+
 
 
 		/*!
@@ -263,26 +307,22 @@ class NoRB {
 			} else {                              //!< insere a direita
 				arv->setDireita(inserir(dado, arv->getDireita()));
 			}
-			arv->setCor(RB_RUBRO);
 
-			NoRB<T> *arvTmp = arv;
-			NoRB<T> *pai, avo;
+			// DIFERE DO PROF. AQUI POR NAO TRABALHAR DIRETAMENTE COM A RAIZ
+			// arv->setCor(RB_RUBRO);
+			// NoRB<T> *arvTmp = arv;
+			// NoRB<T> *pai;
+			// NoRB<T> *avo;
 
-			while (!checkNullptr(arvTmp->getPai())) {
-				while (getCor(arvTmp->getPai())) {
-					pai = arvTmp->getPai();
-					avo = pai->getPai();
+			// while (!checkNullptr(arvTmp->getPai()) &&
+			// 		getCor(arvTmp->getPai())) {
+			// 	pai = arvTmp->getPai();
+			// 	avo = pai->getPai();
 
-				}
-			}
-
-			/* IMPLEMENTAR AQUI VVV
-			if (avo->esq == pai) {
-				passo_CE_esq(atual, pai, avo);
-			} else {
-				passo_CE_dir(atual, pai, avo);
-			}
-			*/
+			// 	if (avo->getEsquerda() == pai)
+			// 		ceEsq(arvTmp, pai, avo);
+			// 	else
+			// 		ceDir(arvTmp, pai, avo);			}
 
 			// fixAltura(arv);
 			// return balanceia(dado, arv);
