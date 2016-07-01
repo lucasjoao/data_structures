@@ -2,25 +2,20 @@ dúvidas:
 -
 
 rb:
-- ideal: versão que só considera casos na adição
-    0. entender o que deve ser feito
-    1. fazer certo com teste pessoal
-    2. passar nos testes do professor
-    3. comentários
-        - atenção no remover
-    4. perfumaria
+- faltou:
+    1. balancear corretamente após adição
+    2. balancear corretamente após remoção
+    3. criar testes próprios
+    4. passar nos testes próprios
+    5. passar nos testes do professor
+    6. comentários
+    7. perfumaria
         - verificar dump no arquivo
         - arvTmp x tmpArv
-- plano B: deixar tudo comentado, mas só executa bst e tirar 7
-- add futura correção no code guide, além de comentar sobre esse to-do lá
 
 b:
 
 hashtable:
-
-quicksort:
-
-heapsort:
 
 t02 (começar pós-org de certeza):
 - passar ideia para to-do

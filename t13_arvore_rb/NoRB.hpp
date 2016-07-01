@@ -10,6 +10,10 @@
  *  \author Lucas Joao Martins
  *
  *	Implementa arvore rb atraves de template.
+ *  WARNING: NAO FUNCIONA CORRETAMENTE, NOS TESTES DO PROFESSOR FICOU 7/10
+ *			 NAO TEM VERIFICACAO DE DESBALANCEAMENTO PARA REMOCAO
+ *			 NAO FOI REALIZADO TESTES PROPRIOS
+ *			 POSSIVELMENTE BALANCEAMENTO APOS INSERCAO ESTA INCORRETO
  */
 
 #include <vector>
@@ -92,7 +96,7 @@ class NoRB {
 
 		/*!
 		 *	\brief Funcao setter setEsquerda
-		 *  \param esq passado por nome e um nodo avl.
+		 *  \param esq passado por nome e um nodo rb.
 		 * 	\return nao possui.
 		 *
 		 *	Atribui o nodo passado como filho da esquerda do nodo pai.
@@ -103,7 +107,7 @@ class NoRB {
 
 		/*!
 		 *  \brief Funcao setter setDireita
-		 *  \param dir passado por nome e um nodo avl.
+		 *  \param dir passado por nome e um nodo rb.
 		 * 	\return nao possui.
 		 *
 		 *	Atribui o nodo passado como filho da direita do nodo pai.
@@ -148,7 +152,7 @@ class NoRB {
 
 		/*!
 		 *  \brief Funcao checkNullptr
-		 *  \param arv passado por nome e um nodo avl
+		 *  \param arv passado por nome e um nodo rb
 		 *  \return valor booleano resultante da comparacao
 		 *
 		 *  Checa se o nodo passado e um nullptr.
@@ -157,6 +161,15 @@ class NoRB {
 			return arv == nullptr ? true : false;
 		}
 
+		/*!
+		 *  \brief Funcao rotacaoEsq
+		 *  \param arv passado por nome e um nodo rb
+		 *  \return a arv rotacionada
+		 *  \sa checkNullptr(...), getDireita(), setEsquerda(...),
+		 * 		setDireita(...), getEsquerda(), getPai(), setPai(...)
+		 *
+		 *  Se possivel, realiza a rotacao esquerda.
+		 */
 		NoRB<T> *rotacaoEsq(NoRB<T> *arv) {
 			if (!checkNullptr(arv->getPai())) {
 				NoRB<T> *paiTmp = arv->getPai();
@@ -177,18 +190,17 @@ class NoRB {
 			} else {
 				throw "ERRO!";
 			}
-
-			// if (!checkNullptr(arv->getDireita())) {
-			// 	NoRB<T> *arvTmp = arv->getDireita();
-			// 	arv->setDireita(arvTmp->getEsquerda());
-			// 	arvTmp->setEsquerda(arv);
-
-			// 	return arvTmp;
-			// } else {
-			// 	throw "ERRO!";
-			// }
 		}
 
+		/*!
+		 *  \brief Funcao rotacaoDir
+		 *  \param arv passado por nome e um nodo rb
+		 *  \return a arv rotacionada
+		 *  \sa checkNullptr(...), getDireita(), setEsquerda(...),
+		 * 		setDireita(...), getEsquerda(), getPai(), setPai(...)
+		 *
+		 *  Se possivel, realiza a rotacao direita.
+		 */
 		NoRB<T> *rotacaoDir(NoRB<T> *arv) {
 			if (!checkNullptr(arv->getPai())) {
 				NoRB<T> *paiTmp = arv->getPai();
@@ -209,19 +221,21 @@ class NoRB {
 			} else {
 				throw "ERRO!";
 			}
-
-			// if (!checkNullptr(arv->getEsquerda())) {
-			// 	NoRB<T> *arvTmp = arv->getEsquerda();
-			// 	arv->setEsquerda(arvTmp->getDireita());
-			// 	arvTmp->setDireita(arv);
-
-			// 	return arvTmp;
-			// } else {
-			// 	throw "ERRO!";
-			// }
 		}
 
-		void ceEsq(NoRB<T> *arv, NoRB<T> *pai, NoRB<T> *avo) {
+		/*!
+		 *  \brief Funcao ceEsq
+		 *  \param arv passado por nome e um nodo rb
+		 *  \param arv passado por nome e um nodo rb que representa o pai
+		 *  \param arv passado por nome e um nodo rb que representa o avo
+		 *  \return a arv "balanceada"
+		 *  \sa getDireita(), getCor(...), setCor(...), rotacaoEsq(...),
+		 * 		getEsquerda(), rotacaoDir(...)
+		 *
+		 *  Realiza a correcao ou elevacao da arvore para que ela fique
+		 *		"balanceada".
+		 */
+		NoRB<T> *ceEsq(NoRB<T> *arv, NoRB<T> *pai, NoRB<T> *avo) {
 			NoRB<T> *tio = avo->getDireita();
 			if (getCor(tio)) {
 				pai->setCor(RB_NEGRO);
@@ -237,9 +251,22 @@ class NoRB {
 				avo->setCor(RB_RUBRO);
 				avo = rotacaoDir(avo);
 			}
+			return arv;
 		}
 
-		void ceDir(NoRB<T> *arv, NoRB<T> *pai, NoRB<T> *avo) {
+		/*!
+		 *  \brief Funcao ceDir
+		 *  \param arv passado por nome e um nodo rb
+		 *  \param arv passado por nome e um nodo rb que representa o pai
+		 *  \param arv passado por nome e um nodo rb que representa o avo
+		 *  \return a arv "balanceada"
+		 *  \sa getDireita(), getCor(...), setCor(...), rotacaoEsq(...),
+		 * 		getEsquerda(), rotacaoDir(...)
+		 *
+		 *  Realiza a correcao ou elevacao da arvore para que ela fique
+		 *		"balanceada".
+		 */
+		NoRB<T> *ceDir(NoRB<T> *arv, NoRB<T> *pai, NoRB<T> *avo) {
 			NoRB<T> *tio = avo->getEsquerda();
 			if (getCor(tio)) {
 				pai->setCor(RB_NEGRO);
@@ -255,9 +282,8 @@ class NoRB {
 				avo->setCor(RB_RUBRO);
 				avo = rotacaoEsq(avo);
 			}
+			return arv;
 		}
-
-
 
 		/*!
 		 *  \brief Funcao busca
@@ -286,15 +312,15 @@ class NoRB {
 		/*!
 		 *  \brief Funcao inserir
 		 *  \param referencia ao tipo generico constante dado do nodo
-		 *  \param arv passado por nome e um nodo avl que vai ser inserido
-		 *  \return o ponteiro para o nodo avl
+		 *  \param arv passado por nome e um nodo rb que vai ser inserido
+		 *  \return o ponteiro para o nodo rb
 		 *  \sa getDado(), checkNullptr(...), getEsquerda(), getDireita(),
-		 *		setEsquerda(...), setDireita(...), fixAltura(...),
-		 *		balanceia(...)
+		 *		setEsquerda(...), setDireita(...), setCor(...), setPai(...),
+		 *		getPai(), getCor(), ceEsq(...), ceDir(...)
 		 *
 		 *  Busca de forma recursiva o local correto para inserir o nodo e
 		 *		so realiza o processo de adicao se houver espaco na memoria.
-		 *		Apos isso balanceia, se necessario, os nodos que estao acima
+		 *		Apos isso "balanceia", se necessario, os nodos que estao acima
 		 *		da arv inserida.
 		 */
 		NoRB<T> *inserir(const T &dado, NoRB<T> *arv) {
@@ -308,39 +334,39 @@ class NoRB {
 				arv->setDireita(inserir(dado, arv->getDireita()));
 			}
 
-			// DIFERE DO PROF. AQUI POR NAO TRABALHAR DIRETAMENTE COM A RAIZ
-			// arv->setCor(RB_RUBRO);
-			// NoRB<T> *arvTmp = arv;
-			// NoRB<T> *pai;
-			// NoRB<T> *avo;
+			arv->setPai(arv->getPai());
+			arv->setCor(RB_RUBRO);
 
-			// while (!checkNullptr(arvTmp->getPai()) &&
-			// 		getCor(arvTmp->getPai())) {
-			// 	pai = arvTmp->getPai();
-			// 	avo = pai->getPai();
+			NoRB<T> *arvTmp = arv;
+			NoRB<T> *pai = arvTmp->getPai();
+			NoRB<T> *avo;
 
-			// 	if (avo->getEsquerda() == pai)
-			// 		ceEsq(arvTmp, pai, avo);
-			// 	else
-			// 		ceDir(arvTmp, pai, avo);			}
+			while (getCor(arvTmp) && !checkNullptr(pai) && getCor(pai)) {
+				avo = pai->getPai();
 
-			// fixAltura(arv);
-			// return balanceia(dado, arv);
+				if (!checkNullptr(avo) && avo->getEsquerda() == pai)
+					arvTmp = ceEsq(arvTmp, pai, avo);
+				else
+					arvTmp = ceDir(arvTmp, pai, avo);
+			}
+
+			arv = arvTmp;
+			while (!checkNullptr(arv->getPai()))
+				arv = arv->getPai();
+
+			arv->setCor(RB_NEGRO);
 			return arv;
 		}
 
 		/*!
 		 *  \brief Funcao remover
 		 *  \param referencia ao tipo generico constante dado do nodo
-		 *  \param arv passado por nome e um nodo avl que vai ser removido
-		 *  \return o ponteiro para o nodo avl
+		 *  \param arv passado por nome e um nodo rb que vai ser removido
+		 *  \return o ponteiro para o nodo rb
 		 *  \sa getDado(), checkNullptr(...), getEsquerda(), getDireita(),
-		 *		setEsquerda(...), setDireita(...), setDado(...), minimo(...),
-		 *		fixAltura(...), balanceia(...)
+		 *		setEsquerda(...), setDireita(...), setDado(...), minimo(...)
 		 *
 		 *  Busca de forma recursiva o nodo a ser deletado e entao o deleta.
-		 *		Apos isso balanceia, se necessario, os nodos que estao acima
-		 *		da arv deletada.
 		 */
 		NoRB<T> *remover(NoRB<T> *arv, const T &dado) {
 			NoRB<T> *tmpArv = arv;
@@ -348,18 +374,15 @@ class NoRB {
 			if (dado < *arv->getDado()) {
 				/* busca do nodo a ser removido */
 				arv->setEsquerda(remover(arv->getEsquerda(), dado));
-				// arv = balanceia(dado, arv);
 			} else if (*arv->getDado() < dado) {
 				/* busca do nodo a ser removido */
 				arv->setDireita(remover(arv->getDireita(), dado));
-				// arv = balanceia(dado, arv);
 			} else if (!checkNullptr(arv->getEsquerda())
 						&& !checkNullptr(arv->getDireita())) {
 				/* dois filhos */
 				tmpArv = minimo(arv->getDireita());
 				arv->setDado(*tmpArv->getDado());
 				arv->setDireita(remover(arv->getDireita(), *arv->getDado()));
-				// arv = balanceia(dado, arv);
 			} else if (!checkNullptr(arv->getDireita())) {
 				/* filho na direita */
 				arv = arv->getDireita();
@@ -372,7 +395,6 @@ class NoRB {
 				return nullptr;
 			}
 
-			// fixAltura(arv);
 			return arv;
 		}
 
